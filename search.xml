@@ -8,9 +8,9 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>kolla</tag>
         <tag>docker</tag>
-        <tag>OpenStack</tag>
+        <tag>kolla</tag>
+        <tag>openstack</tag>
       </tags>
   </entry>
 </search>
