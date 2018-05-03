@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/images/networkbrex.png">
 <meta property="og:image" content="http://yoursite.com/images/compute.png">
 <meta property="og:image" content="http://yoursite.com/images/computebrex.png">
-<meta property="og:updated_time" content="2018-05-03T13:26:33.811Z">
+<meta property="og:updated_time" content="2018-05-03T14:09:11.355Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="配置OpenStack虚机网络vxlan和vlan共存">
 <meta name="twitter:description" content="OpenStack Neutron网络服务定义了四种网络模式：1234# tenant_network_type = local# tenant_network_type = vlan   # tenant_network_type = gre# tenant_network_type = vxlan 这里，本文以vlan、vxlan为例，阐述如何实现OpenStack虚机网络（亦称租户网络、业务">
@@ -407,14 +407,14 @@
 <li>eth1：虚机网络(vxlan)；vlan 52，交换机端口设置为Access模式</li>
 <li>eth2：外部网络兼虚机网络(vlan)；vlan网段53-54，交换机端口设置为trunk模式，主机不配置IP地址</li>
 </ul>
-<h2 id="1-在所有网络节点上，操作如下"><a href="#1-在所有网络节点上，操作如下" class="headerlink" title="1.在所有网络节点上，操作如下"></a>1.在所有网络节点上，操作如下</h2><p>修改文件/etc/kolla/neutron-server/ml2_conf.ini</p>
+<h2 id="在所有网络节点上，操作如下"><a href="#在所有网络节点上，操作如下" class="headerlink" title="在所有网络节点上，操作如下"></a>在所有网络节点上，操作如下</h2><p>修改文件/etc/kolla/neutron-server/ml2_conf.ini</p>
 <p><img src="/images/network1.png" alt="image"> </p>
 <p>修改文件/etc/kolla/neutron-openvswitch-agent/ml2_conf.ini</p>
 <p><img src="/images/network2.png" alt="image"> </p>
 <p>重启neutron容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker restart neutron_server neutron_openvswitch_agent</span></span><br></pre></td></tr></table></figure></p>
 <p>在网络节点上，查看br-ex网桥设置情况，如下。</p>
 <p><img src="/images/networkbrex.png" alt="image"> </p>
-<h2 id="2-在所有计算节点上，执行操作如下"><a href="#2-在所有计算节点上，执行操作如下" class="headerlink" title="2.在所有计算节点上，执行操作如下"></a>2.在所有计算节点上，执行操作如下</h2><p>修改文件/etc/kolla/neutron-openvswitch-agent/ml2_conf.ini</p>
+<h2 id="在所有计算节点上，操作如下"><a href="#在所有计算节点上，操作如下" class="headerlink" title="在所有计算节点上，操作如下"></a>在所有计算节点上，操作如下</h2><p>修改文件/etc/kolla/neutron-openvswitch-agent/ml2_conf.ini</p>
 <p><img src="/images/compute.png" alt="image"></p>
 <p>创建一个br-ex外部网桥，并关联到主机的eth2物理网卡上。这样，当计算节点上的虚拟机使用vlan网络时，便可以直接通过qbr-&gt;br-int-&gt;br-ex-&gt;eth2连接到外网。（vlan网络的三层路由，建议使用物理路由器，这样性能和稳定性更好，而不需要通过网络节点上的L3 vRouter虚拟路由）。<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># docker exec -<span class="keyword">u</span> root -it neutron_openvswitch_agent ovs-vsctl <span class="built_in">add</span>-<span class="keyword">br</span> <span class="keyword">br</span>-<span class="keyword">ex</span></span><br><span class="line"># docker exec -<span class="keyword">u</span> root -it neutron_openvswitch_agent ovs-vsctl <span class="built_in">add</span>-port <span class="keyword">br</span>-<span class="keyword">ex</span> eth2</span><br></pre></td></tr></table></figure></p>
 <p>最后，重启相关容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker restart neutron_openvswitch_agent</span></span><br></pre></td></tr></table></figure></p>
@@ -639,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-在所有网络节点上，操作如下"><span class="nav-number">1.</span> <span class="nav-text">1.在所有网络节点上，操作如下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-在所有计算节点上，执行操作如下"><span class="nav-number">2.</span> <span class="nav-text">2.在所有计算节点上，执行操作如下</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在所有网络节点上，操作如下"><span class="nav-number">1.</span> <span class="nav-text">在所有网络节点上，操作如下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在所有计算节点上，操作如下"><span class="nav-number">2.</span> <span class="nav-text">在所有计算节点上，操作如下</span></a></li></ol></div>
             
 
           </div>
