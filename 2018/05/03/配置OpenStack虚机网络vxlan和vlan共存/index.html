@@ -87,12 +87,17 @@
 <meta property="og:site_name" content="起风了">
 <meta property="og:description" content="OpenStack Neutron网络服务定义了四种网络模式：1234# tenant_network_type = local# tenant_network_type = vlan   # tenant_network_type = gre# tenant_network_type = vxlan 这里，本文以vlan、vxlan为例，阐述如何实现OpenStack虚机网络（亦称租户网络、业务">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/1.png">
-<meta property="og:updated_time" content="2018-05-03T13:10:29.446Z">
+<meta property="og:image" content="http://yoursite.com/images/globals.png">
+<meta property="og:image" content="http://yoursite.com/images/network1.png">
+<meta property="og:image" content="http://yoursite.com/images/network2.png">
+<meta property="og:image" content="http://yoursite.com/images/networkbrex.png">
+<meta property="og:image" content="http://yoursite.com/images/compute.png">
+<meta property="og:image" content="http://yoursite.com/images/computebrex.png">
+<meta property="og:updated_time" content="2018-05-03T13:26:33.811Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="配置OpenStack虚机网络vxlan和vlan共存">
 <meta name="twitter:description" content="OpenStack Neutron网络服务定义了四种网络模式：1234# tenant_network_type = local# tenant_network_type = vlan   # tenant_network_type = gre# tenant_network_type = vxlan 这里，本文以vlan、vxlan为例，阐述如何实现OpenStack虚机网络（亦称租户网络、业务">
-<meta name="twitter:image" content="http://yoursite.com/images/1.png">
+<meta name="twitter:image" content="http://yoursite.com/images/globals.png">
 
 
 
@@ -396,20 +401,25 @@
 <li>部署工具：kolla-ansible</li>
 </ul>
 <p>在kolla-ansible部署节点的/etc/kolla/globals.yml文件中，配置网卡。如下所示。</p>
-<p><img src="/images/1.png" alt="image"></p>
+<p><img src="/images/globals.png" alt="image"></p>
 <ul>
 <li>eth0：openstack管理网络；vlan 51，交换机端口设置为Access模式</li>
 <li>eth1：虚机网络(vxlan)；vlan 52，交换机端口设置为Access模式</li>
 <li>eth2：外部网络兼虚机网络(vlan)；vlan网段53-54，交换机端口设置为trunk模式，主机不配置IP地址</li>
 </ul>
 <h2 id="1-在所有网络节点上，操作如下"><a href="#1-在所有网络节点上，操作如下" class="headerlink" title="1.在所有网络节点上，操作如下"></a>1.在所有网络节点上，操作如下</h2><p>修改文件/etc/kolla/neutron-server/ml2_conf.ini</p>
+<p><img src="/images/network1.png" alt="image"> </p>
 <p>修改文件/etc/kolla/neutron-openvswitch-agent/ml2_conf.ini</p>
+<p><img src="/images/network2.png" alt="image"> </p>
 <p>重启neutron容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker restart neutron_server neutron_openvswitch_agent</span></span><br></pre></td></tr></table></figure></p>
 <p>在网络节点上，查看br-ex网桥设置情况，如下。</p>
+<p><img src="/images/networkbrex.png" alt="image"> </p>
 <h2 id="2-在所有计算节点上，执行操作如下"><a href="#2-在所有计算节点上，执行操作如下" class="headerlink" title="2.在所有计算节点上，执行操作如下"></a>2.在所有计算节点上，执行操作如下</h2><p>修改文件/etc/kolla/neutron-openvswitch-agent/ml2_conf.ini</p>
+<p><img src="/images/compute.png" alt="image"></p>
 <p>创建一个br-ex外部网桥，并关联到主机的eth2物理网卡上。这样，当计算节点上的虚拟机使用vlan网络时，便可以直接通过qbr-&gt;br-int-&gt;br-ex-&gt;eth2连接到外网。（vlan网络的三层路由，建议使用物理路由器，这样性能和稳定性更好，而不需要通过网络节点上的L3 vRouter虚拟路由）。<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># docker exec -<span class="keyword">u</span> root -it neutron_openvswitch_agent ovs-vsctl <span class="built_in">add</span>-<span class="keyword">br</span> <span class="keyword">br</span>-<span class="keyword">ex</span></span><br><span class="line"># docker exec -<span class="keyword">u</span> root -it neutron_openvswitch_agent ovs-vsctl <span class="built_in">add</span>-port <span class="keyword">br</span>-<span class="keyword">ex</span> eth2</span><br></pre></td></tr></table></figure></p>
 <p>最后，重启相关容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker restart neutron_openvswitch_agent</span></span><br></pre></td></tr></table></figure></p>
 <p>在计算节点上，查看br-ex网桥设置情况，如下。</p>
+<p><img src="/images/computebrex.png" alt="image"></p>
 <p>创建一个vlan id为53的网段<br><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span> <span class="comment">neutron</span> <span class="comment">net</span><span class="literal">-</span><span class="comment">create</span> <span class="comment">vlan</span><span class="literal">-</span><span class="comment">53</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">shared</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:physical_network</span> <span class="comment">physnet1</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:network_type</span> <span class="comment">vlan</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:segmentation_id</span> <span class="comment">53</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">#</span> <span class="comment">neutron</span> <span class="comment">subnet</span><span class="literal">-</span><span class="comment">create</span> <span class="comment">vlan</span><span class="literal">-</span><span class="comment">53</span> <span class="comment">172</span><span class="string">.</span><span class="comment">17</span><span class="string">.</span><span class="comment">53</span><span class="string">.</span><span class="comment">0/24</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">name</span> <span class="comment">provider</span><span class="literal">-</span><span class="comment">53</span><span class="literal">-</span><span class="comment">subnet</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">gateway</span> <span class="comment">172</span><span class="string">.</span><span class="comment">17</span><span class="string">.</span><span class="comment">53</span><span class="string">.</span><span class="comment">1</span></span><br></pre></td></tr></table></figure></p>
 <p>查看创建的网络，如下。<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># neutron net-<span class="type">list</span></span><br><span class="line">+--------------------------------------+----------------+----------------------------------+-----------------------------------------------------+</span><br><span class="line">| id                                   | name           | tenant_id                        | subnets                                             |</span><br><span class="line">+--------------------------------------+----------------+----------------------------------+-----------------------------------------------------+</span><br><span class="line">| <span class="number">5</span>d9c4874-e03b<span class="number">-4</span>bde-aee0<span class="number">-947</span>d7dde4860 | vlan<span class="number">-53</span>        | <span class="number">48</span>fbadff0ab84229b429166babbe488f | <span class="number">9</span>bade37c-ff44<span class="number">-4004</span><span class="number">-8e82</span><span class="number">-20</span>d61348fdc0 <span class="number">172.17</span><span class="number">.53</span><span class="number">.0</span>/<span class="number">24</span> |</span><br><span class="line">| <span class="number">7</span>b0152da-a975<span class="number">-4</span>dbf-b35b<span class="number">-437951</span>c66efa | tenant_network | <span class="number">48</span>fbadff0ab84229b429166babbe488f | a45516a4<span class="number">-4</span>ce9<span class="number">-4</span>c2e<span class="number">-8052</span><span class="number">-8</span>c71eae0e219 <span class="number">10.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span>    |</span><br><span class="line">| <span class="number">9630</span>cf8b<span class="number">-4072</span><span class="number">-415</span>b-a9a9<span class="number">-99</span>ff815748f8 | public_network | <span class="number">48</span>fbadff0ab84229b429166babbe488f | a98f8c80<span class="number">-78</span>de<span class="number">-43</span>ba-af52-d86c19fc59ef <span class="number">172.17</span><span class="number">.54</span><span class="number">.0</span>/<span class="number">24</span> |</span><br><span class="line">+--------------------------------------+----------------+----------------------------------+-----------------------------------------------------+</span><br></pre></td></tr></table></figure></p>
 <p>最后，创建一个虚拟机并使用该vlan网络。<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># nova boot --flavor <span class="number">1</span>Gmem_1cpu --image centos7 --nic net-id=<span class="number">5</span>d9c4874-e03b<span class="number">-4</span>bde-aee0<span class="number">-947</span>d7dde4860 test_vm</span><br><span class="line"></span><br><span class="line"># nova <span class="type">list</span> | grep test_vm</span><br><span class="line">| f506129b<span class="number">-610</span>f<span class="number">-4e2</span>d<span class="number">-886</span>b<span class="number">-5</span>d791cdcb282 | test_vm | <span class="literal">ACTIVE</span> | -  | Running | vlan<span class="number">-53</span>=<span class="number">172.17</span><span class="number">.53</span><span class="number">.7</span></span><br></pre></td></tr></table></figure></p>
@@ -568,7 +578,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
