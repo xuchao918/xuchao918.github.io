@@ -4,11 +4,31 @@
 
     
   <url>
-    <loc>http://yoursite.com/2018/05/03/%E9%85%8D%E7%BD%AEOpenStack%E8%99%9A%E6%9C%BA%E7%BD%91%E7%BB%9Cvxlan%E5%92%8Cvlan%E5%85%B1%E5%AD%98/</loc>
-    <lastmod>2018-05-03T14:09:11.355Z</lastmod>
+    <loc>http://yoursite.com/2018/05/07/%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AEOpenStack%E8%8A%82%E7%82%B9Swap%E5%88%86%E5%8C%BA/</loc>
+    <lastmod>2018-05-07T13:12:28.819Z</lastmod>
     <data>
         <display>
-        <title>配置OpenStack虚机网络vxlan和vlan共存</title>
+        <title>如何设置OpenStack节点Swap分区</title>
+        <pubTime>2018-05-07T13:02:51.000Z</pubTime>
+        
+        <tag>OpenStack</tag>
+         
+         
+           
+             
+              <breadCrumb title="OpenStack" url="http://yoursite.com/categories/OpenStack/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2018/05/03/Kolla%E4%B8%AD%E9%85%8D%E7%BD%AEOpenStack%E8%99%9A%E6%9C%BA%E7%BD%91%E7%BB%9Cvxlan%E5%92%8Cvlan%E5%85%B1%E5%AD%98/</loc>
+    <lastmod>2018-05-07T12:55:48.347Z</lastmod>
+    <data>
+        <display>
+        <title>Kolla中配置OpenStack虚机网络vxlan和vlan共存</title>
         <pubTime>2018-05-03T12:59:32.000Z</pubTime>
         
         <tag>Kolla</tag>
