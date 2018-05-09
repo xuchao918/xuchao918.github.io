@@ -92,9 +92,10 @@
 <meta property="og:image" content="http://yoursite.com/images/bond.png">
 <meta property="og:image" content="http://yoursite.com/images/vmha.png">
 <meta property="og:image" content="http://yoursite.com/images/mysqlha.jpg">
+<meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-09T15:00:10.798Z">
+<meta property="og:updated_time" content="2018-05-09T15:14:02.686Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -517,6 +518,7 @@
 <h3 id="使用多Region和AZ"><a href="#使用多Region和AZ" class="headerlink" title="使用多Region和AZ"></a>使用多Region和AZ</h3><p>如果，OpenStack云平台需要跨机房或地区部署，可以使用多Region和 Availability Zone（以下简称AZ）的方案。这样，每个机房之间在地理位置上自然隔离，这对上层的应用来说是天然的容灾方法。</p>
 <p><strong>多区域（Region）部署</strong></p>
 <p>OpenStack支持依据地理位置划分为不同的Region，所有的Regino除了共享Keystone、Horizon服务外，每个Region都是一个完整的OpenStack环境，从整体上看，多个区域之间的部署相对独立，但可通过内网专线实现互通（如BGP-EVPN）。其架构如下图所示。</p>
+<p><img src="/images/region-az.png" alt="image"></p>
 <p>部署时只需要部署一套公共的Keystone和Horizon服务，其它服务按照单Region方式部署即可，通过Endpoint指定Region。用户在请求任何资源时必须指定具体的区域。采用这种方式能够把分布在不同的区域的资源统一管理起来，各个区域之间可以采取不同的部署架构甚至不同的版本。其优点如下：</p>
 <ul>
 <li>部署简单，每个区域部署几乎不需要额外的配置，并且区域很容易实现横向扩展。</li>
