@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://yoursite.com/images/mysqlha.jpg">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-09T14:48:39.096Z">
+<meta property="og:updated_time" content="2018-05-09T14:53:08.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -612,17 +612,21 @@
 <p>最后，Ceph分布式存储部署架构，如下图所示。</p>
 <p><img src="/images/ceph.png" alt="image"></p>
 <h2 id="用户应用层"><a href="#用户应用层" class="headerlink" title="用户应用层"></a>用户应用层</h2><p>在相当多的业务中，都会涉及到服务高可用。而一般的高可用的实现都是通过VIP(Vitrual IP)实现。VIP不像IP一样，对应一个实际的网络接口（网卡），它是虚拟出来的IP地址，所以利用其特性可以实现服务的容错和迁移工作。</p>
-<p>在常见节点中VIP配置非常简单，没有多大的限制。但OpenStack实例中，一个IP对应一个Port设备。并且Neutron 有“Allowed address pairs”限制，该功能要求 Port 的MAC/IP 相互对应，那么该IP才能连通。<br>对Port设备的进行操作可以实现下面几个功能：</p>
+<p>在常见节点中VIP配置非常简单，没有多大的限制。但OpenStack实例中，一个IP对应一个Port设备。并且Neutron 有“Allowed address pairs”限制，该功能要求 Port 的MAC/IP 相互对应，那么该IP才能连通。对Port设备的进行操作可以实现下面几个功能：</p>
 <ul>
 <li>一个Port设备添加多组Allowed address Pairs，允许多个IP通过该Port连通。</li>
 <li>一个IP对应多组MAC地址。</li>
 <li>一个MAC地址对应多个IP</li>
 </ul>
-<p>另外在OpenStack创建的实例中建立VIP并使其能正常工作可以使用下面方法：<br>创建VIP的Port设备(防止该VIP被再次分配)<br>更新Port设备的Allowed address pairs</p>
+<p>另外在OpenStack创建的实例中建立VIP并使其能正常工作可以使用下面方法：</p>
+<ul>
+<li>创建VIP的Port设备(防止该VIP被再次分配)</li>
+<li>更新Port设备的Allowed address pairs</li>
+</ul>
 <p>第一步，创建Port设备<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#source</span> admin-openrc<span class="selector-class">.sh</span>   <span class="comment">//导入租户环境变量</span></span><br><span class="line"><span class="selector-id">#openstack</span> network list    <span class="comment">//查看现有网络，从中选择创建port设备的网络</span></span><br><span class="line"><span class="selector-id">#openstack</span> subnet list     <span class="comment">//查看网络下存在子网，从中选择port设备所处子网</span></span><br><span class="line"><span class="selector-id">#openstack</span> port create --network NetWork_Name --fixed-ip subnet=SubNet_Name,\</span><br><span class="line">ip-address=IP Port_Name</span><br><span class="line"><span class="selector-id">#openstack</span> port show Port_Name</span><br></pre></td></tr></table></figure></p>
 <p>此时Port设备已经创建，但该Port设备与需要建立VIP的实例没有任何关系，在该实例上创建VIP也是不能工作的。原因在于下面<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#neutron port-list |grep Instance-IP        <span class="comment">//找到需要配置VIP的实例的Port ID</span></span></span><br></pre></td></tr></table></figure></p>
 <p>查看该Port的详细信息<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#neutron port-show <span class="number">17</span>b580e8<span class="number">-1733</span><span class="number">-4e2</span>e-b248-cde4863f4985</span><br></pre></td></tr></table></figure></p>
-<p>此时的allowed_address_pairs为空，就算在该实例中创建VIP，其MAC/IP也是不对应，不能工作的。那么就要进行第二步<br>更新Port的allowed_address_pairs信息<br><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#neutron port-update Port-ID --allowed_address_pair list-<span class="keyword">true</span> <span class="class"><span class="keyword">type</span></span>=dict ip_address=IP</span><br></pre></td></tr></table></figure></p>
+<p>此时的allowed_address_pairs为空，就算在该实例中创建VIP，其MAC/IP也是不对应，不能工作的。那么就要进行第二步，即更新Port的allowed_address_pairs信息<br><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#neutron port-update Port-ID --allowed_address_pair list-<span class="keyword">true</span> <span class="class"><span class="keyword">type</span></span>=dict ip_address=IP</span><br></pre></td></tr></table></figure></p>
 <p>例如<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#neutron port-update <span class="number">17</span>b580e8<span class="number">-1733</span><span class="number">-4e2</span>e-b248-cde4863f4985 \</span><br><span class="line">--allowed_address_pairs <span class="type">list</span>=true type=dict ip_address=<span class="number">172.24</span><span class="number">.1</span><span class="number">.202</span></span><br></pre></td></tr></table></figure></p>
 <p>现在再来查看实例Port信息<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#neutron port-show <span class="number">17</span>b580e8<span class="number">-1733</span><span class="number">-4e2</span>e-b248-cde4863f4985</span><br></pre></td></tr></table></figure></p>
 <p>此时在虚拟机中创建VIP，就能够正常工作了。</p>
@@ -656,7 +660,7 @@
 </ul>
 <h3 id="监控告警"><a href="#监控告警" class="headerlink" title="监控告警"></a>监控告警</h3><p>当监控的对象超过了某一阈值或者某一服务出现了异常时，便自动发送邮件、短信或微信给相关人员进行告警。</p>
 <p><strong>建立集中监控平台</strong></p>
-<p>在一体化运维体系中，监控平台贯穿所有环节，它起到了生产系统涉及的软硬件环境实时运行状况的“监”，监控平台事件驱动的特性也为一体化运维体系起到神经网络驱动的作用，进而进行了“控”，另外，监控平台优质的运维数据可以作为运维大数据分析的数据源，实现运维数据采集的角色。为了提高投入效率，减少重复投入，需要建立集中监控平台实现统一展示、统一管理，支持两地三中心建设，具备灵活的扩展性，支持运维大数据分析；</p>
+<p>在一体化运维体系中，监控平台贯穿所有环节，它起到了生产系统涉及的软硬件环境实时运行状况的“监”，监控平台事件驱动的特性也为一体化运维体系起到神经网络驱动的作用，进而进行了“控”，另外，监控平台优质的运维数据可以作为运维大数据分析的数据源，实现运维数据采集的角色。为了提高投入效率，减少重复投入，需要建立集中监控平台实现统一展示、统一管理，支持两地三中心建设，具备灵活的扩展性，支持运维大数据分析。</p>
 <p><strong>指标权重与阀值分级</strong></p>
 <p>需要重点强调一下监控指标的指标权重、阀值分级与上升机制问题，做监控的人知道“监”的最重要目标是不漏报，为了不漏报在实际实施过程中会出现监控告警过多的困难。如何让运维人员在不漏处理监控事件，又能快速解决风险最高的事件，则需要监控的指标需要进行指标权重、阀值分级与上升机制：</p>
 <p>1）指标权重：</p>
