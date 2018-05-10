@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-10T14:05:16.794Z">
+<meta property="og:updated_time" content="2018-05-10T14:07:03.114Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -512,7 +512,7 @@
 <p>#内存分配超售比例，默认是 1.5 倍，生产环境不建议开启超售<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ram_allocation_ratio</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
 <p>#内存预留量，这部分内存不能被虚拟机使用，以便保证系统的正常运行<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">reserved_host_memory_mb</span> = <span class="number">10240</span>      //如预留<span class="number">10</span>GB</span><br></pre></td></tr></table></figure></p>
 <p><strong>设置CPU</strong></p>
-<p>在虚拟化资源使用上，我们可以通过nova来控制，OpenStack提供了一些配置，我们可以很容易的做到，修改文件nova-conf。</p>
+<p>在虚拟化资源使用上，我们可以通过nova来控制，OpenStack提供了一些配置，我们可以很容易的做到，修改文件nova.conf。</p>
 <p>#虚拟机 vCPU 的绑定范围，可以防止虚拟机争抢宿主机进程的 CPU 资源，建议值是预留前几个物理 CPU<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">vcpu_pin_set</span> = <span class="number">4</span>-<span class="number">31</span></span><br></pre></td></tr></table></figure></p>
 <p>#物理 CPU 超售比例，默认是 16 倍，超线程也算作一个物理 CPU<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">cpu_allocation_ratio</span> = <span class="number">8</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="使用多Region和AZ"><a href="#使用多Region和AZ" class="headerlink" title="使用多Region和AZ"></a>使用多Region和AZ</h3><p>如果，OpenStack云平台需要跨机房或地区部署，可以使用多Region和 Availability Zone（以下简称AZ）的方案。这样，每个机房之间在地理位置上自然隔离，这对上层的应用来说是天然的容灾方法。</p>
