@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-10T13:04:02.090Z">
+<meta property="og:updated_time" content="2018-05-10T13:08:24.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -407,14 +407,14 @@
 <p>对应到每一种网络，服务器都应该做网卡Bond，来提供服务器网络的冗余、高可用和负载均衡的能力，根据实际需求，可以选择模式0或模式1。在网络流量较大的场景下推荐使用bond 0；在可靠性要求较高的场景下推荐使用bond 1。</p>
 <p>二者优劣比较。</p>
 <p><img src="/images/bond.png" alt="image"></p>
-<p>在生产环境中，如果是少于100台OpenStack节点规模的私有云，一般网络类型对应的带宽是（PS：100台只是一个相对值，非绝对值，有洁癖的人请绕过）。</p>
+<p>在生产环境中，如果是少于90台OpenStack节点规模的私有云，一般网络类型对应的带宽是（PS：90台只是一个相对值，非绝对值，有洁癖的人请绕过）。</p>
 <ul>
 <li>管理网络：千兆网络</li>
 <li>外部网络：千兆网络</li>
 <li>存储网络：万兆网络</li>
 <li>租户网络：千兆网络</li>
 </ul>
-<p>如果是多于100台OpenStack节点规模的私有云或公有云环境，则推荐尽量都使用万兆网络。</p>
+<p>如果是多于90台OpenStack节点规模的私有云或公有云环境，则推荐尽量都使用万兆网络。</p>
 <h4 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h4><p>服务器操作系统使用的系统盘，应该用2块硬盘来做RAID 1，以提供系统存储的高可靠性。且推荐使用高性能且成本可控的SAS硬盘，以提高操作系统、MySQL数据库和Docker容器（如果使用kolla部署openstack）的存储性能。</p>
 <h4 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h4><p>OpenStack各计算节点的CPU型号，必须一致，以保证虚拟机的迁移功能正常可用等。</p>
 <h4 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h4><p>OpenStack各计算节点的内存大小，应该一致，以保证虚拟机创建管理的均衡调度等。同时，主机的Swap交换分区，应该科学合理的设置，不能使用系统默认创建的。如何设置，请参考此文。如何设置OpenStack节点Swap分区。</p>
@@ -569,7 +569,7 @@
 <h2 id="使用分布式存储"><a href="#使用分布式存储" class="headerlink" title="使用分布式存储"></a>使用分布式存储</h2><p>如果OpenStack云平台使用开源的分布式存储系统，如Ceph、GlusterFS等。如何保证存储系统的冗余容灾性、可靠性、安全性和性能，便显得尤为重要。这里，以Ceph开源分布式存储为例进行讲解。</p>
 <h3 id="Mon节点和OSD节点部署"><a href="#Mon节点和OSD节点部署" class="headerlink" title="Mon节点和OSD节点部署"></a>Mon节点和OSD节点部署</h3><p>一般地，在生产环境中，至少需要部署有3个Ceph Mon节点（数量最好为奇数）以及多个OSD节点。</p>
 <h3 id="开启CephX认证"><a href="#开启CephX认证" class="headerlink" title="开启CephX认证"></a>开启CephX认证</h3><p>同时，开启CephX认证方式，以提高数据存储的安全性，防范被攻击。如下所示。<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/ceph/ceph.conf </span></span><br><span class="line">[global]</span><br><span class="line">fsid = e10d7336-23e8-4dac-a07a-d012d9208ae1</span><br><span class="line">mon_initial_members = computer1, computer2, computer3</span><br><span class="line">mon_host = 172.17.51.54,172.17.51.55,172.17.51.56</span><br><span class="line">auth_cluster_required = cephx</span><br><span class="line">auth_service_required = cephx</span><br><span class="line">auth_client_required = cephx</span><br><span class="line">………</span><br></pre></td></tr></table></figure></p>
-<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p>如果Ceph节点少于100台，建议Ceph公共网络（即Public Network）使用千兆网络，集群网络（即Cluster Network）使用万兆网络。如果Ceph节点多于100台，且业务负载较高，则尽量都使用万兆网络，在重要的环境上，Ceph公共网络和集群网络，都应该单独分开。需要注意的是，Ceph存储节点使用的网卡，必须要做网卡Bond，防止网卡因故障而导致网络中断。</p>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p>如果Ceph节点少于90台，建议Ceph公共网络（即Public Network）使用千兆网络，集群网络（即Cluster Network）使用万兆网络。如果Ceph节点多于90台，且业务负载较高，则尽量都使用万兆网络，在重要的环境上，Ceph公共网络和集群网络，都应该单独分开。需要注意的是，Ceph存储节点使用的网卡，必须要做网卡Bond，防止网卡因故障而导致网络中断。</p>
 <h3 id="使用Cache-Tier"><a href="#使用Cache-Tier" class="headerlink" title="使用Cache Tier"></a>使用Cache Tier</h3><p>在一个云存储环境中，出于成本的考虑，基本会少量使用SSD硬盘，大量使用SATA硬盘。在OpenStack集成Ceph的云环境中，如何使用SSD和SATA硬盘。一般有两种使用方法。</p>
 <p>第一种：分别创建独立的SSD和SATA存储资源集群。然后，Cinder块存储服务对接这两套Ceph后端存储，这样云平台便可以同时创建和使用SSD介质和SATA介质的云硬盘。</p>
 <p>第二种：使用SSD硬盘创建容量相对较小但性能高的缓存池（Cache tier），SATA硬盘创建容量大的但性能较低的存储池（Storage tier）。</p>
