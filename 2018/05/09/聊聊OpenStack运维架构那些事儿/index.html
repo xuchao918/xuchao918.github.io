@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-09T15:14:02.686Z">
+<meta property="og:updated_time" content="2018-05-10T13:04:02.090Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -643,11 +643,15 @@
 <li>硬件设备类：交换机、路由器、负载均衡设备、防火墙、服务器（硬盘、CPU、内存和网卡）等。</li>
 <li>应用软件类：日志、数据库、消息队列、操作系统、OpenStack云服务、Ceph存储服务、虚拟机、容器、系统和应用负载等。</li>
 </ul>
-<h3 id="监控手段"><a href="#监控手段" class="headerlink" title="监控手段"></a>监控手段</h3><p>通常情况下，随着系统的运行，操作系统会产生系统日志，应用程序会产生应用程序的访问日志、错误日志、运行日志、网络日志，我们可以使用 ELK 来进行日志监控。对于日志监控来说，最见的需求就是收集、存储、查询、展示。</p>
-<p>不同的监控目标，有不同的监控手段。如下几种开源工具或方案，Kolla社区都是默认支持的。最重要的是，如何去使用、完善它们。</p>
+<h3 id="监控手段"><a href="#监控手段" class="headerlink" title="监控手段"></a>监控手段</h3><p>通常情况下，随着系统的运行，操作系统会产生系统日志，应用程序会产生应用程序的访问日志、错误日志、运行日志、网络日志，我们可以使用 EFK 来进行日志监控。对于日志监控来说，最常见的需求就是收集、存储、查询、展示。</p>
+<p>除了对日志进行监控外，我们还需要对系统和应用的运行状况进行实时监控。不同的监控目标，有不同的监控手段。OpenStack云资源的监控，如虚拟机、镜像、数据卷、虚拟网卡等，天然的可以由OpenStack自带的Ceilometer+Gnocchi+Aodh等服务来做（PS：ceilometer可以将采集数据交给gnocchi做数据聚合，最后用grafana来出图）。</p>
+<p>如果，OpenStack云平台是基于Kolla容器化部署和运行管理的。那么诸如Docker容器、操作系统负载、存储空间等，又该使用什么来运维监控并告警呢。自然，TPG栈便呼之欲出了（不要问我为啥不用Zabbix）。</p>
+<p>什么是TPIG栈。即由Telegraf + Influxdb + Grafana + Prometheus组合成的一套运维监控工具集合。它们之间的关系是。<br>Prometheus/Telegraf(收集数据) —-&gt; Influxdb(保存数据) —-&gt; Grafana(显示数据)</p>
+<p>说明：<br>Prometheus和Telegraf不是必须同时部署使用的，你可以根据自己的需要，选择二者都部署，也可以二者选其一。</p>
+<p>如下几种开源工具或方案，Kolla社区都是默认支持的。最重要的是，如何去使用、完善它们。</p>
 <ul>
-<li>日志收集和分析处理的开源方案有：fluentd/filebeat+ elasticsearch +kibana</li>
-<li>性能采集和分析处理的开源方案有：telegraf + influxdb + grafana + collectd + Prometheus</li>
+<li>日志收集和分析处理的开源方案有EFK栈：fluentd/filebeat + elasticsearch +kibana</li>
+<li>性能采集和分析处理的开源方案有TPIG栈：telegraf + influxdb + grafana + Prometheus</li>
 </ul>
 <p><strong>监控方法</strong></p>
 <p>了解监控对象：我们要监控的对象你是否了解呢？比如硬盘的IOPS？<br>对象性能指标：我们要监控这个东西的什么属性？比如 CPU 的使用率、负载、用户态、内核态、上下文切换。<br>报警阈值定义：怎么样才算是故障，要报警呢？比如 CPU 的负载到底多少算高，用户态、内核态分别跑多少算高？<br>故障处理流程：收到了故障报警，我们怎么处理呢？有什么更高效的处理流程吗？</p>
