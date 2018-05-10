@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-10T14:07:03.114Z">
+<meta property="og:updated_time" content="2018-05-10T14:13:46.250Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -657,7 +657,7 @@
 <p>了解监控对象：我们要监控的对象你是否了解呢？比如硬盘的IOPS？<br>对象性能指标：我们要监控这个东西的什么属性？比如 CPU 的使用率、负载、用户态、内核态、上下文切换。<br>报警阈值定义：怎么样才算是故障，要报警呢？比如 CPU 的负载到底多少算高，用户态、内核态分别跑多少算高？<br>故障处理流程：收到了故障报警，我们怎么处理呢？有什么更高效的处理流程吗？</p>
 <p><strong>监控流程</strong></p>
 <ul>
-<li>数据采集：通过telegraf + collectd + Prometheus等对系统和应用进行数据采集；</li>
+<li>数据采集：通过telegraf/Prometheus等对系统和应用进行数据采集；</li>
 <li>数据存储：监控数据存储在MySQL、influxdb上，也可以存储在其他数据库中；</li>
 <li>数据分析：当我们事后需要分析故障时，EFK栈 能给我们提供图形以及时间等相关信息，方面我们确定故障所在；</li>
 <li>数据展示：web 界面展示；</li>
