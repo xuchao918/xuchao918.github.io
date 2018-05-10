@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-10T13:08:24.082Z">
+<meta property="og:updated_time" content="2018-05-10T13:57:14.486Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -417,8 +417,8 @@
 <p>如果是多于90台OpenStack节点规模的私有云或公有云环境，则推荐尽量都使用万兆网络。</p>
 <h4 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h4><p>服务器操作系统使用的系统盘，应该用2块硬盘来做RAID 1，以提供系统存储的高可靠性。且推荐使用高性能且成本可控的SAS硬盘，以提高操作系统、MySQL数据库和Docker容器（如果使用kolla部署openstack）的存储性能。</p>
 <h4 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h4><p>OpenStack各计算节点的CPU型号，必须一致，以保证虚拟机的迁移功能正常可用等。</p>
-<h4 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h4><p>OpenStack各计算节点的内存大小，应该一致，以保证虚拟机创建管理的均衡调度等。同时，主机的Swap交换分区，应该科学合理的设置，不能使用系统默认创建的。如何设置，请参考此文。如何设置OpenStack节点Swap分区。</p>
-<p>数据中心中少部分机器用于做控制节点，大部分机器都是需要运行虚拟化软件的，虚拟化平台的上有大量的vm，而宿主机本身的系统也会跑一些服务，那么这就势必会造成vm之间资源抢占，vm与宿主机系统之间的资源抢占，我们需要通过设定游戏规则，让他们在各自的界限内高效运行，减少冲突抢占。</p>
+<h4 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h4><p>OpenStack各计算节点的内存大小，应该一致，以保证虚拟机创建管理的均衡调度等。同时，主机的Swap交换分区，应该科学合理的设置，不能使用系统默认创建的。如何设置，请参考此文。<a href="https://xuchao918.github.io/2018/05/07/如何设置OpenStack节点Swap分区/" target="_blank" rel="noopener">如何设置OpenStack节点Swap分区</a>。</p>
+<p>数据中心中少部分机器用于做控制节点，大部分机器都是需要运行虚拟化软件的，虚拟化平台上有大量的vm，而宿主机本身的系统也会跑一些服务，那么这就势必会造成vm之间资源抢占，vm与宿主机系统之间的资源抢占，我们需要通过设定游戏规则，让他们在各自的界限内高效运行，减少冲突抢占。</p>
 <p>我们可以让宿主机运行操作系统时候，更多的选择指定的几个核，这样就不会过多抢占虚拟化中虚机的vcpu调度，通过修改内核启动参数我们可以做到:</p>
 <p>修改 /etc/default/grub文件，让系统只使用前三个核 隔离其余核。<br><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GRUB_CMDLINE_LINUX_DEFAULT="isolcpus=<span class="number">4,5,6,7</span>,<span class="number">8,9,10,11</span>,<span class="number">12,13,14,15</span>,<span class="number">16,17,18,19</span>,<span class="number">20,21,22,23</span>,<span class="number">24,25,26,27</span>,<span class="number">28,29,30,31</span>"</span><br></pre></td></tr></table></figure></p>
 <p>更新内核参数<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> update-grub</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> reboot</span></span><br></pre></td></tr></table></figure></p>
