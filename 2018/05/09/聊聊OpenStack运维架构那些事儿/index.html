@@ -95,7 +95,8 @@
 <meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-10T14:13:46.250Z">
+<meta property="og:image" content="http://yoursite.com/images/monitor.png">
+<meta property="og:updated_time" content="2018-05-10T14:58:47.155Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -638,10 +639,12 @@
 <p><strong>监控的目标，包括：</strong></p>
 <p>1）对系统不间断实时监控：实际上是对系统不间断的实时监控(这就是监控)；<br>2）实时反馈系统当前状态：我们监控某个硬件、或者某个系统，都是需要能实时看到当前系统的状态，是正常、异常、或者故障；<br>3）保证服务可靠性安全性：我们监控的目的就是要保证系统、服务、业务正常运行；<br>4）保证业务持续稳定运行：如果我们的监控做得很完善，即使出现故障，能第一时间接收到故障报警，在第一时间处理解决，从而保证业务持续性的稳定运行；</p>
 <p><strong>监控体系分层</strong></p>
-<p>监控有赖于运维各专业条线协同完善，通过将监控体系进行分层、分类，各专业条线再去有重点的丰富监控指标。监控的对象，主要有基础设施硬件类和应用软件类等，如下：</p>
+<p>监控有赖于运维各专业条线协同完善，通过将监控体系进行分层、分类，各专业条线再去有重点的丰富监控指标。监控的对象，主要有基础设施硬件类和应用软件类等，如下图所示：</p>
+<p><img src="/images/monitor.png" alt="image"></p>
 <ul>
-<li>硬件设备类：交换机、路由器、负载均衡设备、防火墙、服务器（硬盘、CPU、内存和网卡）等。</li>
-<li>应用软件类：日志、数据库、消息队列、操作系统、OpenStack云服务、Ceph存储服务、虚拟机、容器、系统和应用负载等。</li>
+<li>硬件设施层：交换机、路由器、负载均衡设备、防火墙、服务器（硬盘、CPU、内存和网卡）等。</li>
+<li>云平台层：日志、数据库、消息队列、操作系统、OpenStack服务、Ceph存储、Docker容器、系统和应用负载等。</li>
+<li>应用层：虚拟机、数据卷、虚拟网卡等。</li>
 </ul>
 <h3 id="监控手段"><a href="#监控手段" class="headerlink" title="监控手段"></a>监控手段</h3><p>通常情况下，随着系统的运行，操作系统会产生系统日志，应用程序会产生应用程序的访问日志、错误日志、运行日志、网络日志，我们可以使用 EFK 来进行日志监控。对于日志监控来说，最常见的需求就是收集、存储、查询、展示。</p>
 <p>除了对日志进行监控外，我们还需要对系统和应用的运行状况进行实时监控。不同的监控目标，有不同的监控手段。OpenStack云资源的监控，如虚拟机、镜像、数据卷、虚拟网卡等，天然的可以由OpenStack自带的Ceilometer+Gnocchi+Aodh等服务来做（PS：ceilometer可以将采集数据交给gnocchi做数据聚合，最后用grafana来出图）。</p>
