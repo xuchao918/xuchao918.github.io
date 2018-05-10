@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2018/05/09/%E8%81%8A%E8%81%8AOpenStack%E8%BF%90%E7%BB%B4%E6%9E%B6%E6%9E%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/</loc>
-    <lastmod>2018-05-10T13:57:14.486Z</lastmod>
+    <lastmod>2018-05-10T14:05:16.794Z</lastmod>
     <data>
         <display>
         <title>聊聊OpenStack运维架构那些事儿</title>
@@ -33,11 +33,11 @@
         <title>如何获取Kolla的OpenStack镜像</title>
         <pubTime>2018-05-07T15:16:22.000Z</pubTime>
         
+        <tag>Docker</tag>
+         
         <tag>Kolla</tag>
          
         <tag>OpenStack</tag>
-         
-        <tag>Docker</tag>
          
          
            
@@ -103,11 +103,11 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
+        <tag>Docker</tag>
+         
         <tag>Kolla</tag>
          
         <tag>OpenStack</tag>
-         
-        <tag>Docker</tag>
          
          
            

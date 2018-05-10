@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/images/region-az.png">
 <meta property="og:image" content="http://yoursite.com/images/overlay2.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph.png">
-<meta property="og:updated_time" content="2018-05-10T13:57:14.486Z">
+<meta property="og:updated_time" content="2018-05-10T14:05:16.794Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="聊聊OpenStack运维架构那些事儿">
 <meta name="twitter:description" content="前言想一想，从事OpenStack杂七杂八的事儿，至今正好三年半了。做过QA测试（手动的、自动的）、CI（gerrit、jenkins、gitlab、harbor）、云产品封装（从系统pxe到openstack代码）、自动化部署开发、运维监控、分布式存储、底层功能调研和实现、开源社区参与、Docker等等。 一个良好的架构设计和运维保障措施，能为OpenStack云平台的稳定健康运行，产生不可估量">
@@ -484,7 +484,7 @@
 <li>LBaas Agent HA：Pacemaker + 共享存储（放置 /var/lib/neutron/lbaas/ 目录） 的方式来部署 A/P 方式的 LBaas Agent HA</li>
 </ul>
 <h5 id="存储节点HA"><a href="#存储节点HA" class="headerlink" title="存储节点HA"></a>存储节点HA</h5><p>存储节点的HA，主要是针对cinder-volume、cinder-backup服务做HA，最简便的方法就是部署多个存储节点，某一节点上的服务挂了，不至于影响到全局。</p>
-<h5 id="计算节点和虚拟机-HA"><a href="#计算节点和虚拟机-HA" class="headerlink" title="计算节点和虚拟机 HA"></a>计算节点和虚拟机 HA</h5><p>计算节点和虚拟机的HA，社区从2016年9月开始一直致力于一个虚拟机HA的统一方案，<br>详细参考igh Availability for Virtual Machines。目前还处于开发阶段。业界目前使用的方案大致有以下几种：</p>
+<h5 id="计算节点和虚拟机-HA"><a href="#计算节点和虚拟机-HA" class="headerlink" title="计算节点和虚拟机 HA"></a>计算节点和虚拟机 HA</h5><p>计算节点和虚拟机的HA，社区从2016年9月开始一直致力于一个虚拟机HA的统一方案，<br>详细参考：High Availability for Virtual Machines。目前还处于开发阶段。业界目前使用的方案大致有以下几种：</p>
 <p>1)检查compute计算节点和nova 服务运行状态，对于有问题的节点或服务进行自动修复。该方案的实现是：</p>
 <p>①Pacemaker 监控每个计算节点上的 pacemaker_remote 的连接，来检查该节点是否处于活动状态。发现它不可以连接的话，启动恢复（recovery）过程。</p>
 <ul>
