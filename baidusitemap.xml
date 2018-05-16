@@ -4,6 +4,33 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/05/07/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96Kolla%E7%9A%84OpenStack%E9%95%9C%E5%83%8F/</loc>
+    <lastmod>2018-05-16T15:09:41.308Z</lastmod>
+    <data>
+        <display>
+        <title>如何获取Kolla的OpenStack镜像</title>
+        <pubTime>2018-05-07T15:16:22.000Z</pubTime>
+        
+        <tag>Docker</tag>
+         
+        <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
+         
+         
+           
+             
+              <breadCrumb title="OpenStack" url="http://yoursite.com/categories/OpenStack/"/>
+          
+             
+              <breadCrumb title="Kolla" url="http://yoursite.com/categories/OpenStack/Kolla/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/05/09/%E8%81%8A%E8%81%8AOpenStack%E8%BF%90%E7%BB%B4%E6%9E%B6%E6%9E%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/</loc>
     <lastmod>2018-05-10T14:58:47.155Z</lastmod>
     <data>
@@ -19,33 +46,6 @@
            
              
               <breadCrumb title="OpenStack" url="http://yoursite.com/categories/OpenStack/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2018/05/07/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96Kolla%E7%9A%84OpenStack%E9%95%9C%E5%83%8F/</loc>
-    <lastmod>2018-05-07T15:53:58.642Z</lastmod>
-    <data>
-        <display>
-        <title>如何获取Kolla的OpenStack镜像</title>
-        <pubTime>2018-05-07T15:16:22.000Z</pubTime>
-        
-        <tag>Kolla</tag>
-         
-        <tag>OpenStack</tag>
-         
-        <tag>Docker</tag>
-         
-         
-           
-             
-              <breadCrumb title="OpenStack" url="http://yoursite.com/categories/OpenStack/"/>
-          
-             
-              <breadCrumb title="Kolla" url="http://yoursite.com/categories/OpenStack/Kolla/"/>
           
         </display>
     </data>
@@ -103,11 +103,11 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
+        <tag>Docker</tag>
+         
         <tag>Kolla</tag>
          
         <tag>OpenStack</tag>
-         
-        <tag>Docker</tag>
          
          
            
