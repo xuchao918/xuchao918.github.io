@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="概述所谓，“常在河边走，哪有不湿鞋”。在一个实际的环境中，由于种种原因，可能发生数据被删除的情况。比如，云平台中的数据库、虚拟机、数据卷、镜像或底层存储被删除等，如果数据没有进行备份，则是灾难性的后果。 在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是代码逻辑判断错误导致，另一次是人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共勉。 在一个由Open">
+<meta name="description" content="概述所谓，“常在河边走，哪有不湿鞋”。在一个实际的环境中，由于种种原因，可能发生数据被删除的情况。比如，云平台中的数据库、虚拟机、数据卷、镜像或底层存储被删除等，如果数据没有进行备份，则是灾难性的后果。 在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是研发部门开发的代码逻辑判断错误导致，另一次是运维同事人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共">
 <meta name="keywords" content="OpenStack,Ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从数据删除看备份的重要性">
 <meta property="og:url" content="http://yoursite.com/2018/05/23/从数据删除看备份的重要性/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="概述所谓，“常在河边走，哪有不湿鞋”。在一个实际的环境中，由于种种原因，可能发生数据被删除的情况。比如，云平台中的数据库、虚拟机、数据卷、镜像或底层存储被删除等，如果数据没有进行备份，则是灾难性的后果。 在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是代码逻辑判断错误导致，另一次是人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共勉。 在一个由Open">
+<meta property="og:description" content="概述所谓，“常在河边走，哪有不湿鞋”。在一个实际的环境中，由于种种原因，可能发生数据被删除的情况。比如，云平台中的数据库、虚拟机、数据卷、镜像或底层存储被删除等，如果数据没有进行备份，则是灾难性的后果。 在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是研发部门开发的代码逻辑判断错误导致，另一次是运维同事人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/ceph-01.png">
 <meta property="og:image" content="http://yoursite.com/images/ceph-02.png">
-<meta property="og:updated_time" content="2018-05-23T14:59:05.822Z">
+<meta property="og:updated_time" content="2018-05-26T07:25:27.191Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从数据删除看备份的重要性">
-<meta name="twitter:description" content="概述所谓，“常在河边走，哪有不湿鞋”。在一个实际的环境中，由于种种原因，可能发生数据被删除的情况。比如，云平台中的数据库、虚拟机、数据卷、镜像或底层存储被删除等，如果数据没有进行备份，则是灾难性的后果。 在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是代码逻辑判断错误导致，另一次是人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共勉。 在一个由Open">
+<meta name="twitter:description" content="概述所谓，“常在河边走，哪有不湿鞋”。在一个实际的环境中，由于种种原因，可能发生数据被删除的情况。比如，云平台中的数据库、虚拟机、数据卷、镜像或底层存储被删除等，如果数据没有进行备份，则是灾难性的后果。 在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是研发部门开发的代码逻辑判断错误导致，另一次是运维同事人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共">
 <meta name="twitter:image" content="http://yoursite.com/images/ceph-01.png">
 
 
@@ -401,7 +401,7 @@
 
       
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>所谓，“常在河边走，哪有不湿鞋”。在一个实际的环境中，由于种种原因，可能发生数据被删除的情况。比如，云平台中的数据库、虚拟机、数据卷、镜像或底层存储被删除等，如果数据没有进行备份，则是灾难性的后果。</p>
-<p>在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是代码逻辑判断错误导致，另一次是人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共勉。</p>
+<p>在笔者的工作中，经历过2次在生产环境云平台上，客户虚拟机数据被删除的情况，一次是研发部门开发的代码逻辑判断错误导致，另一次是运维同事人为误操作。因此，觉得有必要调研整理下数据备份相关的小文，以此共勉。</p>
 <p>在一个由OpenStack+Ceph架构组成的云平台环境中，有N种数据备份方案。如OpenStack有自带的Karbor、Freezer云服务，Ceph也有相关的备份方案，也有其他商业的备份方案等。实际上，OpenStack云平台本身也提供了一些较好易用的备份功能，比如虚拟机快照/备份、数据卷快照/备份，在使用时也倡导通过将数据卷挂载给虚拟机，从而将数据写入到云盘中，间接的实现数据容灾备份。</p>
 <p>但，如果删除的是底层存储数据，上层的备份操作基本都将报废。那么有什么好的备份方案吗。这里，我们阐述下Ceph相关的备份方案。</p>
 <h2 id="方案1-Snapshot"><a href="#方案1-Snapshot" class="headerlink" title="方案1 Snapshot"></a>方案1 Snapshot</h2><p><strong>原理</strong></p>
@@ -463,6 +463,7 @@
 <p>1、进行全量的恢复<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rbd <span class="keyword">import</span> config@UTC20161130T170848.full dest_image</span><br></pre></td></tr></table></figure></p>
 <p>2、重新创建基础快照<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rbd snap create dest_image<span class="doctag">@UTC</span>20161130T170848</span></span><br></pre></td></tr></table></figure></p>
 <p>3、还原增量的快照<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rbd <span class="keyword">import</span>-diff config@UTC20161130T170929.diff_from_UTC20161130T170848 dest_image</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>综合评估，以上三种方案的优缺点，推荐使用“方案二RBD Mirroring”。</p>
 <p>参考链接<br><a href="http://www.yangguanjun.com/2017/02/22/rbd-data-replication/" target="_blank" rel="noopener">http://www.yangguanjun.com/2017/02/22/rbd-data-replication/</a><br><a href="https://ceph.com/planet/ceph%E7%9A%84rbd%E5%A4%87%E4%BB%BD%E8%BD%AF%E4%BB%B6ceph-backup/" target="_blank" rel="noopener">https://ceph.com/planet/ceph%E7%9A%84rbd%E5%A4%87%E4%BB%BD%E8%BD%AF%E4%BB%B6ceph-backup/</a></p>
 
       
@@ -670,7 +671,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案1-Snapshot"><span class="nav-number">2.</span> <span class="nav-text">方案1 Snapshot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案2-RBD-Mirroring"><span class="nav-number">3.</span> <span class="nav-text">方案2  RBD Mirroring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案3-ceph备份软件ceph-backup"><span class="nav-number">4.</span> <span class="nav-text">方案3  ceph备份软件ceph-backup</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案1-Snapshot"><span class="nav-number">2.</span> <span class="nav-text">方案1 Snapshot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案2-RBD-Mirroring"><span class="nav-number">3.</span> <span class="nav-text">方案2  RBD Mirroring</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案3-ceph备份软件ceph-backup"><span class="nav-number">4.</span> <span class="nav-text">方案3  ceph备份软件ceph-backup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
