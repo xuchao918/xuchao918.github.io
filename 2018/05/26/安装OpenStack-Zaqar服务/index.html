@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。 1.创">
+<meta name="description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB（必须大于或等于2个节点，否则会报错） Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需">
 <meta name="keywords" content="OpenStack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="安装OpenStack Zaqar服务">
 <meta property="og:url" content="http://yoursite.com/2018/05/26/安装OpenStack-Zaqar服务/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。 1.创">
+<meta property="og:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB（必须大于或等于2个节点，否则会报错） Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-30T15:14:19.131Z">
+<meta property="og:updated_time" content="2018-05-30T15:18:48.596Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装OpenStack Zaqar服务">
-<meta name="twitter:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。 1.创">
+<meta name="twitter:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB（必须大于或等于2个节点，否则会报错） Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需">
 
 
 
@@ -390,7 +390,7 @@
 <p><strong>依赖服务</strong></p>
 <ul>
 <li>一个基本的OpenStack正常运行环境</li>
-<li>MongoDB</li>
+<li>MongoDB（必须大于或等于2个节点，否则会报错）</li>
 <li>Memcache</li>
 </ul>
 <p><strong>说明</strong></p>
