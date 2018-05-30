@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里写下中文第一篇吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。">
+<meta name="description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。 1.创">
 <meta name="keywords" content="OpenStack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="安装OpenStack Zaqar服务">
 <meta property="og:url" content="http://yoursite.com/2018/05/26/安装OpenStack-Zaqar服务/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里写下中文第一篇吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。">
+<meta property="og:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。 1.创">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-30T15:09:37.193Z">
+<meta property="og:updated_time" content="2018-05-30T15:14:19.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装OpenStack Zaqar服务">
-<meta name="twitter:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里写下中文第一篇吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。">
+<meta name="twitter:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需要安装配置zaqar服务即可。 1.创">
 
 
 
@@ -386,7 +386,7 @@
       
 
       
-        <p>关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里写下中文第一篇吧。</p>
+        <p>关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。</p>
 <p><strong>依赖服务</strong></p>
 <ul>
 <li>一个基本的OpenStack正常运行环境</li>
@@ -416,7 +416,7 @@
 <li>验证操作<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># curl -i -X POST http://<span class="number">172.17</span>.223.21:<span class="number">8888</span>/v2/queues/samplequeue/messages -d '&#123;<span class="string">"messages"</span>: [&#123;<span class="string">"body"</span>: &#123;<span class="string">"event"</span>: <span class="number">1</span>&#125;, <span class="string">"ttl"</span>: <span class="number">600</span>&#125;, &#123;<span class="string">"body"</span>: &#123;<span class="string">"event"</span>: <span class="number">2</span>&#125;, <span class="string">"ttl"</span>: <span class="number">600</span>&#125;]&#125;' -H <span class="string">"Content-type: application/json"</span> -H <span class="string">"Client-ID: 7289f400-2439-4822-9e3a-928af262d843"</span> -H <span class="string">"X-Auth-Token: eb7e4d966aef4648a1f57a91e4abaa6b"</span></span><br><span class="line">HTTP/<span class="number">1.1</span> <span class="number">201</span> Created</span><br><span class="line"><span class="built_in">content</span>-<span class="built_in">length</span>: <span class="number">135</span></span><br><span class="line"><span class="built_in">content</span>-type: application/json; charset=UTF-<span class="number">8</span></span><br><span class="line">location: http://<span class="number">172.17</span>.223.21:<span class="number">8888</span>/v2/queues/samplequeue/messages?ids=5b0bb7289140d605340bf3a6,5b0bb7289140d605340bf3a7</span><br><span class="line">Connection: <span class="built_in">close</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">"resources"</span>: [<span class="string">"/v2/queues/samplequeue/messages/5b0bb7289140d605340bf3a6"</span>, <span class="string">"/v2/queues/samplequeue/messages/5b0bb7289140d605340bf3a7"</span>]&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>最后，你就可以愉快的使用Zaqar服务啦。</p>
+<p>最后，你就可以愉快的使用Zaqar服务啦。当然，由于该项目目前尚不成熟，参阅资料很少，希望你能一边使用一边填坑。</p>
 
       
     </div>
