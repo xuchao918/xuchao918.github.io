@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="起风了">
 <meta property="og:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB（必须大于或等于2个节点，否则会报错） Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-02T08:07:05.723Z">
+<meta property="og:updated_time" content="2018-06-03T09:11:40.403Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装OpenStack Zaqar服务">
 <meta name="twitter:description" content="关于什么是Zaqar，有什么作用。国内已有介绍读者可以自行Google查阅。若在此再阐述，已显多余。由于安装Zaqar服务官方文档还有坑且国内无资料，故这里就写一写吧。 依赖服务  一个基本的OpenStack正常运行环境 MongoDB（必须大于或等于2个节点，否则会报错） Memcache  说明 本环境，MongoDB和memcache已有kolla-ansible事先安装好。所以，这里只需">
@@ -417,7 +417,8 @@
 <figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># curl -i -X POST http://<span class="number">172.17</span>.223.21:<span class="number">8888</span>/v2/queues/samplequeue/messages -d '&#123;<span class="string">"messages"</span>: [&#123;<span class="string">"body"</span>: &#123;<span class="string">"event"</span>: <span class="number">1</span>&#125;, <span class="string">"ttl"</span>: <span class="number">600</span>&#125;, &#123;<span class="string">"body"</span>: &#123;<span class="string">"event"</span>: <span class="number">2</span>&#125;, <span class="string">"ttl"</span>: <span class="number">600</span>&#125;]&#125;' -H <span class="string">"Content-type: application/json"</span> -H <span class="string">"Client-ID: 7289f400-2439-4822-9e3a-928af262d843"</span> -H <span class="string">"X-Auth-Token: eb7e4d966aef4648a1f57a91e4abaa6b"</span></span><br><span class="line">HTTP/<span class="number">1.1</span> <span class="number">201</span> Created</span><br><span class="line"><span class="built_in">content</span>-<span class="built_in">length</span>: <span class="number">135</span></span><br><span class="line"><span class="built_in">content</span>-type: application/json; charset=UTF-<span class="number">8</span></span><br><span class="line">location: http://<span class="number">172.17</span>.223.21:<span class="number">8888</span>/v2/queues/samplequeue/messages?ids=5b0bb7289140d605340bf3a6,5b0bb7289140d605340bf3a7</span><br><span class="line">Connection: <span class="built_in">close</span></span><br><span class="line"></span><br><span class="line">&#123;<span class="string">"resources"</span>: [<span class="string">"/v2/queues/samplequeue/messages/5b0bb7289140d605340bf3a6"</span>, <span class="string">"/v2/queues/samplequeue/messages/5b0bb7289140d605340bf3a7"</span>]&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装Zaqar UI</p>
-<h1 id="git-clone-https-github-com-openstack-zaqar-ui-b-stable-queens"><a href="#git-clone-https-github-com-openstack-zaqar-ui-b-stable-queens" class="headerlink" title="git clone https://github.com/openstack/zaqar-ui -b stable/queens"></a>git clone <a href="https://github.com/openstack/zaqar-ui" target="_blank" rel="noopener">https://github.com/openstack/zaqar-ui</a> -b stable/queens</h1><h1 id="docker-cp-zaqar-ui-horizon-home"><a href="#docker-cp-zaqar-ui-horizon-home" class="headerlink" title="docker cp zaqar-ui horizon:/home"></a>docker cp zaqar-ui horizon:/home</h1><h1 id="docker-exec-u-root-it-horizon-bash"><a href="#docker-exec-u-root-it-horizon-bash" class="headerlink" title="docker exec -u root -it horizon bash"></a>docker exec -u root -it horizon bash</h1><h1 id="cd-home-amp-amp-pip-install-e-zaqar-ui"><a href="#cd-home-amp-amp-pip-install-e-zaqar-ui" class="headerlink" title="cd /home &amp;&amp; pip install -e zaqar-ui/"></a>cd /home &amp;&amp; pip install -e zaqar-ui/</h1><h1 id="cp-zaqar-ui-zaqar-ui-enabled-1510-project-messaging-group-py-var-lib-kolla-venv-lib-python2-7-site-packages-openstack-dashboard-local-enabled"><a href="#cp-zaqar-ui-zaqar-ui-enabled-1510-project-messaging-group-py-var-lib-kolla-venv-lib-python2-7-site-packages-openstack-dashboard-local-enabled" class="headerlink" title="cp zaqar-ui/zaqar_ui/enabled/_1510_project_messaging_group.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/local/enabled"></a>cp zaqar-ui/zaqar_ui/enabled/_1510_project_messaging_group.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/local/enabled</h1><h1 id="cp-zaqar-ui-zaqar-ui-enabled-1520-project-queues-py-var-lib-kolla-venv-lib-python2-7-site-packages-openstack-dashboard-local-enabled"><a href="#cp-zaqar-ui-zaqar-ui-enabled-1520-project-queues-py-var-lib-kolla-venv-lib-python2-7-site-packages-openstack-dashboard-local-enabled" class="headerlink" title="cp zaqar-ui/zaqar_ui/enabled/_1520_project_queues.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/local/enabled"></a>cp zaqar-ui/zaqar_ui/enabled/_1520_project_queues.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/local/enabled</h1></li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/openstack/zaqar-ui -b stable/queens</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker cp zaqar-ui horizon:/home</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker <span class="built_in">exec</span> -u root -it horizon bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /home &amp;&amp; pip install -e zaqar-ui/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> cp zaqar-ui/zaqar_ui/enabled/_1510_project_messaging_group.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/<span class="built_in">local</span>/enabled</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> cp zaqar-ui/zaqar_ui/enabled/_1520_project_queues.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/<span class="built_in">local</span>/enabled</span></span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <p>最后，你就可以愉快的使用Zaqar服务啦。当然，由于该项目目前尚不成熟，参阅资料很少，希望你能一边使用一边填坑。</p>
 
@@ -512,17 +513,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -614,22 +606,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git-clone-https-github-com-openstack-zaqar-ui-b-stable-queens"><span class="nav-number">1.</span> <span class="nav-text">git clone https://github.com/openstack/zaqar-ui -b stable/queens</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker-cp-zaqar-ui-horizon-home"><span class="nav-number">2.</span> <span class="nav-text">docker cp zaqar-ui horizon:/home</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#docker-exec-u-root-it-horizon-bash"><span class="nav-number">3.</span> <span class="nav-text">docker exec -u root -it horizon bash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cd-home-amp-amp-pip-install-e-zaqar-ui"><span class="nav-number">4.</span> <span class="nav-text">cd /home &amp;&amp; pip install -e zaqar-ui/</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cp-zaqar-ui-zaqar-ui-enabled-1510-project-messaging-group-py-var-lib-kolla-venv-lib-python2-7-site-packages-openstack-dashboard-local-enabled"><span class="nav-number">5.</span> <span class="nav-text">cp zaqar-ui/zaqar_ui/enabled/_1510_project_messaging_group.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/local/enabled</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cp-zaqar-ui-zaqar-ui-enabled-1520-project-queues-py-var-lib-kolla-venv-lib-python2-7-site-packages-openstack-dashboard-local-enabled"><span class="nav-number">6.</span> <span class="nav-text">cp zaqar-ui/zaqar_ui/enabled/_1520_project_queues.py /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/local/enabled</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
       <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=461525011&auto=1&height=66"></iframe>
       
