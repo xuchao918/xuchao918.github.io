@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/06/10/%E9%85%8D%E7%BD%AEGnocchi%E4%BD%BF%E7%94%A8Ceph%E5%90%8E%E7%AB%AF%E5%AD%98%E5%82%A8/</loc>
+    <lastmod>2018-06-10T10:48:23.506Z</lastmod>
+    <data>
+        <display>
+        <title>配置Gnocchi使用Ceph后端存储</title>
+        <pubTime>2018-06-10T10:47:46.000Z</pubTime>
+        
+        <tag>OpenStack</tag>
+         
+         
+           
+             
+              <breadCrumb title="OpenStack" url="http://yoursite.com/categories/OpenStack/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/05/26/%E5%AE%89%E8%A3%85OpenStack-Zaqar%E6%9C%8D%E5%8A%A1/</loc>
     <lastmod>2018-06-03T09:11:40.403Z</lastmod>
     <data>
