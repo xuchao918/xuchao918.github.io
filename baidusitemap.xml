@@ -4,6 +4,33 @@
 
     
   <url>
+    <loc>http://yoursite.com/2018/05/07/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96Kolla%E7%9A%84OpenStack%E9%95%9C%E5%83%8F/</loc>
+    <lastmod>2018-06-14T14:25:56.334Z</lastmod>
+    <data>
+        <display>
+        <title>如何获取Kolla的OpenStack镜像</title>
+        <pubTime>2018-05-07T15:16:22.000Z</pubTime>
+        
+        <tag>OpenStack</tag>
+         
+        <tag>Docker</tag>
+         
+        <tag>Kolla</tag>
+         
+         
+           
+             
+              <breadCrumb title="OpenStack" url="http://yoursite.com/categories/OpenStack/"/>
+          
+             
+              <breadCrumb title="Kolla" url="http://yoursite.com/categories/OpenStack/Kolla/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2018/06/10/%E9%85%8D%E7%BD%AEGnocchi%E4%BD%BF%E7%94%A8Ceph%E5%90%8E%E7%AB%AF%E5%AD%98%E5%82%A8/</loc>
     <lastmod>2018-06-14T13:29:18.742Z</lastmod>
     <data>
@@ -69,33 +96,6 @@
 
     
   <url>
-    <loc>http://yoursite.com/2018/05/07/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96Kolla%E7%9A%84OpenStack%E9%95%9C%E5%83%8F/</loc>
-    <lastmod>2018-05-16T15:09:41.308Z</lastmod>
-    <data>
-        <display>
-        <title>如何获取Kolla的OpenStack镜像</title>
-        <pubTime>2018-05-07T15:16:22.000Z</pubTime>
-        
-        <tag>Kolla</tag>
-         
-        <tag>OpenStack</tag>
-         
-        <tag>Docker</tag>
-         
-         
-           
-             
-              <breadCrumb title="OpenStack" url="http://yoursite.com/categories/OpenStack/"/>
-          
-             
-              <breadCrumb title="Kolla" url="http://yoursite.com/categories/OpenStack/Kolla/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2018/05/09/%E8%81%8A%E8%81%8AOpenStack%E8%BF%90%E7%BB%B4%E6%9E%B6%E6%9E%84%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/</loc>
     <lastmod>2018-05-10T14:58:47.155Z</lastmod>
     <data>
@@ -103,9 +103,9 @@
         <title>聊聊OpenStack运维架构那些事儿</title>
         <pubTime>2018-05-09T13:22:43.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -145,9 +145,9 @@
         <title>Kolla中配置OpenStack虚机网络vxlan和vlan共存</title>
         <pubTime>2018-05-03T12:59:32.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -168,11 +168,11 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
          
         <tag>Docker</tag>
+         
+        <tag>Kolla</tag>
          
          
            
