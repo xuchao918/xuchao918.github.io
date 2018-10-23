@@ -146,9 +146,9 @@
       <category term="OpenStack" scheme="http://yoursite.com/categories/OpenStack/"/>
     
     
-      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
-    
       <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
+    
+      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
     
   </entry>
   
@@ -175,9 +175,9 @@
       <category term="Kolla" scheme="http://yoursite.com/categories/OpenStack/Kolla/"/>
     
     
-      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
-    
       <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
+    
+      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
     
       <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
     
@@ -229,9 +229,9 @@
       <category term="OpenStack" scheme="http://yoursite.com/categories/OpenStack/"/>
     
     
-      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
-    
       <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
+    
+      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
     
   </entry>
   
@@ -257,9 +257,9 @@
       <category term="Docker" scheme="http://yoursite.com/categories/Docker/"/>
     
     
-      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
-    
       <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
+    
+      <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
     
       <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
     
