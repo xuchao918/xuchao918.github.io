@@ -89,7 +89,13 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/scrumjiazhi.jpg">
 <meta property="og:image" content="http://yoursite.com/images/scrumgongzuoliu.jpg">
-<meta property="og:updated_time" content="2018-10-23T15:52:53.436Z">
+<meta property="og:image" content="http://yoursite.com/images/sprintbacklog.png">
+<meta property="og:image" content="http://yoursite.com/images/duibi.png">
+<meta property="og:image" content="http://yoursite.com/images/ranjingtu.jpg">
+<meta property="og:image" content="http://yoursite.com/images/kanban.png">
+<meta property="og:image" content="http://yoursite.com/images/scrumhuiyi.png">
+<meta property="og:image" content="http://yoursite.com/images/huiyiduibi.jpg">
+<meta property="og:updated_time" content="2018-10-23T15:57:52.902Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Scrum管理软件开发项目">
 <meta name="twitter:description" content="Scrum 价值观 Scrum三种角色 Product Owner：产品负责人，确定「大家要做什么」。一般由相关的产品经理担任；如果是为客户做项目，PO 一般就是客户负责人。  Scrum Master：Scrum的推动者，掌控大节奏的人。  Team：一般由多个 developer 组成，开发的主力。  Scrum执行流程 概言之，就是1.产品经理整理出需求列表，做好优先级排序，这些需求可以来自">
@@ -411,17 +417,17 @@
 <p>Product backlog = 用户故事 + 优先级 + 验收标准</p>
 <h3 id="4-Sprint-Backlog"><a href="#4-Sprint-Backlog" class="headerlink" title="4.Sprint Backlog"></a>4.Sprint Backlog</h3><p>即任务列表，是一次迭代中团队需要完成的具体任务，也是开发过程用得最多的Backlog，非常细化。当Scrum团队完成Sprint backlog列表中的所有任务时，本次Sprint结束，进入下一个Sprint迭代周期。可以用Jira类敏捷工具来管理。</p>
 <p>每个月，团队都努力实现列表最顶端的任务，这一部分是他们估计需要一个月完成的工作。把它展开成一个详细的任务列表，叫做Sprint Backlog。这个团队承诺在月底向出资人演示或交付结果。用故事点的方式，即用斐波那契数列的数字（1，2，3，5，8，13，21……）的形式去估算时间。单个用户故事点数不超过8是最理性的状态，超过21则需要拆分。</p>
-<p>如图所示。</p>
-<p>Product Backlog和Sprint Backlog两者区别如图所示。</p>
-<h3 id="5-燃尽图和看板"><a href="#5-燃尽图和看板" class="headerlink" title="5.燃尽图和看板"></a>5.燃尽图和看板</h3><h4 id="5-1燃尽图"><a href="#5-1燃尽图" class="headerlink" title="5.1燃尽图"></a>5.1燃尽图</h4><p>即实时评估完成任务数量和剩余时间的趋势。每天Scrum Master都会记录待完成的剩余点数，而后画在燃尽图上。可以使用Jira系统的燃尽图。</p>
+<p>如图所示。<br><img src="/images/sprintbacklog.png" alt="image"></p>
+<p>Product Backlog和Sprint Backlog两者区别如图所示。<br><img src="/images/duibi.png" alt="image"> </p>
+<h3 id="5-燃尽图和看板"><a href="#5-燃尽图和看板" class="headerlink" title="5.燃尽图和看板"></a>5.燃尽图和看板</h3><h4 id="5-1燃尽图"><a href="#5-1燃尽图" class="headerlink" title="5.1燃尽图"></a>5.1燃尽图</h4><p>即实时评估完成任务数量和剩余时间的趋势。每天Scrum Master都会记录待完成的剩余点数，而后画在燃尽图上。可以使用Jira系统的燃尽图。<br><img src="/images/ranjingtu.jpg" alt="image"> </p>
 <p>横坐标为工作日期，纵坐标为工作量（任务数），每个点代表了在那一天估计剩余的工作量，通过折线依次连接起所有的点形成估计剩余工作量的趋势线。另外还有一条控制线，为最初的估计工作量到结束日期的连线，一般用不同的颜色画上面的两根线。</p>
 <p>对此图的研判规则如下：<br>1）如果趋势线在控制线以下，说明进展顺利，有比较大的概率按期或提前完工；<br>2）如果趋势线在控制线以上，说明有比较大的概率延期，此时需要关注进度了。</p>
 <p> 注意，趋势线并非一直下行，也有可能上行，即发生了错误的估计或遗漏的任务时，估计剩余的工作量也有可能在某天上升了。</p>
 <p>每天开完15分钟站立会议后，由scrum master根据进展更新燃尽图。第1个点是项目最初的工作量估计值，第2个点是第最初的估计工作量减去第1天已经完成的任务的工作量，依次类推计算后续的点。任务完成的标志是什么呢？准则如下：<br>1）开发人员检测：所有的单元测试用例都通过；<br>2）Product owner或测试人员检测：通过了所有的功能测试；</p>
 <p>燃尽图最好是张贴在白板上，让每个人项目组成员抬头就能看见，这样给大家一个明确的视觉效果，每个人随时都能看到我们离目标有多远。燃尽图可以每天画，表示完成某个迭代的进展趋势，也可以某次迭代结束的时候画，表示完成整个项目的进展趋势，此时横坐标就是迭代的顺序号。</p>
-<h4 id="5-2看板"><a href="#5-2看板" class="headerlink" title="5.2看板"></a>5.2看板</h4><p>让工作透明化除了使用燃尽图之外，还有看板。看板的栏目大致包括待办事项、进行中事项以及已完成事项三个部分。随着迭代进度的推进，由Team每天及时将事项转移到对应看板栏目下。</p>
+<h4 id="5-2看板"><a href="#5-2看板" class="headerlink" title="5.2看板"></a>5.2看板</h4><p>让工作透明化除了使用燃尽图之外，还有看板。看板的栏目大致包括待办事项、进行中事项以及已完成事项三个部分。随着迭代进度的推进，由Team每天及时将事项转移到对应看板栏目下。<br><img src="/images/kanban.png" alt="image"> </p>
 <h3 id="6-任务申领"><a href="#6-任务申领" class="headerlink" title="6.任务申领"></a>6.任务申领</h3><p>原则上，奉行Scrum各个组里的成员主动申领任务。</p>
-<h3 id="7-Scrum四种会议"><a href="#7-Scrum四种会议" class="headerlink" title="7.Scrum四种会议"></a>7.Scrum四种会议</h3><p>在SCRUM方法中定义了4种会议活动：</p>
+<h3 id="7-Scrum四种会议"><a href="#7-Scrum四种会议" class="headerlink" title="7.Scrum四种会议"></a>7.Scrum四种会议</h3><p>在SCRUM方法中定义了4种会议活动：<br> <img src="/images/scrumhuiyi.png" alt="image"> </p>
 <ul>
 <li>Sprint planning<br>即Sprint规划会(Sprint Planning)。这是第一场Scrum会议。团队成员、Scrum Master以及产品负责人坐到一起，规划冲刺的内容。PO 向大家介绍排好序的产品待办事项（Production Backlog），然后大家共同思考决定如何推进计划，梳理出 Sprint Backlog 来完成后续的工作。简单点说，就是一个大家理解「需要做什么」，然后讨论「怎么完成」，并形成待办事项列表的会议。</li>
 </ul>
@@ -434,7 +440,7 @@
 <li><p>Sprint retrospective<br>即Sprint回顾会议，会议维持在2小时以内，主要总结此次Sprint实施的经验教训，如何在下一个Sprint中发挥。冲刺回顾会要认真分析以下几个问题：<br>1）发生了哪些有待改进的事；<br>2）为什么会发生那件事；<br>3）为什么我们当时忽略了；<br>4）怎样才能加快工作进度。</p>
 </li>
 </ul>
-<p>除去开发活动外这4种会议构成了scrum方法的核心活动。这四种会议的要点如下。</p>
+<p>除去开发活动外这4种会议构成了scrum方法的核心活动。这四种会议的要点如下。<br> <img src="/images/huiyiduibi.jpg" alt="image"> </p>
 <p>最后，敏捷开发在线协作工具，有Jira、Teambition和Worktitle等。</p>
 
       
