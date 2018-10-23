@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[使用Scrum管理软件开发项目]]></title>
+    <url>%2F2018%2F10%2F23%2F%E4%BD%BF%E7%94%A8Scrum%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E9%A1%B9%E7%9B%AE%2F</url>
+    <content type="text"><![CDATA[使用Scrum管理软件开发项目 Scrum 价值观 Scrum三种角色 Product Owner：产品负责人，确定「大家要做什么」。一般由相关的产品经理担任；如果是为客户做项目，PO 一般就是客户负责人。 Scrum Master：Scrum的推动者，掌控大节奏的人。 Team：一般由多个 developer 组成，开发的主力。Scrum执行流程 概言之，就是 产品经理整理出需求列表，做好优先级排序，这些需求可以来自客户或者产品经理的判断 开个会，和研发团队一起讨论需求列表的工作量，确定要进行Sprint（冲刺开发）的任务 研发团队进入开发环节，这个期间可以让产品经理修改需求，但是不得延期或修改验收标准。Sprint期间每天要进行站会，汇报工作进展、问题和下一步计划 再开个会，和产品经理一起验收产品，并确定最终的可发布版本。 整个团队一起回顾项目，提出改进点，然后进入下一个Sprint Scrum敏捷开发执行由Product Backlog、Sprint Backlog、燃尽图/看板和Sprint会议等要素组成。 说明：Backlog 是 Scrum中的一个专用名词，意思是待办工作事项的集合。1.Sprint迭代周期整个开发过程由若干个短的迭代周期组成，一个短的迭代周期称为一个Sprint，每个Sprint的长度是2到4周。 2.组建团队Scrum团队，推荐人数在5-10人左右，可以按需组建相应的团队等。如根据所开发的软件系统特点，将全员分成4个小组，分别是管理和产品组、前端组A、后端组B、测试组。 3.Product Backlog即产品待办事项列表，也被称为用户故事，是量化的用户需求。即PO、Scrum Master、Team围绕产品创建一个团队需要做的所有事情的列表。然后产品负责人进行筛选并按照优先级进行排序，以商业价值作为排序的主要原则，从Product Backlog中挑选高优先级的需求进行开发，挑选的需求在Sprint计划会议上经过讨论、分析和估算得到相应的任务列表，称它为Sprint backlog。 Product backlog 中列举了本项目应该实现的需求，需求采用了用户故事的方式进行描述，用户故事是一句简短的采用用户熟悉的术语表达的需求，是用户讲给开发人员的故事，不是开发人员讲给用户的故事。 故事可以有标准的格式，称为三段论式故事，哪三段呢？ 用户角色 需要的功能 目的 比如，有这样一个故事：作为一个家庭主妇，我需要一个30平米的餐厅，以便于我可以招待10位朋友来用餐，光线明亮。 除了用户故事本身之外，还包括用户故事的验收标准，或者叫用户故事的测试要点，这也是由product owner来完成的，product owner可以先完成前三段，在和team member的沟通过程中，逐步丰富完善验收标准。Product backlog在项目进展过程中是会发生变化的，只有product owner有权来修改此文档。可以用EXCEL文件来管理它。 Product backlog = 用户故事 + 优先级 + 验收标准4.Sprint Backlog即任务列表，是一次迭代中团队需要完成的具体任务，也是开发过程用得最多的Backlog，非常细化。当Scrum团队完成Sprint backlog列表中的所有任务时，本次Sprint结束，进入下一个Sprint迭代周期。可以用Jira类敏捷工具来管理。 每个月，团队都努力实现列表最顶端的任务，这一部分是他们估计需要一个月完成的工作。把它展开成一个详细的任务列表，叫做Sprint Backlog。这个团队承诺在月底向出资人演示或交付结果。用故事点的方式，即用斐波那契数列的数字（1，2，3，5，8，13，21……）的形式去估算时间。单个用户故事点数不超过8是最理性的状态，超过21则需要拆分。 如图所示。 Product Backlog和Sprint Backlog两者区别如图所示。 5.燃尽图和看板5.1燃尽图即实时评估完成任务数量和剩余时间的趋势。每天Scrum Master都会记录待完成的剩余点数，而后画在燃尽图上。可以使用Jira系统的燃尽图。 横坐标为工作日期，纵坐标为工作量（任务数），每个点代表了在那一天估计剩余的工作量，通过折线依次连接起所有的点形成估计剩余工作量的趋势线。另外还有一条控制线，为最初的估计工作量到结束日期的连线，一般用不同的颜色画上面的两根线。 对此图的研判规则如下：1）如果趋势线在控制线以下，说明进展顺利，有比较大的概率按期或提前完工；2）如果趋势线在控制线以上，说明有比较大的概率延期，此时需要关注进度了。 注意，趋势线并非一直下行，也有可能上行，即发生了错误的估计或遗漏的任务时，估计剩余的工作量也有可能在某天上升了。 每天开完15分钟站立会议后，由scrum master根据进展更新燃尽图。第1个点是项目最初的工作量估计值，第2个点是第最初的估计工作量减去第1天已经完成的任务的工作量，依次类推计算后续的点。任务完成的标志是什么呢？准则如下：1）开发人员检测：所有的单元测试用例都通过；2）Product owner或测试人员检测：通过了所有的功能测试； 燃尽图最好是张贴在白板上，让每个人项目组成员抬头就能看见，这样给大家一个明确的视觉效果，每个人随时都能看到我们离目标有多远。燃尽图可以每天画，表示完成某个迭代的进展趋势，也可以某次迭代结束的时候画，表示完成整个项目的进展趋势，此时横坐标就是迭代的顺序号。 5.2看板让工作透明化除了使用燃尽图之外，还有看板。看板的栏目大致包括待办事项、进行中事项以及已完成事项三个部分。随着迭代进度的推进，由Team每天及时将事项转移到对应看板栏目下。 6.任务申领原则上，奉行Scrum各个组里的成员主动申领任务。 7.Scrum四种会议在SCRUM方法中定义了4种会议活动：  Sprint planning即Sprint规划会(Sprint Planning)。这是第一场Scrum会议。团队成员、Scrum Master以及产品负责人坐到一起，规划冲刺的内容。PO 向大家介绍排好序的产品待办事项（Production Backlog），然后大家共同思考决定如何推进计划，梳理出 Sprint Backlog 来完成后续的工作。简单点说，就是一个大家理解「需要做什么」，然后讨论「怎么完成」，并形成待办事项列表的会议。 冲刺周期一般是固定的，不超过一个月，一般是2-4周。团队要从待办事项清单的顶端着手（即从最重要的事项着手），评估一个冲刺阶段能完成多少。  Daily meeting即每日站会，每天团队都面对面地开5～10分钟的会。每日例会后每个人更新自己的任务表，还要每天更新下燃尽图。1）昨天我完成了什么工作？2）今天我打算做什么工作？3）我遇到了哪些困难，打算怎么办，或需要哪些帮助？  Sprint review即Sprint评估或展示会议(Sprint Review)。在冲刺结束前，给产品负责人展示成果，也就是展示哪些事项可以挪到“完成事项”那一栏，并接受评价。这是一场公开的会议，任何人都可以是参与者，不仅仅包括产品负责人、ScrumMaster及开发团队，还包括利益相关者、管理人员与客户。团队应该只展示那些符合“完成定义”的事项，也就是全部完成，不需要再做工作就能交付的成果。这个成果或许不是完整的产品，但至少是一项完整的、可以使用的功能。  Sprint retrospective即Sprint回顾会议，会议维持在2小时以内，主要总结此次Sprint实施的经验教训，如何在下一个Sprint中发挥。冲刺回顾会要认真分析以下几个问题：1）发生了哪些有待改进的事；2）为什么会发生那件事；3）为什么我们当时忽略了；4）怎样才能加快工作进度。 除去开发活动外这4种会议构成了scrum方法的核心活动。这四种会议的要点如下。 最后，敏捷开发在线协作工具，有Jira、Teambition和Worktitle等。]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[配置Gnocchi使用Ceph后端存储]]></title>
     <url>%2F2018%2F06%2F10%2F%E9%85%8D%E7%BD%AEGnocchi%E4%BD%BF%E7%94%A8Ceph%E5%90%8E%E7%AB%AF%E5%AD%98%E5%82%A8%2F</url>
     <content type="text"><![CDATA[1.给gnocchi创建一个专用的ceph pool，用来存放计量数据。1# ceph osd pool create gnocchi 128 128 gnocchi pool的pg_num需要根据实际的ceph环境确定。 2.给gnocchi创建一个ceph用户。123# ceph auth get-or-create client.gnocchi mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=gnocchi'[client.gnocchi] key = AQB+5xxbZKKQIhAA7FgJKYBQNjF6dD3FZzJvUQ== 3.保存keyring文件1ceph auth get-or-create client.gnocchi | tee ceph.client.gnocchi.keyring 4.在gnocchi容器中创建/etc/ceph目录123# docker exec -u root -it gnocchi_api mkdir /etc/ceph# docker exec -u root -it gnocchi_statsd mkdir /etc/ceph# docker exec -u root -it gnocchi_metricd mkdir /etc/ceph 5.在ceph节点拷贝相关文件到controller节点12# scp ceph.client.gnocchi.keyring controller1:/home# scp /etc/ceph/ceph.conf controller1:/home 6.拷贝gnocchi的keyring文件和ceph配置文件到gnocchi容器的/etc/ceph目录下12345678# docker cp /home/ceph.conf gnocchi_api:/etc/ceph/# docker cp /home/ceph.client.gnocchi.keyring gnocchi_api:/etc/ceph/# docker cp /home/ceph.conf gnocchi_statsd:/etc/ceph/# docker cp /home/ceph.client.gnocchi.keyring gnocchi_statsd:/etc/ceph/# docker cp /home/ceph.conf gnocchi_metricd:/etc/ceph/# docker cp /home/ceph.client.gnocchi.keyring gnocchi_metricd:/etc/ceph/ 7.修改文件gnocchi.conf123456789101112# vim /etc/kolla/gnocchi-api/gnocchi.conf # vim /etc/kolla/gnocchi-metricd/gnocchi.conf # vim /etc/kolla/gnocchi-statsd/gnocchi.conf 添加如下内容[storage]driver = cephceph_username = gnocchiceph_keyring = /etc/ceph/ceph.client.gnocchi.keyringceph_conffile = /etc/ceph/ceph.confceph_secret = AQB+5xxbZKKQIhAA7FgJKYBQNjF6dD3FZzJvUQ==ceph_pool = gnocchi 初始化数据库123# docker exec -it gnocchi_api gnocchi-upgrade# docker exec -it gnocchi_metricd gnocchi-upgrade# docker exec -it gnocchi_statsd gnocchi-upgrade 8.设置权限123# docker exec -u root -it gnocchi_api chown -R gnocchi:gnocchi /etc/ceph/# docker exec -u root -it gnocchi_metricd chown -R gnocchi:gnocchi /etc/ceph/# docker exec -u root -it gnocchi_statsd chown -R gnocchi:gnocchi /etc/ceph/ 9.重启服务生效1# docker restart gnocchi_api gnocchi_metricd gnocchi_statsd]]></content>
@@ -43,8 +48,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>OpenStack</tag>
         <tag>Kolla</tag>
+        <tag>OpenStack</tag>
       </tags>
   </entry>
   <entry>
@@ -56,9 +61,9 @@
         <category>Kolla</category>
       </categories>
       <tags>
+        <tag>Kolla</tag>
         <tag>OpenStack</tag>
         <tag>Docker</tag>
-        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -80,8 +85,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>OpenStack</tag>
         <tag>Kolla</tag>
+        <tag>OpenStack</tag>
       </tags>
   </entry>
   <entry>
@@ -92,9 +97,9 @@
         <category>Docker</category>
       </categories>
       <tags>
+        <tag>Kolla</tag>
         <tag>OpenStack</tag>
         <tag>Docker</tag>
-        <tag>Kolla</tag>
       </tags>
   </entry>
 </search>
