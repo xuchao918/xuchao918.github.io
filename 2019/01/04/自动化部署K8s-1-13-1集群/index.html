@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="前言部署Kubernetes除了手动方式外，还有诸如Kubeadm、Kubespray、Breeze、Rancher、kargo等多种自动化方式。工具没有好坏之分，能干事、效率高就行。这里，笔者仍然使用Kubespray（用着真的很贴身），可自动化部署HA集群、可灵活定制开发、高稳定性等。 初始化环境环境说明| 主机名 |    IP地址    | 角色 || —— | —— | —— || K8">
+<meta name="description" content="前言部署Kubernetes除了手动方式外，还有诸如Kubeadm、Kubespray、Breeze、Rancher、kargo等多种自动化方式。工具没有好坏之分，能干事、效率高就行。这里，笔者仍然使用Kubespray（用着真的很贴身），可自动化部署HA集群、可灵活定制开发、高稳定性等。 初始化环境环境说明主机名 | IP地址 | 角色|—|—|—|K8s1 | 172.16.0.180 | M">
 <meta name="keywords" content="k8s,kubespray">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自动化部署K8s 1.13.1集群">
 <meta property="og:url" content="http://yoursite.com/2019/01/04/自动化部署K8s-1-13-1集群/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="前言部署Kubernetes除了手动方式外，还有诸如Kubeadm、Kubespray、Breeze、Rancher、kargo等多种自动化方式。工具没有好坏之分，能干事、效率高就行。这里，笔者仍然使用Kubespray（用着真的很贴身），可自动化部署HA集群、可灵活定制开发、高稳定性等。 初始化环境环境说明| 主机名 |    IP地址    | 角色 || —— | —— | —— || K8">
+<meta property="og:description" content="前言部署Kubernetes除了手动方式外，还有诸如Kubeadm、Kubespray、Breeze、Rancher、kargo等多种自动化方式。工具没有好坏之分，能干事、效率高就行。这里，笔者仍然使用Kubespray（用着真的很贴身），可自动化部署HA集群、可灵活定制开发、高稳定性等。 初始化环境环境说明主机名 | IP地址 | 角色|—|—|—|K8s1 | 172.16.0.180 | M">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-04T15:59:49.898Z">
+<meta property="og:updated_time" content="2019-01-04T16:05:40.257Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自动化部署K8s 1.13.1集群">
-<meta name="twitter:description" content="前言部署Kubernetes除了手动方式外，还有诸如Kubeadm、Kubespray、Breeze、Rancher、kargo等多种自动化方式。工具没有好坏之分，能干事、效率高就行。这里，笔者仍然使用Kubespray（用着真的很贴身），可自动化部署HA集群、可灵活定制开发、高稳定性等。 初始化环境环境说明| 主机名 |    IP地址    | 角色 || —— | —— | —— || K8">
+<meta name="twitter:description" content="前言部署Kubernetes除了手动方式外，还有诸如Kubeadm、Kubespray、Breeze、Rancher、kargo等多种自动化方式。工具没有好坏之分，能干事、效率高就行。这里，笔者仍然使用Kubespray（用着真的很贴身），可自动化部署HA集群、可灵活定制开发、高稳定性等。 初始化环境环境说明主机名 | IP地址 | 角色|—|—|—|K8s1 | 172.16.0.180 | M">
 
 
 
@@ -387,7 +387,7 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>部署Kubernetes除了手动方式外，还有诸如Kubeadm、Kubespray、Breeze、Rancher、kargo等多种自动化方式。工具没有好坏之分，能干事、效率高就行。这里，笔者仍然使用Kubespray（用着真的很贴身），可自动化部署HA集群、可灵活定制开发、高稳定性等。</p>
-<h2 id="初始化环境"><a href="#初始化环境" class="headerlink" title="初始化环境"></a>初始化环境</h2><p>环境说明<br>| 主机名 |    IP地址    | 角色 |<br>| —— | —— | —— |<br>| K8s1    | 172.16.0.180    | Master+node |<br>| K8s2    | 172.16.0.181    | Master+node |<br>| K8s3    | 172.16.0.182    | Master+node |</p>
+<h2 id="初始化环境"><a href="#初始化环境" class="headerlink" title="初始化环境"></a>初始化环境</h2><p>环境说明<br>主机名 | IP地址 | 角色|<br>—|—|—|<br>K8s1 | 172.16.0.180 | Master+node<br>K8s2 | 172.16.0.181 | Master+node<br>K8s3 | 172.16.0.182 | Master+node</p>
 <p>环境为Centos 7系统，各节点配置hosts和hostname，如<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/hosts</span><br><span class="line"><span class="number">172.16</span><span class="number">.0</span><span class="number">.180</span>   K8s1</span><br><span class="line"><span class="number">172.16</span><span class="number">.0</span><span class="number">.181</span>   K8s2</span><br><span class="line"><span class="number">172.16</span><span class="number">.0</span><span class="number">.182</span>   K8s3</span><br></pre></td></tr></table></figure></p>
 <p>关闭防火墙等<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">'s/SELINUX=*/SELINUX=disabled/'</span> /etc/selinux/<span class="built_in">config</span></span><br><span class="line">systemctl disable firewalld &amp;&amp; systemctl <span class="built_in">stop</span> firewalld</span><br></pre></td></tr></table></figure></p>
 <p>Kubernetes 1.8开始要求关闭系统的Swap交换分区，方法如下<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapoff -<span class="selector-tag">a</span> &amp;&amp; echo <span class="string">"vm.swappiness=0"</span> &gt;&gt; /etc/sysctl<span class="selector-class">.conf</span> &amp;&amp; sysctl -<span class="selector-tag">p</span> &amp;&amp; free –h</span><br></pre></td></tr></table></figure></p>
