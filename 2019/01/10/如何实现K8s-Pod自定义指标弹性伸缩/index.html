@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="弹性伸缩介绍自动弹性伸缩(AutoScaling)，是Kubernetes的一大功能和亮点。在OpenStack IaaS云计算中也有类似的服务，即Senlin。即基于资源使用情况自动弹性缩容和扩容工作负载。Kubernetes的自动弹性伸缩有两个维度：  Cluster Autoscaler：处理K8s集群Node节点伸缩，该功能依赖于IaaS云提供商云主机服务和资源监控服务。 Horizont">
+<meta name="keywords" content="openstack,docker,kubernetes,devops,ci&#x2F;cd,运维,开发,ceph,架构,设计,存储,部署">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“如何实现K8s Pod自定义指标弹性伸缩">
+<meta property="og:url" content="http://yoursite.com/2019/01/10/如何实现K8s-Pod自定义指标弹性伸缩/index.html">
+<meta property="og:site_name" content="起风了">
+<meta property="og:description" content="弹性伸缩介绍自动弹性伸缩(AutoScaling)，是Kubernetes的一大功能和亮点。在OpenStack IaaS云计算中也有类似的服务，即Senlin。即基于资源使用情况自动弹性缩容和扩容工作负载。Kubernetes的自动弹性伸缩有两个维度：  Cluster Autoscaler：处理K8s集群Node节点伸缩，该功能依赖于IaaS云提供商云主机服务和资源监控服务。 Horizont">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/k8s-custom-metrics.png">
+<meta property="og:image" content="http://yoursite.com/images/prometheus.png">
+<meta property="og:updated_time" content="2019-01-10T14:52:45.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="“如何实现K8s Pod自定义指标弹性伸缩">
+<meta name="twitter:description" content="弹性伸缩介绍自动弹性伸缩(AutoScaling)，是Kubernetes的一大功能和亮点。在OpenStack IaaS云计算中也有类似的服务，即Senlin。即基于资源使用情况自动弹性缩容和扩容工作负载。Kubernetes的自动弹性伸缩有两个维度：  Cluster Autoscaler：处理K8s集群Node节点伸缩，该功能依赖于IaaS云提供商云主机服务和资源监控服务。 Horizont">
+<meta name="twitter:image" content="http://yoursite.com/images/k8s-custom-metrics.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/10/如何实现K8s-Pod自定义指标弹性伸缩/"/>
+
+
+
+
+
+  <title>“如何实现K8s Pod自定义指标弹性伸缩 | 起风了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">起风了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xuchao's blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/10/如何实现K8s-Pod自定义指标弹性伸缩/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XuChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="起风了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">“如何实现K8s Pod自定义指标弹性伸缩</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-10T21:56:48+08:00">
+                2019-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="弹性伸缩介绍"><a href="#弹性伸缩介绍" class="headerlink" title="弹性伸缩介绍"></a>弹性伸缩介绍</h2><p>自动弹性伸缩(AutoScaling)，是Kubernetes的一大功能和亮点。在OpenStack IaaS云计算中也有类似的服务，即Senlin。即基于资源使用情况自动弹性缩容和扩容工作负载。Kubernetes的自动弹性伸缩有两个维度：</p>
+<ul>
+<li>Cluster Autoscaler：处理K8s集群Node节点伸缩，该功能依赖于IaaS云提供商云主机服务和资源监控服务。</li>
+<li>Horizontal Pod Autoscaler（HPA）：处理Pod自动弹性伸缩副本集，该功能依赖于监控服务采集到的资源指标数据。</li>
+</ul>
+<p>简言之，Cluster Autoscaling和Horizontal Pod Autoscaler（HPA）可用于动态调整计算能力以满足系统SLA的要求。</p>
+<p>通常，扩/缩容都是根据内存或者CPU资源的使用率实现，但是现实中，很多时候扩/缩容的依据通常是业务监控指标。如何根据业务监控指标来进行扩/缩容，将是本文探讨的内容。</p>
+<p>自Kubernetes 1.11版本起，K8s资源采集指标由Resource Metrics API（Metrics Server 实现）和Custom metrics api（Prometheus实现）两种API实现，传统Heapster监控被废弃。前者主要负责采集Node、Pod的核心资源数据，如内存、CPU等；而后者则主要负责自定义指标数据采集，如网卡流量，磁盘IOPS、HTTP请求数、数据库连接数等。</p>
+<h2 id="Custom-Metrics-Server介绍"><a href="#Custom-Metrics-Server介绍" class="headerlink" title="Custom Metrics Server介绍"></a>Custom Metrics Server介绍</h2><p>前面已提过，自heapster被废弃以后，所有的指标数据都从API接口中获取，由此kubernetes将资源指标分为了两种：</p>
+<ul>
+<li>Core metrics(核心指标)：由metrics-server提供API，即 metrics.k8s.io，仅提供Node和Pod的CPU和内存使用情况。</li>
+<li>Custom Metrics(自定义指标)：由Prometheus Adapter提供API，即 custom.metrics.k8s.io，由此可支持任意Prometheus采集到的自定义指标。</li>
+</ul>
+<p>想让K8s的HPA，获取核心指标以外的其它自定义指标，则必须部署一套prometheus监控系统，让prometheus采集其它各种指标，但是prometheus采集到的metrics并不能直接给k8s用，因为两者数据格式不兼容，还需要另外一个组件(kube-state-metrics)，将prometheus的metrics数据格式转换成k8s API接口能识别的格式，转换以后，因为是自定义API，所以还需要用Kubernetes aggregator在Master节点上的kube-apiserver中注册，以便直接通过/apis/来访问。</p>
+<p><img src="/images/k8s-custom-metrics.png" alt="image"></p>
+<h3 id="Custom-Metrics组件介绍"><a href="#Custom-Metrics组件介绍" class="headerlink" title="Custom Metrics组件介绍"></a>Custom Metrics组件介绍</h3><ul>
+<li>node-exporter：prometheus的agent端，收集Node级别的监控数据。</li>
+<li>prometheus：监控服务端，从node-exporter拉取数据并存储为时序数据。</li>
+<li>kube-state-metrics： 将prometheus中可以用PromQL查询到的指标数据转换成k8s对应的数据格式，即转换成Custerom Metrics API接口格式的数据，但是它不能聚合进apiserver中的功能。</li>
+<li>k8s-prometheus-adpater：聚合apiserver，即提供了一个apiserver（cuester-metrics-api），自定义APIServer通常都要通过Kubernetes aggregator聚合到apiserver。</li>
+</ul>
+<h2 id="Custom-Metrics部署"><a href="#Custom-Metrics部署" class="headerlink" title="Custom Metrics部署"></a>Custom Metrics部署</h2><h3 id="获取部署文件"><a href="#获取部署文件" class="headerlink" title="获取部署文件"></a>获取部署文件</h3><p>这里为了方便读者安装部署，大家可以从github上clong下来使用。该项目为笔者基于github原始项目（k8s-prometheus-adapter和kubernetes）中部分代码及填过的诸多问题修复整理而成，包括镜像替换、服务暴露访问、PVC关联等。<br>clone项目<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> git@github.com:openstack-test/k8s-custom-metrics.git</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ls k8s-custom-metrics</span></span><br><span class="line">k8s-prometheus-adapter  prometheus</span><br></pre></td></tr></table></figure></p>
+<h3 id="部署prometheus、kube-state-metrics和node-exporter服务"><a href="#部署prometheus、kube-state-metrics和node-exporter服务" class="headerlink" title="部署prometheus、kube-state-metrics和node-exporter服务"></a>部署prometheus、kube-state-metrics和node-exporter服务</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> kubectl create -f ./prometheus</span></span><br></pre></td></tr></table></figure>
+<p>查看创建的pv<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kubectl get pv -n kube-system</span></span><br><span class="line">NAME              CAPACITY   ACCESS MODES   RECLAIM<span class="built_in"> POLICY </span>  STATUS   CLAIM                                      STORAGECLASS   REASON   AGE</span><br><span class="line">alertmanager-pv   10Gi       RWO            Retain           Bound    kube-system/alertmanager                   alertmanager            35m</span><br><span class="line">prometheus-pv     10Gi       RWO            Retain           Bound    kube-system/prometheus-data-prometheus-0   prometheus              35m</span><br></pre></td></tr></table></figure></p>
+<p>由于本环境资源有限，没有NFS、GFS、Ceph等存储系统，故此使用本地文件系统hostPath创建PV。在生产环境中，请务必使用NFS、GFS或Ceph等存储系统。</p>
+<p>查看创建的pvc<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get pvc -n kube-system</span><br><span class="line">NAME                           STATUS   VOLUME            CAPACITY   ACCESS MODES   STORAGECLASS   AGE</span><br><span class="line">alertmanager                   Bound    alertmanager-pv   <span class="number">10</span>Gi       RWO            alertmanager   <span class="number">35</span>m</span><br><span class="line">prometheus-data-prometheus<span class="number">-0</span>   Bound    prometheus-pv     <span class="number">10</span>Gi       RWO            prometheus     <span class="number">6</span>m28s</span><br></pre></td></tr></table></figure></p>
+<p>查看创建的service<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get svc -n kube-system</span><br><span class="line">NAME                   TYPE        CLUSTER-<span class="built_in">IP</span>      EXTERNAL-<span class="built_in">IP</span>   PORT(S)                  AGE</span><br><span class="line">alertmanager           ClusterIP   <span class="number">10.233</span><span class="meta">.48</span><span class="meta">.119</span>   &lt;none&gt;        <span class="number">80</span>/TCP                   36m</span><br><span class="line">coredns                ClusterIP   <span class="number">10.233</span><span class="meta">.0</span><span class="meta">.3</span>      &lt;none&gt;        <span class="number">53</span>/UDP,<span class="number">53</span>/TCP,<span class="number">9153</span>/TCP   <span class="number">4d22h</span></span><br><span class="line">kube-state-metrics     ClusterIP   <span class="number">10.233</span><span class="meta">.54</span><span class="meta">.147</span>   &lt;none&gt;        <span class="number">8080</span>/TCP,<span class="number">8081</span>/TCP        36m</span><br><span class="line">kubernetes-dashboard   NodePort    <span class="number">10.233</span><span class="meta">.45</span><span class="meta">.198</span>   &lt;none&gt;        <span class="number">443</span>:<span class="number">32714</span>/TCP            <span class="number">4d22h</span></span><br><span class="line">metrics-server         ClusterIP   <span class="number">10.233</span><span class="meta">.28</span><span class="meta">.40</span>    &lt;none&gt;        <span class="number">443</span>/TCP                  <span class="number">2d17h</span></span><br><span class="line">node-exporter          ClusterIP   None            &lt;none&gt;        <span class="number">9100</span>/TCP                 36m</span><br><span class="line">prometheus             NodePort    <span class="number">10.233</span><span class="meta">.44</span><span class="meta">.40</span>    &lt;none&gt;        <span class="number">9090</span>:<span class="number">30090</span>/TCP           36m</span><br></pre></td></tr></table></figure></p>
+<p>到了这里，我们便可以通过 http://节点IP:30090方式访问Prometheus页面。</p>
+<p><img src="/images/prometheus.png" alt="image"></p>
+<p>查看创建的pod<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get pods --all-namespaces</span><br><span class="line">NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system   alertmanager<span class="number">-7798</span>b54df9-w7tpn              <span class="number">2</span>/<span class="number">2</span>     Running   <span class="number">0</span>          <span class="number">48</span>m</span><br><span class="line">kube-system   calico-kube-controllers<span class="number">-687</span>b7cc79c-knj87   <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">2</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   calico-node<span class="number">-7</span>rj8c                          <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   coredns<span class="number">-5</span>b47d4476c<span class="number">-8</span>wdb7                   <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   coredns<span class="number">-5</span>b47d4476c<span class="number">-92</span>wnq                   <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   dns-autoscaler<span class="number">-5</span>b547856bc<span class="number">-95</span>cft            <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   kube-apiserver-k8s                         <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">46</span>h</span><br><span class="line">kube-system   kube-controller-manager-k8s                <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">4</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   kube-proxy-cdlzp                           <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   kube-scheduler-k8s                         <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">4</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   kube-<span class="section">state</span>-metrics<span class="number">-9776767</span>c4<span class="number">-7</span>kgmp         <span class="number">2</span>/<span class="number">2</span>     Running   <span class="number">0</span>          <span class="number">48</span>m</span><br><span class="line">kube-system   kubernetes-dashboard-d7978b5cc-lvf6l       <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">4</span>d22h</span><br><span class="line">kube-system   node-exporter-dgnhh                        <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">0</span>          <span class="number">48</span>m</span><br><span class="line">kube-system   prometheus<span class="number">-0</span>                               <span class="number">2</span>/<span class="number">2</span>     Running   <span class="number">0</span>          <span class="number">19</span>m</span><br></pre></td></tr></table></figure></p>
+<h2 id="部署组件k8s-prometheus-adapter"><a href="#部署组件k8s-prometheus-adapter" class="headerlink" title="部署组件k8s-prometheus-adapter"></a>部署组件k8s-prometheus-adapter</h2><p>该组件是一个API服务器，提供了一个APIServer服务，名为 custom-metrics-apiserver，提供的API组为： custom.metrics.k8s.io，它是自定义指标API（custom.metrics.k8s.io）的实现。</p>
+<p>该组件的deployment需要挂载一个secret存储卷，secret名为”cm-adapter-serving-certs”，这个secret是一个证书，因此这里需要创建相应的证书和key，这个证书必须由k8s的kube-apiserver信任的CA签发，因此直接用k8s的CA签发。</p>
+<h3 id="生成证书"><a href="#生成证书" class="headerlink" title="生成证书"></a>生成证书</h3><p>私钥:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">  (<span class="built_in">umask</span> 077;openssl genrsa -out serving.key 2048)</span></span><br><span class="line"><span class="meta">$</span><span class="bash">  ls</span></span><br><span class="line">serving.key</span><br></pre></td></tr></table></figure></p>
+<p>证书请求：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ openssl req -new -key serving<span class="selector-class">.key</span> -out serving<span class="selector-class">.csr</span> -subj <span class="string">"/CN=serving"</span></span><br><span class="line">$  ls</span><br><span class="line">serving<span class="selector-class">.csr</span>  serving.key</span><br></pre></td></tr></table></figure></p>
+<p>签署证书：<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># openssl x509 -req -<span class="keyword">in</span> serving.csr -<span class="keyword">CA</span> /etc/kubernetes/ssl/<span class="keyword">ca</span>.crt -CAkey /etc/kubernetes/ssl/<span class="keyword">ca</span>.key -CAcreateserial -<span class="keyword">out</span> serving.crt -days 3650</span><br><span class="line">Signature ok</span><br><span class="line">subject=/CN=serving</span><br><span class="line">Getting <span class="keyword">CA</span> Private Key</span><br><span class="line"></span><br><span class="line">$ <span class="keyword">ls</span></span><br><span class="line">serving.crt  serving.csr  serving.key</span><br></pre></td></tr></table></figure></p>
+<p>创建一个名为 custom-metrics的namespace<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl <span class="keyword">create</span> <span class="keyword">namespace</span> custom-metrics</span><br><span class="line"><span class="keyword">namespace</span>/custom-metrics created</span><br></pre></td></tr></table></figure></p>
+<p>创建secret<br><figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl <span class="keyword">create</span> secret generic cm-adapter-serving-certs --<span class="keyword">from</span>-file=serving.crt=./serving.crt --<span class="keyword">from</span>-file=serving.<span class="keyword">key</span>=./serving.<span class="keyword">key</span> -n custom-metrics</span><br><span class="line">secret/cm-adapter-serving-certs created</span><br></pre></td></tr></table></figure></p>
+<p>查看创建的secrets<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get secrets -n custom-metrics</span><br><span class="line">cm-adapter-serving-certs                         Opaque                                <span class="number">2</span>      <span class="number">118</span>s</span><br></pre></td></tr></table></figure></p>
+<p>编辑custom-metrics-apiserve部署文件<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim ./custom-metrics-apiserver-deployment.yaml</span></span><br><span class="line">- <span class="params">--prometheus-url=http</span>:<span class="string">//172.16.0.180</span><span class="function">:30090</span>/       <span class="string">//</span>将该参数修改为Prometheus的url地址</span><br></pre></td></tr></table></figure></p>
+<h3 id="部署custom-metrics"><a href="#部署custom-metrics" class="headerlink" title="部署custom metrics"></a>部署custom metrics</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> kubectl apply -f ./k8s-prometheus-adapter</span></span><br></pre></td></tr></table></figure>
+<p>查看pods<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get pods --all-namespaces</span><br><span class="line">NAMESPACE        NAME                                       READY   STATUS    RESTARTS   AGE</span><br><span class="line">custom-metrics   custom-metrics-apiserver-c86bfc77-d8wsz    <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">0</span>          <span class="number">116</span>s</span><br><span class="line">kube-system      alertmanager<span class="number">-7798</span>b54df9-fx57f              <span class="number">2</span>/<span class="number">2</span>     Running   <span class="number">0</span>          <span class="number">46</span>m</span><br><span class="line">kube-system      calico-kube-controllers<span class="number">-687</span>b7cc79c-knj87   <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">2</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      calico-node<span class="number">-7</span>rj8c                          <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      coredns<span class="number">-5</span>b47d4476c<span class="number">-8</span>wdb7                   <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      coredns<span class="number">-5</span>b47d4476c<span class="number">-92</span>wnq                   <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      dns-autoscaler<span class="number">-5</span>b547856bc<span class="number">-95</span>cft            <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      kube-apiserver-k8s                         <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">47</span>h</span><br><span class="line">kube-system      kube-controller-manager-k8s                <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">4</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      kube-proxy-cdlzp                           <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      kube-scheduler-k8s                         <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">4</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      kube-<span class="section">state</span>-metrics<span class="number">-9776767</span>c4-b2n9p         <span class="number">2</span>/<span class="number">2</span>     Running   <span class="number">0</span>          <span class="number">46</span>m</span><br><span class="line">kube-system      kubernetes-dashboard-d7978b5cc-lvf6l       <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">1</span>          <span class="number">5</span>d</span><br><span class="line">kube-system      node-exporter-hrxvs                        <span class="number">1</span>/<span class="number">1</span>     Running   <span class="number">0</span>          <span class="number">46</span>m</span><br><span class="line">kube-system      prometheus<span class="number">-0</span>                               <span class="number">2</span>/<span class="number">2</span>     Running   <span class="number">0</span>          <span class="number">46</span>m</span><br></pre></td></tr></table></figure></p>
+<p>查看新创建的api群组：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># kubectl api-versions  | grep metrics</span><br><span class="line">custom.metrics.k8s.<span class="built_in">io</span>/v1beta1</span><br><span class="line">metrics.k8s.<span class="built_in">io</span>/v1beta1</span><br></pre></td></tr></table></figure></p>
+<p>列出由prometheus提供的自定义指标：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> yum -y install jq</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get --raw <span class="string">"/apis/custom.metrics.k8s.io/v1beta1"</span> | jq .</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"kind"</span>: <span class="string">"APIResourceList"</span>,</span><br><span class="line">  <span class="string">"apiVersion"</span>: <span class="string">"v1"</span>,</span><br><span class="line">  <span class="string">"groupVersion"</span>: <span class="string">"custom.metrics.k8s.io/v1beta1"</span>,</span><br><span class="line">  <span class="string">"resources"</span>: [.............]               <span class="comment">//输出信息太多，此处省略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取custom-metrics命名空间中所有pod的fs_usage_bytes信息：<br><figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get --raw <span class="string">"/apis/custom.metrics.k8s.io/v1beta1/namespaces/custom-metrics/pods/*/fs_usage_bytes"</span> | jq .</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"kind"</span>: <span class="string">"MetricValueList"</span>,</span><br><span class="line">  <span class="string">"apiVersion"</span>: <span class="string">"custom.metrics.k8s.io/v1beta1"</span>,</span><br><span class="line">  <span class="string">"metadata"</span>: &#123;</span><br><span class="line">    <span class="string">"selfLink"</span>: <span class="string">"/apis/custom.metrics.k8s.io/v1beta1/namespaces/custom-metrics/pods/%2A/fs_usage_bytes"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"items"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"describedObject"</span>: &#123;</span><br><span class="line">        <span class="string">"kind"</span>: <span class="string">"Pod"</span>,</span><br><span class="line">        <span class="string">"namespace"</span>: <span class="string">"custom-metrics"</span>,</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"custom-metrics-apiserver-7f6d965d9c-fj6lk"</span>,</span><br><span class="line">        <span class="string">"apiVersion"</span>: <span class="string">"/v1"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">"metricName"</span>: <span class="string">"fs_usage_bytes"</span>,</span><br><span class="line">      <span class="string">"timestamp"</span>: <span class="string">"2019-01-10T11:17:26Z"</span>,</span><br><span class="line">      <span class="string">"value"</span>: <span class="string">"33501184"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>创建一个使用Resource 和Custom Metrics APIs的Pod</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>custom metrics大大丰富了K8s pod弹性伸缩的能力，使K8s Pod AutoScaling从资源伸缩向业务应用伸缩方向转变成为现实。限于篇幅，后面将介绍部署Grafana+Influxdb集成Prometheus可视化查看K8s集群资源使用情况。</p>
+<p>参考资料：<br><a href="https://github.com/DirectXMan12/k8s-prometheus-adapter" target="_blank" rel="noopener">https://github.com/DirectXMan12/k8s-prometheus-adapter</a><br><a href="https://github.com/stefanprodan/k8s-prom-hpa" target="_blank" rel="noopener">https://github.com/stefanprodan/k8s-prom-hpa</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/04/自动化部署K8s-1-13-1集群/" rel="next" title="自动化部署K8s 1.13.1">
+                <i class="fa fa-chevron-left"></i> 自动化部署K8s 1.13.1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.jpg"
+                alt="XuChao" />
+            
+              <p class="site-author-name" itemprop="name">XuChao</p>
+              <p class="site-description motion-element" itemprop="description">热爱开源技术，OpenStack、Kubernetes、CI/CD工程师一枚</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-globe"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://douban.com/people" target="_blank" title="豆瓣">
+                      
+                        <i class="fa fa-fw fa-globe"></i>豆瓣</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#弹性伸缩介绍"><span class="nav-number">1.</span> <span class="nav-text">弹性伸缩介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Custom-Metrics-Server介绍"><span class="nav-number">2.</span> <span class="nav-text">Custom Metrics Server介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Custom-Metrics组件介绍"><span class="nav-number">2.1.</span> <span class="nav-text">Custom Metrics组件介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Custom-Metrics部署"><span class="nav-number">3.</span> <span class="nav-text">Custom Metrics部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取部署文件"><span class="nav-number">3.1.</span> <span class="nav-text">获取部署文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署prometheus、kube-state-metrics和node-exporter服务"><span class="nav-number">3.2.</span> <span class="nav-text">部署prometheus、kube-state-metrics和node-exporter服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署组件k8s-prometheus-adapter"><span class="nav-number">4.</span> <span class="nav-text">部署组件k8s-prometheus-adapter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成证书"><span class="nav-number">4.1.</span> <span class="nav-text">生成证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署custom-metrics"><span class="nav-number">4.2.</span> <span class="nav-text">部署custom metrics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">5.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续"><span class="nav-number">6.</span> <span class="nav-text">后续</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=461525011&auto=1&height=66"></iframe>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XuChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
