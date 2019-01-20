@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/k8s-custom-metrics.png">
 <meta property="og:image" content="http://yoursite.com/images/prometheus.png">
-<meta property="og:updated_time" content="2019-01-15T14:40:52.675Z">
+<meta property="og:updated_time" content="2019-01-20T06:56:46.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何实现K8s Pod自定义指标弹性伸缩">
 <meta name="twitter:description" content="弹性伸缩介绍自动弹性伸缩(AutoScaling)，是Kubernetes的一大功能和亮点。在OpenStack IaaS云计算中也有类似的服务，即Senlin。即基于资源使用情况自动弹性缩容和扩容工作负载。Kubernetes的自动弹性伸缩有两个维度：  Cluster Autoscaler：处理K8s集群Node节点伸缩，该功能依赖于IaaS云提供商云主机服务和资源监控服务。 Horizont">
@@ -439,7 +439,7 @@
 <p>可看到，在当前压力测试下，Pod副本将自动扩容到三副本，但不会超过10副本这个最大值。同时三副本Pod已经满足当前负载。</p>
 <p>负载测试结束后，HPA向下自动缩容到1个副本Pod。<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Events:</span></span><br><span class="line">  <span class="string">Type</span>    <span class="string">Reason</span>             <span class="string">Age</span>   <span class="string">From</span>                       <span class="string">Message</span></span><br><span class="line"><span class="bullet">  -</span><span class="meta">---</span>    <span class="bullet">------</span>             <span class="bullet">----</span>  <span class="bullet">----</span>                       <span class="bullet">-------</span></span><br><span class="line">  <span class="string">Normal</span>  <span class="string">SuccessfulRescale</span>  <span class="number">5</span><span class="string">m</span>    <span class="string">horizontal-pod-autoscaler</span>  <span class="string">New</span> <span class="attr">size:</span> <span class="number">3</span><span class="string">;</span> <span class="attr">reason:</span> <span class="string">pods</span> <span class="string">metric</span> <span class="string">http_requests</span> <span class="string">above</span> <span class="string">target</span></span><br><span class="line">  <span class="string">Normal</span>  <span class="string">SuccessfulRescale</span>  <span class="number">21</span><span class="string">s</span>   <span class="string">horizontal-pod-autoscaler</span>  <span class="string">New</span> <span class="attr">size:</span> <span class="number">2</span><span class="string">;</span> <span class="attr">reason:</span> <span class="string">All</span> <span class="string">metrics</span> <span class="string">below</span> <span class="string">target</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>custom metrics大大丰富了K8s pod弹性伸缩的能力，使K8s Pod AutoScaling从资源伸缩向业务应用伸缩方向转变成为现实。限于篇幅，后面将介绍部署Grafana+Influxdb集成Prometheus可视化查看K8s集群资源使用情况。</p>
-<p>此外，在生产环境中，应当使用NFShostPath等方式持久化存储prometheus监控数据。</p>
+<p>此外，在生产环境中，应当使用NFS、hostPath等方式持久化存储Prometheus监控数据。</p>
 <p>参考资料：<br><a href="https://github.com/stefanprodan/k8s-prom-hpa" target="_blank" rel="noopener">https://github.com/stefanprodan/k8s-prom-hpa</a></p>
 
       
