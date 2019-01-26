@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[编译和运行Kubernetes源码]]></title>
     <url>%2F2019%2F01%2F26%2F%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8CKubernetes%E6%BA%90%E7%A0%81%2F</url>
-    <content type="text"><![CDATA[** 为什么要编译源码 Kubernetes是一个非常棒的容器集群管理平台。通常情况下，我们并不需要修改K8s代码即可直接使用。但如果，我们在环境中发现了某个问题/缺陷，或按照特定业务需求需要修改K8s代码时，如定制Kubelet的StopContainer 逻辑、kube-scheduler的pod调度逻辑等。为了让修改生效，那么就需要编译K8s代码了。 Kubernetes源码编译，大致分为本地二进制可执行文件编译和docker镜像编译两种。由于在我们的环境中，Kubernetes是由Docker容器方式运行的。故此我们需要采用后面一种方式编译，即镜像编译。 由于Kubernetes每个组件服务的镜像Dockerfile文件是由Kubernetes源码自动生成的，因此，社区并未提供每个组件的镜像Dockerfile文件。编译本地二进制可执行文件很简单，也更直接。而docker镜像编译资料却很少，且碍于某种特殊网络原因，会导致失败。此处，将介绍如何顺利的完成k8s镜像编译。 ** 安装依赖 安装Golang1234wget -c https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz -P /opt/cd /opt/tar -C /usr/local -xzf go1.11.4.linux-amd64.tar.gz echo "export PATH=$PATH:/usr/local/go/bin" &gt;&gt; /etc/profile &amp;&amp; source /etc/profile 指定分支，下载 Kubernetes 源代码（默认$GOPATH目录为/root/go/）1234mkdir -p $GOPATH/src/k8s.iocd $GOPATH/src/k8s.iogit clone https://github.com/kubernetes/kubernetes -b release-1.13cd $GOPATH/src/k8s.io/kubernetes ** 源码编译Kubernetes（方法一）修改运行平台配置参数（可选）根据自己的运行平台（linux/amd64)修改hack/lib/golang.sh，把KUBE_SERVER_PLATFORMS，KUBE_CLIENT_PLATFORMS和KUBE_TEST_PLATFORMS中除linux/amd64以外的其他平台注释掉，以此来减少编译所用时间。 编译源码进入Kubernetes根目录下1cd kubernetes KUBE_BUILD_PLATFORMS指定目标平台，WHAT指定编译的组件，通过GOFLAGS和GOGCFLAGS传入编译时参数，如此处编译kubelet 组件。1KUBE_BUILD_PLATFORMS=linux/amd64 make all WHAT=cmd/kubelet GOFLAGS=-v GOGCFLAGS="-N -l" 如果不指定WHAT，则编译全部。 make all是在本地环境中进行编译的。 make release和make quick-release在容器中完成编译、打包成docker镜像。 编译kubelet这部分代码，也可执行make clean &amp;&amp; make WHAT=cmd/kubelet 检查编译成果编译过程较长，请耐心等待，编译后的文件在kubernetes/_output里。 或者进入cmd/kubelet (以kubelet为例子)执行go build -v命令,如果没出错,会生成可执行文件kubelet1go build -v 生成的可执行文件在当前文件夹下面12# ls cmd/kubelet/app BUILD kubelet kubelet.go OWNERS ** 容器编译Kubernetes（方法二）查看kube-cross的TAG版本号12# cat ./build/build-image/cross/VERSIONv1.11.4-1 查看debian_iptables_version版本号12# egrep -Rn "debian_iptables_version=" ././build/common.sh:93: local debian_iptables_version=v11.0 这里，我使用DockerHub的Auto build功能，来构建K8s镜像。自然将编译需要用到的base镜像，放在了DockerHub上（也算是为促进国内K8s源码docker编译贡献绵薄之力吧！）。1234567891011docker pull xiaoxu780/pause-amd64:3.1docker pull xiaoxu780/kube-cross:v1.11.2-1docker pull xiaoxu780/debian-base-amd64:0.4.0docker pull xiaoxu780/debian-iptables-amd64:v11.0docker pull xiaoxu780/debian-hyperkube-base-amd64:0.12.0docker tag xiaoxu780/pause-amd64:3.1 k8s.gcr.io/pause-amd64:3.1docker tag xiaoxu780/kube-cross:v1.11.2-1 k8s.gcr.io/kube-cross:v1.11.4-1docker tag xiaoxu780/debian-base-amd64:0.4.0 k8s.gcr.io/debian-base-amd64:0.4.0docker tag xiaoxu780/debian-iptables-amd64:v11.0 k8s.gcr.io/debian-iptables-amd64:v11.0docker tag xiaoxu780/debian-hyperkube-base-amd64:0.12.0 k8s.gcr.io/debian-hyperkube-base-amd64:0.12.0 把build/lib/release.sh中的–pull去掉，避免构建镜像继续拉取镜像：123 "$&#123;DOCKER[@]&#125;" build --pull -q -t "$&#123;docker_image_tag&#125;" $&#123;docker_build_path&#125; &gt;/dev/null修改为: "$&#123;DOCKER[@]&#125;" build -q -t "$&#123;docker_image_tag&#125;" $&#123;docker_build_path&#125; &gt;/dev/null 只编译linux/amd64，且略过test:1234# export KUBE_GIT_VERSION=v1.13.2# make quick-release- make all是在本地环境中进行编译的。- make release和make quick-release在容器中完成编译、打包成docker镜像。 执行编译命令123# cd kubernetes# make clean# KUBE_BUILD_PLATFORMS=linux/amd64 KUBE_BUILD_CONFORMANCE=n KUBE_BUILD_HYPERKUBE=n make release-images GOFLAGS=-v GOGCFLAGS="-N -l" 其中KUBE_BUILD_PLATFORMS=linux/amd64指定目标平台为linux/amd64，GOFLAGS=-v开启verbose日志，GOGCFLAGS=”-N -l”禁止编译优化和内联，减小可执行程序大小。 开始编译1KUBE_BUILD_PLATFORMS=linux/amd64 build/run.sh make all 将编译得到的文件从容器中拷贝出来1build/copy-output.sh 进入编译容器1build/shell.sh 客户端以压缩包的形式发布在_output/release-tars目录中123# ls _output/release-images/amd64/cloud-controller-manager.tar kube-controller-manager.tar kube-scheduler.tarkube-apiserver.tar kube-proxy.tar ** 使用编译镜像等待编译完成后，在_output/release-stage/server/linux-amd64/kubernetes/server/bin/目录下保存了编译生成的二进制可执行程序和docker镜像tar包。如导入kube-apiserver.tar镜像，并更新环境上部署的kube-apiserver镜像。12# docker load -i kube-apiserver.tar# docker tag k8s.gcr.io/kube-apiserver:v1.13.3 registry.com/kube-apiserver:v1.13.3 整个编译过程结束后，现在就可以到master节点上，修改/etc/kubernetes/manifests/kube-apiserver.yaml描述文件中的image，修改完立即生效。 参考资料：https://github.com/kubernetes/kubernetes/tree/master/build/]]></content>
+    <content type="text"><![CDATA[** 为什么要编译源码 Kubernetes是一个非常棒的容器集群管理平台。通常情况下，我们并不需要修改K8s代码即可直接使用。但如果，我们在环境中发现了某个问题/缺陷，或按照特定业务需求需要修改K8s代码时，如定制Kubelet的StopContainer 逻辑、kube-scheduler的pod调度逻辑等。为了让修改生效，那么就需要编译K8s代码了。 Kubernetes源码编译，大致分为本地二进制可执行文件编译和docker镜像编译两种。由于在我们的环境中，Kubernetes是由Docker容器方式运行的。故此我们需要采用后面一种方式编译，即镜像编译。 由于Kubernetes每个组件服务的镜像Dockerfile文件是由Kubernetes源码自动生成的，因此，社区并未提供每个组件的镜像Dockerfile文件。编译本地二进制可执行文件很简单，也更直接。而docker镜像编译资料却很少，且碍于某种特殊网络原因，会导致失败。此处，将介绍如何顺利的完成k8s镜像编译。 ** 安装依赖 安装Golang1234wget -c https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz -P /opt/cd /opt/tar -C /usr/local -xzf go1.11.4.linux-amd64.tar.gz echo "export PATH=$PATH:/usr/local/go/bin" &gt;&gt; /etc/profile &amp;&amp; source /etc/profile 指定分支，下载 Kubernetes 源代码（默认$GOPATH目录为/root/go/）1234mkdir -p $GOPATH/src/k8s.iocd $GOPATH/src/k8s.iogit clone https://github.com/kubernetes/kubernetes -b release-1.13cd $GOPATH/src/k8s.io/kubernetes ** 源码编译Kubernetes（方法一） 修改运行平台配置参数（可选）根据自己的运行平台（linux/amd64)修改hack/lib/golang.sh，把KUBE_SERVER_PLATFORMS，KUBE_CLIENT_PLATFORMS和KUBE_TEST_PLATFORMS中除linux/amd64以外的其他平台注释掉，以此来减少编译所用时间。 编译源码进入Kubernetes根目录下1cd kubernetes KUBE_BUILD_PLATFORMS指定目标平台，WHAT指定编译的组件，通过GOFLAGS和GOGCFLAGS传入编译时参数，如此处编译kubelet 组件。1KUBE_BUILD_PLATFORMS=linux/amd64 make all WHAT=cmd/kubelet GOFLAGS=-v GOGCFLAGS="-N -l" 如果不指定WHAT，则编译全部。 make all是在本地环境中进行编译的。 make release和make quick-release在容器中完成编译、打包成docker镜像。 编译kubelet这部分代码，也可执行make clean &amp;&amp; make WHAT=cmd/kubelet 检查编译成果编译过程较长，请耐心等待，编译后的文件在kubernetes/_output里。 或者进入cmd/kubelet (以kubelet为例子)执行go build -v命令,如果没出错,会生成可执行文件kubelet1go build -v 生成的可执行文件在当前文件夹下面12# ls cmd/kubelet/app BUILD kubelet kubelet.go OWNERS ** 容器编译Kubernetes（方法二） 查看kube-cross的TAG版本号12# cat ./build/build-image/cross/VERSIONv1.11.4-1 查看debian_iptables_version版本号12# egrep -Rn "debian_iptables_version=" ././build/common.sh:93: local debian_iptables_version=v11.0 这里，我使用DockerHub的Auto build功能，来构建K8s镜像。自然将编译需要用到的base镜像，放在了DockerHub上（也算是为促进国内K8s源码docker编译贡献绵薄之力吧！）。1234567891011docker pull xiaoxu780/pause-amd64:3.1docker pull xiaoxu780/kube-cross:v1.11.2-1docker pull xiaoxu780/debian-base-amd64:0.4.0docker pull xiaoxu780/debian-iptables-amd64:v11.0docker pull xiaoxu780/debian-hyperkube-base-amd64:0.12.0docker tag xiaoxu780/pause-amd64:3.1 k8s.gcr.io/pause-amd64:3.1docker tag xiaoxu780/kube-cross:v1.11.2-1 k8s.gcr.io/kube-cross:v1.11.4-1docker tag xiaoxu780/debian-base-amd64:0.4.0 k8s.gcr.io/debian-base-amd64:0.4.0docker tag xiaoxu780/debian-iptables-amd64:v11.0 k8s.gcr.io/debian-iptables-amd64:v11.0docker tag xiaoxu780/debian-hyperkube-base-amd64:0.12.0 k8s.gcr.io/debian-hyperkube-base-amd64:0.12.0 把build/lib/release.sh中的–pull去掉，避免构建镜像继续拉取镜像：123 "$&#123;DOCKER[@]&#125;" build --pull -q -t "$&#123;docker_image_tag&#125;" $&#123;docker_build_path&#125; &gt;/dev/null修改为: "$&#123;DOCKER[@]&#125;" build -q -t "$&#123;docker_image_tag&#125;" $&#123;docker_build_path&#125; &gt;/dev/null 只编译linux/amd64，且略过test:1234# export KUBE_GIT_VERSION=v1.13.2# make quick-release- make all是在本地环境中进行编译的。- make release和make quick-release在容器中完成编译、打包成docker镜像。 执行编译命令123# cd kubernetes# make clean# KUBE_BUILD_PLATFORMS=linux/amd64 KUBE_BUILD_CONFORMANCE=n KUBE_BUILD_HYPERKUBE=n make release-images GOFLAGS=-v GOGCFLAGS="-N -l" 其中KUBE_BUILD_PLATFORMS=linux/amd64指定目标平台为linux/amd64，GOFLAGS=-v开启verbose日志，GOGCFLAGS=”-N -l”禁止编译优化和内联，减小可执行程序大小。 开始编译1KUBE_BUILD_PLATFORMS=linux/amd64 build/run.sh make all 将编译得到的文件从容器中拷贝出来1build/copy-output.sh 进入编译容器1build/shell.sh 客户端以压缩包的形式发布在_output/release-tars目录中123# ls _output/release-images/amd64/cloud-controller-manager.tar kube-controller-manager.tar kube-scheduler.tarkube-apiserver.tar kube-proxy.tar ** 使用编译镜像 等待编译完成后，在_output/release-stage/server/linux-amd64/kubernetes/server/bin/目录下保存了编译生成的二进制可执行程序和docker镜像tar包。如导入kube-apiserver.tar镜像，并更新环境上部署的kube-apiserver镜像。12# docker load -i kube-apiserver.tar# docker tag k8s.gcr.io/kube-apiserver:v1.13.3 registry.com/kube-apiserver:v1.13.3 整个编译过程结束后，现在就可以到master节点上，修改/etc/kubernetes/manifests/kube-apiserver.yaml描述文件中的image，修改完立即生效。 参考资料：https://github.com/kubernetes/kubernetes/tree/master/build/]]></content>
       <categories>
         <category>Kubernetes</category>
       </categories>
@@ -91,8 +91,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -104,8 +104,8 @@
         <category>Kolla</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
         <tag>Docker</tag>
       </tags>
   </entry>
@@ -128,8 +128,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -140,8 +140,8 @@
         <category>Docker</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
         <tag>Docker</tag>
       </tags>
   </entry>
