@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-01-20T06:56:46.193Z</updated>
+  <updated>2019-01-26T11:59:23.597Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>编译和运行Kubernetes源码</title>
+    <link href="http://yoursite.com/2019/01/26/%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8CKubernetes%E6%BA%90%E7%A0%81/"/>
+    <id>http://yoursite.com/2019/01/26/编译和运行Kubernetes源码/</id>
+    <published>2019-01-26T11:51:09.000Z</published>
+    <updated>2019-01-26T11:59:23.597Z</updated>
+    
+    <content type="html"><![CDATA[<p>** 为什么要编译源码</p><p>Kubernetes是一个非常棒的容器集群管理平台。通常情况下，我们并不需要修改K8s代码即可直接使用。但如果，我们在环境中发现了某个问题/缺陷，或按照特定业务需求需要修改K8s代码时，如定制Kubelet的StopContainer 逻辑、kube-scheduler的pod调度逻辑等。为了让修改生效，那么就需要编译K8s代码了。</p><p>Kubernetes源码编译，大致分为本地二进制可执行文件编译和docker镜像编译两种。由于在我们的环境中，Kubernetes是由Docker容器方式运行的。故此我们需要采用后面一种方式编译，即镜像编译。</p><p>由于Kubernetes每个组件服务的镜像Dockerfile文件是由Kubernetes源码自动生成的，因此，社区并未提供每个组件的镜像Dockerfile文件。编译本地二进制可执行文件很简单，也更直接。而docker镜像编译资料却很少，且碍于某种特殊网络原因，会导致失败。此处，将介绍如何顺利的完成k8s镜像编译。</p><p>** 安装依赖</p><p>安装Golang<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget -<span class="keyword">c</span> http<span class="variable">s:</span>//<span class="keyword">dl</span>.google.<span class="keyword">com</span>/<span class="keyword">go</span>/go1.<span class="number">11.4</span>.linux-amd64.tar.gz -<span class="keyword">P</span> /<span class="keyword">opt</span>/</span><br><span class="line"><span class="keyword">cd</span> /<span class="keyword">opt</span>/</span><br><span class="line">tar -C /usr/local -xzf go1.<span class="number">11.4</span>.linux-amd64.tar.gz </span><br><span class="line"><span class="keyword">echo</span> <span class="string">"export PATH=$PATH:/usr/local/go/bin"</span> &gt;&gt; /etc/<span class="keyword">profile</span> &amp;&amp; <span class="keyword">source</span> /etc/<span class="keyword">profile</span></span><br></pre></td></tr></table></figure></p><p>指定分支，下载 Kubernetes 源代码（默认$GOPATH目录为/root/go/）<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -<span class="selector-tag">p</span> <span class="variable">$GOPATH</span>/src/k8s.io</span><br><span class="line">cd <span class="variable">$GOPATH</span>/src/k8s.io</span><br><span class="line">git clone  https:<span class="comment">//github.com/kubernetes/kubernetes -b release-1.13</span></span><br><span class="line">cd <span class="variable">$GOPATH</span>/src/k8s.io/kubernetes</span><br></pre></td></tr></table></figure></p><p>** 源码编译Kubernetes（方法一）<br>修改运行平台配置参数（可选）<br>根据自己的运行平台（linux/amd64)修改hack/lib/golang.sh，把KUBE_SERVER_PLATFORMS，KUBE_CLIENT_PLATFORMS和KUBE_TEST_PLATFORMS中除linux/amd64以外的其他平台注释掉，以此来减少编译所用时间。</p><p>编译源码<br>进入Kubernetes根目录下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> kubernetes</span><br></pre></td></tr></table></figure></p><p>KUBE_BUILD_PLATFORMS指定目标平台，WHAT指定编译的组件，通过GOFLAGS和GOGCFLAGS传入编译时参数，如此处编译kubelet 组件。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">KUBE_BUILD_PLATFORMS</span>=linux/amd64 make all <span class="attribute">WHAT</span>=cmd/kubelet <span class="attribute">GOFLAGS</span>=-v <span class="attribute">GOGCFLAGS</span>=<span class="string">"-N -l"</span></span><br></pre></td></tr></table></figure></p><ul><li>如果不指定WHAT，则编译全部。</li><li>make all是在本地环境中进行编译的。</li><li>make release和make quick-release在容器中完成编译、打包成docker镜像。</li><li>编译kubelet这部分代码，也可执行make clean &amp;&amp; make WHAT=cmd/kubelet</li></ul><p>检查编译成果<br>编译过程较长，请耐心等待，编译后的文件在kubernetes/_output里。</p><p>或者进入cmd/kubelet (以kubelet为例子)<br>执行go build -v命令,如果没出错,会生成可执行文件kubelet<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">go</span> <span class="keyword">build </span>-v</span><br></pre></td></tr></table></figure></p><p>生成的可执行文件在当前文件夹下面<br><figure class="highlight hsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># ls <span class="meta-keyword">cmd</span>/kubelet/</span></span><br><span class="line">app  BUILD  kubelet  kubelet.go  OWNERS</span><br></pre></td></tr></table></figure></p><p>** 容器编译Kubernetes（方法二）<br>查看kube-cross的TAG版本号<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cat ./build/build-image/cross/VERSION</span><br><span class="line">v1<span class="number">.11</span><span class="number">.4</span><span class="number">-1</span></span><br></pre></td></tr></table></figure></p><p>查看debian_iptables_version版本号<br><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># egrep -Rn <span class="string">"debian_iptables_version="</span> ./</span></span><br><span class="line">./build/common.sh:<span class="number">93</span>:  <span class="keyword">local</span> debian_iptables_version=v11<span class="number">.0</span></span><br></pre></td></tr></table></figure></p><p>这里，我使用DockerHub的Auto build功能，来构建K8s镜像。自然将编译需要用到的base镜像，放在了DockerHub上（也算是为促进国内K8s源码docker编译贡献绵薄之力吧！）。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker pull xiaoxu780/<span class="keyword">pause</span>-amd64:<span class="number">3.1</span></span><br><span class="line">docker pull xiaoxu780/kube-cross:v1<span class="meta">.11</span><span class="meta">.2</span>-<span class="number">1</span></span><br><span class="line">docker pull xiaoxu780/debian-base-amd64:<span class="number">0.4</span><span class="meta">.0</span></span><br><span class="line">docker pull xiaoxu780/debian-iptables-amd64:v11<span class="meta">.0</span></span><br><span class="line">docker pull xiaoxu780/debian-hyperkube-base-amd64:<span class="number">0.12</span><span class="meta">.0</span></span><br><span class="line"></span><br><span class="line">docker tag xiaoxu780/<span class="keyword">pause</span>-amd64:<span class="number">3.1</span> k8s.gcr.io/<span class="keyword">pause</span>-amd64:<span class="number">3.1</span></span><br><span class="line">docker tag xiaoxu780/kube-cross:v1<span class="meta">.11</span><span class="meta">.2</span>-<span class="number">1</span> k8s.gcr.io/kube-cross:v1<span class="meta">.11</span><span class="meta">.4</span>-<span class="number">1</span></span><br><span class="line">docker tag xiaoxu780/debian-base-amd64:<span class="number">0.4</span><span class="meta">.0</span> k8s.gcr.io/debian-base-amd64:<span class="number">0.4</span><span class="meta">.0</span></span><br><span class="line">docker tag xiaoxu780/debian-iptables-amd64:v11<span class="meta">.0</span> k8s.gcr.io/debian-iptables-amd64:v11<span class="meta">.0</span></span><br><span class="line">docker tag xiaoxu780/debian-hyperkube-base-amd64:<span class="number">0.12</span><span class="meta">.0</span> k8s.gcr.io/debian-hyperkube-base-amd64:<span class="number">0.12</span><span class="meta">.0</span></span><br></pre></td></tr></table></figure></p><p>把build/lib/release.sh中的–pull去掉，避免构建镜像继续拉取镜像：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="string">"<span class="variable">$&#123;DOCKER[@]&#125;</span>"</span> build --pull -q -t <span class="string">"<span class="variable">$&#123;docker_image_tag&#125;</span>"</span> <span class="variable">$&#123;docker_build_path&#125;</span> &gt;/dev/<span class="literal">null</span></span><br><span class="line">修改为:</span><br><span class="line"> <span class="string">"<span class="variable">$&#123;DOCKER[@]&#125;</span>"</span> build -q -t <span class="string">"<span class="variable">$&#123;docker_image_tag&#125;</span>"</span> <span class="variable">$&#123;docker_build_path&#125;</span> &gt;/dev/<span class="literal">null</span></span><br></pre></td></tr></table></figure></p><p>只编译linux/amd64，且略过test:<br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># export KUBE_GIT_VERSION=v1.13.2</span></span><br><span class="line"><span class="meta"># make quick-release</span></span><br><span class="line">- <span class="built_in">make</span> all是在本地环境中进行编译的。</span><br><span class="line">- <span class="built_in">make</span> release和<span class="built_in">make</span> quick-release在容器中完成编译、打包成docker镜像。</span><br></pre></td></tr></table></figure></p><p>执行编译命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> kubernetes</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> make clean</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> KUBE_BUILD_PLATFORMS=linux/amd64 KUBE_BUILD_CONFORMANCE=n KUBE_BUILD_HYPERKUBE=n make release-images GOFLAGS=-v GOGCFLAGS=<span class="string">"-N -l"</span></span></span><br></pre></td></tr></table></figure></p><p>其中KUBE_BUILD_PLATFORMS=linux/amd64指定目标平台为linux/amd64，GOFLAGS=-v开启verbose日志，GOGCFLAGS=”-N -l”禁止编译优化和内联，减小可执行程序大小。</p><p>开始编译<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KUBE_BUILD_PLATFORMS=linux/amd64 build/run.<span class="keyword">sh</span> <span class="keyword">make</span> <span class="keyword">all</span></span><br></pre></td></tr></table></figure></p><p>将编译得到的文件从容器中拷贝出来<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build/<span class="keyword">copy</span><span class="bash">-output.sh</span></span><br></pre></td></tr></table></figure></p><p>进入编译容器<br><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build/<span class="keyword">shell</span>.<span class="bash">sh</span></span><br></pre></td></tr></table></figure></p><p>客户端以压缩包的形式发布在_output/release-tars目录中<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls _output/release-images/amd64/</span></span><br><span class="line"><span class="keyword">cloud-controller-manager.tar </span> kube-controller-manager.tar  kube-<span class="keyword">scheduler.tar</span></span><br><span class="line"><span class="keyword">kube-apiserver.tar </span>           kube-proxy.tar</span><br></pre></td></tr></table></figure></p><p>** 使用编译镜像<br>等待编译完成后，在_output/release-stage/server/linux-amd64/kubernetes/server/bin/目录下保存了编译生成的二进制可执行程序和docker镜像tar包。如导入kube-apiserver.tar镜像，并更新环境上部署的kube-apiserver镜像。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker load -i kube-apiserver.tar</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker tag k8s.gcr.io/kube-apiserver:v1.13.3  registry.com/kube-apiserver:v1.13.3</span></span><br></pre></td></tr></table></figure></p><p>整个编译过程结束后，现在就可以到master节点上，修改/etc/kubernetes/manifests/kube-apiserver.yaml描述文件中的image，修改完立即生效。</p><p>参考资料：<br><a href="https://github.com/kubernetes/kubernetes/tree/master/build/" target="_blank" rel="noopener">https://github.com/kubernetes/kubernetes/tree/master/build/</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;** 为什么要编译源码&lt;/p&gt;
+&lt;p&gt;Kubernetes是一个非常棒的容器集群管理平台。通常情况下，我们并不需要修改K8s代码即可直接使用。但如果，我们在环境中发现了某个问题/缺陷，或按照特定业务需求需要修改K8s代码时，如定制Kubelet的StopContainer 
+      
+    
+    </summary>
+    
+      <category term="Kubernetes" scheme="http://yoursite.com/categories/Kubernetes/"/>
+    
+    
+      <category term="K8s" scheme="http://yoursite.com/tags/K8s/"/>
+    
+      <category term="源码编译" scheme="http://yoursite.com/tags/%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91/"/>
+    
+  </entry>
   
   <entry>
     <title>如何实现K8s Pod自定义指标弹性伸缩</title>
@@ -200,9 +228,9 @@
       <category term="OpenStack" scheme="http://yoursite.com/categories/OpenStack/"/>
     
     
-      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
-    
       <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
+    
+      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
     
   </entry>
   
@@ -229,9 +257,9 @@
       <category term="Kolla" scheme="http://yoursite.com/categories/OpenStack/Kolla/"/>
     
     
-      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
-    
       <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
+    
+      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
     
       <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
     
@@ -283,9 +311,9 @@
       <category term="OpenStack" scheme="http://yoursite.com/categories/OpenStack/"/>
     
     
-      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
-    
       <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
+    
+      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
     
   </entry>
   
@@ -311,9 +339,9 @@
       <category term="Docker" scheme="http://yoursite.com/categories/Docker/"/>
     
     
-      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
-    
       <category term="Kolla" scheme="http://yoursite.com/tags/Kolla/"/>
+    
+      <category term="OpenStack" scheme="http://yoursite.com/tags/OpenStack/"/>
     
       <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
     
