@@ -5,15 +5,13 @@
     
   <url>
     <loc>http://yoursite.com/2019/02/13/%E4%BD%BF%E7%94%A8client-go%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%80%E5%8F%91Kubernetes/</loc>
-    <lastmod>2019-02-13T14:42:28.976Z</lastmod>
+    <lastmod>2019-02-13T14:46:09.516Z</lastmod>
     <data>
         <display>
         <title>使用client-go自定义开发Kubernetes</title>
         <pubTime>2019-02-13T14:39:09.000Z</pubTime>
         
         <tag>K8s</tag>
-         
-        <tag>源码编译</tag>
          
          
            
