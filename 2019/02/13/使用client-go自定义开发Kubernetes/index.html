@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="使用client-go自定义开发Kubernetes  1. 安装client-go  client-go 安装很简单，前提是本机已经安装并配置好了 Go 环境，安装之前，我们需要先查看下其版本针对 k8s 版本 兼容性列表，针对自己本机安装的 k8s 版本选择对应的 client-go 版本，当然也可以默认选择最新版本，来兼容所有。 client-go 安装方式有多种，比如 go get、God">
+<meta name="description" content="1. 安装client-go  client-go 安装很简单，前提是本机已经安装并配置好了 Go 环境，安装之前，我们需要先查看下其版本针对 k8s 版本 兼容性列表，针对自己本机安装的 k8s 版本选择对应的 client-go 版本，当然也可以默认选择最新版本，来兼容所有。 client-go 安装方式有多种，比如 go get、Godep、Glide 方式。如果我们本地没有安装 Gode">
 <meta name="keywords" content="K8s,源码编译">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用client-go自定义开发Kubernetes">
 <meta property="og:url" content="http://yoursite.com/2019/02/13/使用client-go自定义开发Kubernetes/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="使用client-go自定义开发Kubernetes  1. 安装client-go  client-go 安装很简单，前提是本机已经安装并配置好了 Go 环境，安装之前，我们需要先查看下其版本针对 k8s 版本 兼容性列表，针对自己本机安装的 k8s 版本选择对应的 client-go 版本，当然也可以默认选择最新版本，来兼容所有。 client-go 安装方式有多种，比如 go get、God">
+<meta property="og:description" content="1. 安装client-go  client-go 安装很简单，前提是本机已经安装并配置好了 Go 环境，安装之前，我们需要先查看下其版本针对 k8s 版本 兼容性列表，针对自己本机安装的 k8s 版本选择对应的 client-go 版本，当然也可以默认选择最新版本，来兼容所有。 client-go 安装方式有多种，比如 go get、Godep、Glide 方式。如果我们本地没有安装 Gode">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-13T14:40:06.099Z">
+<meta property="og:updated_time" content="2019-02-13T14:42:28.976Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用client-go自定义开发Kubernetes">
-<meta name="twitter:description" content="使用client-go自定义开发Kubernetes  1. 安装client-go  client-go 安装很简单，前提是本机已经安装并配置好了 Go 环境，安装之前，我们需要先查看下其版本针对 k8s 版本 兼容性列表，针对自己本机安装的 k8s 版本选择对应的 client-go 版本，当然也可以默认选择最新版本，来兼容所有。 client-go 安装方式有多种，比如 go get、God">
+<meta name="twitter:description" content="1. 安装client-go  client-go 安装很简单，前提是本机已经安装并配置好了 Go 环境，安装之前，我们需要先查看下其版本针对 k8s 版本 兼容性列表，针对自己本机安装的 k8s 版本选择对应的 client-go 版本，当然也可以默认选择最新版本，来兼容所有。 client-go 安装方式有多种，比如 go get、Godep、Glide 方式。如果我们本地没有安装 Gode">
 
 
 
@@ -386,8 +386,7 @@
       
 
       
-        <p>使用client-go自定义开发Kubernetes</p>
-<p><strong> 1. 安装client-go </strong></p>
+        <p><strong> 1. 安装client-go </strong></p>
 <p>client-go 安装很简单，前提是本机已经安装并配置好了 Go 环境，安装之前，我们需要先查看下其版本针对 k8s 版本 兼容性列表，针对自己本机安装的 k8s 版本选择对应的 client-go 版本，当然也可以默认选择最新版本，来兼容所有。</p>
 <p>client-go 安装方式有多种，比如 go get、Godep、Glide 方式。如果我们本地没有安装 Godep 和 Glide 依赖管理工具的话，可以使用最简单的 go get 下载安装。<br><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">go</span> <span class="built_in">get</span> k8s.io/client-<span class="built_in">go</span>/...</span><br></pre></td></tr></table></figure></p>
 <p>执行该命令将会自动将 k8s.io/client-go 下载到本机 $GOPATH，默认下载的源码中只包含了大部分依赖，并将其放在 k8s.io/client-go/vendor 路径，但是如果想成功运行的话，还需要另外两个依赖库 k8s.io/client-go/vendor 和 glog，所以还需要接着执行如下命令。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ go <span class="builtin-name">get</span> -u k8s.io/apimachinery/<span class="built_in">..</span>.</span><br></pre></td></tr></table></figure></p>
