@@ -4,21 +4,43 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/03/01/Kubernetes-traefik-ingress%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2019-03-01T12:48:06.713Z</lastmod>
+    <data>
+        <display>
+        <title>Kubernetes traefik ingress使用</title>
+        <pubTime>2019-03-01T12:33:08.000Z</pubTime>
+        
+        <tag>Kubernetes</tag>
+         
+        <tag>traefik</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/03/01/Kubernetes-Helm%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2019-03-01T12:26:46.740Z</lastmod>
+    <lastmod>2019-03-01T12:34:11.385Z</lastmod>
     <data>
         <display>
         <title>Kubernetes Helm使用</title>
         <pubTime>2019-03-01T11:58:21.000Z</pubTime>
         
-        <tag>K8s</tag>
+        <tag>Kubernetes</tag>
          
         <tag>Helm</tag>
          
          
            
              
-              <breadCrumb title="K8s" url="http://yoursite.com/categories/K8s/"/>
+              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
           
         </display>
     </data>
