@@ -4,16 +4,16 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/03/01/Kubernetes-traefik-ingress%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2019-03-01T14:09:51.360Z</lastmod>
+    <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2019-03-01T14:18:03.591Z</lastmod>
     <data>
         <display>
-        <title>Kubernetes traefik ingress使用</title>
-        <pubTime>2019-03-01T12:33:08.000Z</pubTime>
+        <title>Kubernetes Istio使用</title>
+        <pubTime>2019-03-01T13:55:02.000Z</pubTime>
         
         <tag>Kubernetes</tag>
          
-        <tag>traefik</tag>
+        <tag>Istio</tag>
          
          
            
@@ -26,16 +26,16 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2019-03-01T14:08:34.729Z</lastmod>
+    <loc>http://yoursite.com/2019/03/01/Kubernetes-traefik-ingress%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2019-03-01T14:09:51.360Z</lastmod>
     <data>
         <display>
-        <title>Kubernetes Istio使用</title>
-        <pubTime>2019-03-01T13:55:02.000Z</pubTime>
+        <title>Kubernetes traefik ingress使用</title>
+        <pubTime>2019-03-01T12:33:08.000Z</pubTime>
         
         <tag>Kubernetes</tag>
          
-        <tag>Istio</tag>
+        <tag>traefik</tag>
          
          
            
