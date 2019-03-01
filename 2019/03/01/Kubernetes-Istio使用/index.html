@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/bookinfo-arch.png">
 <meta property="og:image" content="http://yoursite.com/images/bookinfo-istio.png">
-<meta property="og:updated_time" content="2019-03-01T14:18:03.591Z">
+<meta property="og:updated_time" content="2019-03-01T14:20:23.524Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Istio使用">
 <meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
@@ -415,7 +415,12 @@
 <p>执行部署命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> kubectl apply -f istio-ingress.yaml</span></span><br></pre></td></tr></table></figure></p>
 <p>访问Kiali<br>登录用户名和密码为：YWRtaW4=</p>
 <h3 id="部署Istio可视化管理工具"><a href="#部署Istio可视化管理工具" class="headerlink" title="部署Istio可视化管理工具"></a>部署Istio可视化管理工具</h3><p>Istio 管理面板Naftis<br><a href="https://github.com/XiaoMi/naftis" target="_blank" rel="noopener">https://github.com/XiaoMi/naftis</a></p>
-<h3 id="Istio-对-Pod-和服务的要求"><a href="#Istio-对-Pod-和服务的要求" class="headerlink" title="Istio 对 Pod 和服务的要求"></a>Istio 对 Pod 和服务的要求</h3><p>要成为服务网格的一部分，Kubernetes 集群中的 Pod 和服务必须满足以下几个要求：<br>需要给端口正确命名：服务端口必须进行命名。端口名称只允许是&lt;协议&gt;[-&lt;后缀&gt;-]模式；<br>关联服务：Pod 必须关联到 Kubernetes 服务，如果一个 Pod 属于多个服务，这些服务不能再同一端口上使用不同协议，例如 HTTP 和 TCP。<br>Deployment 应带有 app 以及 version 标签：每个 Deployment 都应该有一个有意义的 app 标签和一个用于标识 Deployment 版本的 version 标签。Istio 会用 app 和 version 标签来给监控指标数据加入上下文信息。</p>
+<h3 id="Istio-对-Pod-和服务的要求"><a href="#Istio-对-Pod-和服务的要求" class="headerlink" title="Istio 对 Pod 和服务的要求"></a>Istio 对 Pod 和服务的要求</h3><p>要成为服务网格的一部分，Kubernetes 集群中的 Pod 和服务必须满足以下几个要求：</p>
+<ul>
+<li>需要给端口正确命名：服务端口必须进行命名。端口名称只允许是&lt;协议&gt;[-&lt;后缀&gt;-]模式；</li>
+<li>Pod必须关联到 Kubernetes服务：如果一个 Pod 属于多个服务，这些服务不能再同一端口上使用不同协议，例如 HTTP 和 TCP。</li>
+<li>Deployment应带有app以及version标签：每个 Deployment 都应该有一个有意义的 app 标签和一个用于标识 Deployment 版本的 version 标签。Istio 会用 app 和 version 标签来给监控指标数据加入上下文信息。</li>
+</ul>
 <p><strong>istio参考资料</strong><br><a href="https://istio.io/zh/docs/" target="_blank" rel="noopener">https://istio.io/zh/docs/</a><br><a href="https://jimmysong.io/istio-handbook/" target="_blank" rel="noopener">https://jimmysong.io/istio-handbook/</a><br><a href="http://www.servicemesher.com/" target="_blank" rel="noopener">http://www.servicemesher.com/</a></p>
 
       
