@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2019/03/01/Kubernetes-Helm%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2019-03-01T12:13:52.985Z</lastmod>
+    <lastmod>2019-03-01T12:17:42.558Z</lastmod>
     <data>
         <display>
         <title>Kubernetes Helm使用</title>
@@ -141,9 +141,9 @@
         <title>如何获取Kolla的OpenStack镜像</title>
         <pubTime>2018-05-07T15:16:22.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
         <tag>Docker</tag>
          
@@ -233,9 +233,9 @@
         <title>聊聊OpenStack运维架构那些事儿</title>
         <pubTime>2018-05-09T13:22:43.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
          
            
@@ -275,9 +275,9 @@
         <title>Kolla中配置OpenStack虚机网络vxlan和vlan共存</title>
         <pubTime>2018-05-03T12:59:32.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
          
            
@@ -298,9 +298,9 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
         <tag>Docker</tag>
          

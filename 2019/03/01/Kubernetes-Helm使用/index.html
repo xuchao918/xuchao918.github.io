@@ -87,10 +87,12 @@
 <meta property="og:site_name" content="起风了">
 <meta property="og:description" content="什么是Helm在没使用helm之前，向kubernetes部署应用，我们要依次部署deployment、svc等，步骤较繁琐。况且随着很多项目微服务化，复杂的应用在容器中部署以及管理显得较为复杂，helm通过打包的方式，支持发布的版本管理和控制，很大程度上简化了Kubernetes应用的部署和管理. Helm本质就是让K8s的应用管理（Deployment,Service等)可配置，能动态生成。通">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-01T12:13:52.985Z">
+<meta property="og:image" content="http://yoursite.com/images/helm-k8s.png">
+<meta property="og:updated_time" content="2019-03-01T12:17:42.558Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Helm使用">
 <meta name="twitter:description" content="什么是Helm在没使用helm之前，向kubernetes部署应用，我们要依次部署deployment、svc等，步骤较繁琐。况且随着很多项目微服务化，复杂的应用在容器中部署以及管理显得较为复杂，helm通过打包的方式，支持发布的版本管理和控制，很大程度上简化了Kubernetes应用的部署和管理. Helm本质就是让K8s的应用管理（Deployment,Service等)可配置，能动态生成。通">
+<meta name="twitter:image" content="http://yoursite.com/images/helm-k8s.png">
 
 
 
@@ -425,7 +427,7 @@
 <h2 id="使用第三方chat库"><a href="#使用第三方chat库" class="headerlink" title="使用第三方chat库"></a>使用第三方chat库</h2><p>添加fabric8库<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># helm repo add fabric8 https:<span class="comment">//fabric8.io/helm</span></span></span><br></pre></td></tr></table></figure></p>
 <p>搜索fabric8提供的工具（主要就是fabric8-platform工具包，包含了CI、CD的全套工具）<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> helm search fabric8</span></span><br></pre></td></tr></table></figure></p>
 <p>我们在前面打包的chart可以通过HTTP server的方式提供。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># <span class="selector-tag">helm</span> <span class="selector-tag">serve</span> <span class="selector-tag">--address</span> 172<span class="selector-class">.16</span><span class="selector-class">.0</span><span class="selector-class">.180</span><span class="selector-pseudo">:8879</span></span><br><span class="line"><span class="selector-tag">Regenerating</span> <span class="selector-tag">index</span>. <span class="selector-tag">This</span> <span class="selector-tag">may</span> <span class="selector-tag">take</span> <span class="selector-tag">a</span> <span class="selector-tag">moment</span>.</span><br><span class="line"><span class="selector-tag">Now</span> <span class="selector-tag">serving</span> <span class="selector-tag">you</span> <span class="selector-tag">on</span> 172<span class="selector-class">.16</span><span class="selector-class">.0</span><span class="selector-class">.180</span><span class="selector-pseudo">:8879</span></span><br></pre></td></tr></table></figure></p>
-<p>访问<a href="http://172.16.0.180:8879可以看到刚刚安装的chart。" target="_blank" rel="noopener">http://172.16.0.180:8879可以看到刚刚安装的chart。</a></p>
+<p>访问<a href="http://172.16.0.180:8879可以看到刚刚安装的chart。" target="_blank" rel="noopener">http://172.16.0.180:8879可以看到刚刚安装的chart。</a><br><img src="/images/helm-k8s.png" alt="image"></p>
 <p>解决本地chart依赖<br>打开另外一个终端，在本地当前chart配置的目录下，将该repo加入到repo list中。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> helm repo add <span class="built_in">local</span> http://172.16.0.180:8879</span></span><br></pre></td></tr></table></figure></p>
 <p>在浏览器中访问<a href="http://172.16.0.180:8879可以看到所有本地的chart。" target="_blank" rel="noopener">http://172.16.0.180:8879可以看到所有本地的chart。</a></p>
 <p>然后下载依赖到本地。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> helm dependency update</span></span><br></pre></td></tr></table></figure></p>
