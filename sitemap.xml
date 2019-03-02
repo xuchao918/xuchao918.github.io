@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
+    
+    <lastmod>2019-03-02T13:01:26.140Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E4%BD%BF%E7%94%A8/</loc>
     
-    <lastmod>2019-03-01T14:20:23.524Z</lastmod>
+    <lastmod>2019-03-02T09:41:28.323Z</lastmod>
     
   </url>
   

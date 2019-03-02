@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="什么是IstioIstio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
+<meta name="description" content="什么是IstioIstio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于">
 <meta name="keywords" content="Kubernetes,Istio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes Istio使用">
 <meta property="og:url" content="http://yoursite.com/2019/03/01/Kubernetes-Istio使用/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="什么是IstioIstio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
+<meta property="og:description" content="什么是IstioIstio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/bookinfo-arch.png">
 <meta property="og:image" content="http://yoursite.com/images/bookinfo-istio.png">
-<meta property="og:updated_time" content="2019-03-01T14:20:23.524Z">
+<meta property="og:updated_time" content="2019-03-02T09:41:28.323Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Istio使用">
-<meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
+<meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于">
 <meta name="twitter:image" content="http://yoursite.com/images/bookinfo-arch.png">
 
 
@@ -389,7 +389,7 @@
       
 
       
-        <h2 id="什么是Istio"><a href="#什么是Istio" class="headerlink" title="什么是Istio"></a>什么是Istio</h2><p>Istio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。</p>
+        <h2 id="什么是Istio"><a href="#什么是Istio" class="headerlink" title="什么是Istio"></a>什么是Istio</h2><p>Istio是Service Mesh（服务网格）的具体实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。</p>
 <p>其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于网络是无感知的，只知道所附加的sidecar代理，它将网络依赖抽象成了Sidecar。</p>
 <p>在Service Mesh中，我们需要了解Data Plane和Control Plane两个概念：</p>
 <ul>
@@ -463,6 +463,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/02/浅谈Kubernetes生产架构/" rel="prev" title="浅谈Kubernetes生产架构">
+                浅谈Kubernetes生产架构 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -545,7 +549,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
