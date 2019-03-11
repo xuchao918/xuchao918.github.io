@@ -2,23 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
+    <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BD%BF%E7%94%A8/</loc>
     
-    <lastmod>2019-03-02T13:01:26.140Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E4%BD%BF%E7%94%A8/</loc>
-    
-    <lastmod>2019-03-02T09:41:28.323Z</lastmod>
+    <lastmod>2019-03-11T14:00:54.558Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2019/03/01/Kubernetes-traefik-ingress%E4%BD%BF%E7%94%A8/</loc>
     
-    <lastmod>2019-03-01T14:09:51.360Z</lastmod>
+    <lastmod>2019-03-11T13:41:08.740Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
+    
+    <lastmod>2019-03-02T13:01:26.140Z</lastmod>
     
   </url>
   
