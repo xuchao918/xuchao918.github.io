@@ -149,8 +149,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -162,9 +162,9 @@
         <category>Kolla</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
         <tag>Docker</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -186,8 +186,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -198,9 +198,9 @@
         <category>Docker</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
         <tag>Docker</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
 </search>

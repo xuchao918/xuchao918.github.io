@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2019-03-11T14:00:54.558Z</lastmod>
+    <lastmod>2019-03-11T14:22:03.211Z</lastmod>
     <data>
         <display>
         <title>Kubernetes Istio微服务架构部署和使用</title>
@@ -205,11 +205,11 @@
         <title>如何获取Kolla的OpenStack镜像</title>
         <pubTime>2018-05-07T15:16:22.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
          
         <tag>Docker</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -297,9 +297,9 @@
         <title>聊聊OpenStack运维架构那些事儿</title>
         <pubTime>2018-05-09T13:22:43.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -339,9 +339,9 @@
         <title>Kolla中配置OpenStack虚机网络vxlan和vlan共存</title>
         <pubTime>2018-05-03T12:59:32.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -362,11 +362,11 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
          
         <tag>Docker</tag>
+         
+        <tag>Kolla</tag>
          
          
            
