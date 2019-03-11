@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/images/kiali-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/prometheus-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/grafana-istio.png">
-<meta property="og:updated_time" content="2019-03-11T14:29:39.264Z">
+<meta property="og:updated_time" content="2019-03-11T14:32:54.945Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Istio微服务架构部署和使用">
 <meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
@@ -413,10 +413,8 @@
 </li>
 <li><p>Kiali：提供可视化服务网格拓扑、断路器和请求率等功能。Kiali还包括 Jaeger Tracing，可以提供开箱即用的分布式跟踪功能。<br>可以参考：<a href="https://jimmysong.io/istio-handbook/setup/istio-observability-tool-kiali.html" target="_blank" rel="noopener">https://jimmysong.io/istio-handbook/setup/istio-observability-tool-kiali.html</a></p>
 </li>
-<li><p>jaeger：用于展示istio微服务调用链关系，以及微服务工作状态监测。注意，在生产环境中，你应当使用Elasticsearch或cassandra持久化存储jaeger数据。<br>可以参考：<a href="https://blog.csdn.net/ywq935/article/details/80599297" target="_blank" rel="noopener">https://blog.csdn.net/ywq935/article/details/80599297</a></p>
-<pre><code>https://mathspanda.github.io/2018/09/19/jaeger-deploy/            
-https://blog.frognew.com/2017/12/opentracing-jaeger-3.html
-</code></pre></li>
+<li><p>jaeger：用于展示istio微服务调用链关系，以及微服务工作状态监测。注意，在生产环境中，你应当使用Elasticsearch或cassandra持久化存储jaeger数据。<br>可以参考：<a href="https://blog.csdn.net/ywq935/article/details/80599297" target="_blank" rel="noopener">https://blog.csdn.net/ywq935/article/details/80599297</a><br><a href="https://mathspanda.github.io/2018/09/19/jaeger-deploy/" target="_blank" rel="noopener">https://mathspanda.github.io/2018/09/19/jaeger-deploy/</a><br><a href="https://blog.frognew.com/2017/12/opentracing-jaeger-3.html" target="_blank" rel="noopener">https://blog.frognew.com/2017/12/opentracing-jaeger-3.html</a></p>
+</li>
 </ul>
 <p>其中，Kiali、Jaeger、prometheus、grafana管理工具，将和Istio一并部署。</p>
 <h2 id="使用Helm部署Istio"><a href="#使用Helm部署Istio" class="headerlink" title="使用Helm部署Istio"></a>使用Helm部署Istio</h2><p>依赖环境<br>Helm &gt; 2.10<br>Kubernetes &gt; 1.9</p>
