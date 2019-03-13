@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/03/01/Kubernetes-Helm%E4%BD%BF%E7%94%A8/</loc>
+    
+    <lastmod>2019-03-13T13:00:18.683Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BD%BF%E7%94%A8/</loc>
     
-    <lastmod>2019-03-11T14:32:54.945Z</lastmod>
+    <lastmod>2019-03-11T14:50:42.622Z</lastmod>
     
   </url>
   
@@ -47,13 +54,6 @@
     <loc>http://yoursite.com/2019/01/26/%E7%BC%96%E8%AF%91%E5%92%8C%E8%BF%90%E8%A1%8CKubernetes%E6%BA%90%E7%A0%81/</loc>
     
     <lastmod>2019-03-01T12:53:39.676Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2019/03/01/Kubernetes-Helm%E4%BD%BF%E7%94%A8/</loc>
-    
-    <lastmod>2019-03-01T12:34:11.385Z</lastmod>
     
   </url>
   
