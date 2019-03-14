@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/images/kiali-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/prometheus-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/grafana-istio.png">
-<meta property="og:updated_time" content="2019-03-13T13:14:08.471Z">
+<meta property="og:updated_time" content="2019-03-14T11:17:19.653Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Istio微服务架构部署和使用">
 <meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
@@ -464,17 +464,7 @@
 <p><strong>访问kiali</strong><br>使用域名istio.kiali.com访问kiali页面。用户名admin，密码1f2d1e2e67df。<br><img src="/images/kiali-istio.png" alt="image"></p>
 <p><strong>访问prometheus</strong><br>使用域名istio.prometheus.com访问prometheus页面。<br><img src="/images/prometheus-istio.png" alt="image"></p>
 <p><strong>访问grafana</strong><br>使用域名istio.grafana.com访问prometheus页面。<br><img src="/images/grafana-istio.png" alt="image"></p>
-<h2 id="Ingress使用https协议"><a href="#Ingress使用https协议" class="headerlink" title="Ingress使用https协议"></a>Ingress使用https协议</h2><h3 id="使用自签名证书"><a href="#使用自签名证书" class="headerlink" title="使用自签名证书"></a>使用自签名证书</h3><p><strong>创建 tls secret</strong><br>如果只是拿来自己使用，创建一个自己签名的证书。如果是公共服务，建议去数字证书颁发机构去申请一个正式的数字证书（需要一些服务费用）；或者使用Let’s encrypt去申请一个免费的（后面有介绍）；如果使用Cloudflare可以自动生成证书和https转接服务，但是需要将域名迁移过去，高级功能是收费的。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl req -x509 -nodes -days <span class="number">365</span> -newkey rsa:<span class="number">2048</span> -keyout ./tls<span class="selector-class">.key</span> -out ./tls<span class="selector-class">.crt</span> -subj <span class="string">"/CN=192.168.199.230"</span></span><br></pre></td></tr></table></figure></p>
-<p>将会产生两个文件tls.key和tls.crt，你可以改成自己的文件名或放在特定的目录下（如果你是为公共服务器创建的，请保证这个不会被别人访问到）。后面的192.168.199.230是我的服务器IP地址，你可以改成自己的。</p>
-<p><strong> 安装tls secret</strong></p>
-<p>下一步，将这两个文件的信息创建为一个Kubernetes的secret访问凭证，我将名称指定为 k8s-dashboard-secret ，这在后面的Ingress配置时将会用到。如果你修改了这个名字，注意后面的Ingress配置yaml文件也需要同步修改。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl -n kube-system create<span class="built_in"> secret </span>tls k8s-dashboard-secret --key ./tls.key --cert ./tls.crt</span><br></pre></td></tr></table></figure></p>
-<p>注意：</p>
-<ul>
-<li>上面命令的参数 -n 指定凭证安装的命名空间。</li>
-<li>为了安全考虑，Ingress所有的资源（凭证、路由、服务）必须在同一个命名空间。</li>
-</ul>
-<p>最后，在Ingress 文件中定义相关的https即可（此内容略）。</p>
-<h3 id="使用CA认证机构颁发的证书"><a href="#使用CA认证机构颁发的证书" class="headerlink" title="使用CA认证机构颁发的证书"></a>使用CA认证机构颁发的证书</h3><h2 id="Istio-对-Pod-和服务的要求"><a href="#Istio-对-Pod-和服务的要求" class="headerlink" title="Istio 对 Pod 和服务的要求"></a>Istio 对 Pod 和服务的要求</h2><p>要成为服务网格的一部分，Kubernetes 集群中的 Pod 和服务必须满足以下几个要求：</p>
+<h2 id="Istio-对-Pod-和服务的要求"><a href="#Istio-对-Pod-和服务的要求" class="headerlink" title="Istio 对 Pod 和服务的要求"></a>Istio 对 Pod 和服务的要求</h2><p>要成为服务网格的一部分，Kubernetes 集群中的 Pod 和服务必须满足以下几个要求：</p>
 <ul>
 <li>需要给端口正确命名：服务端口必须进行命名。端口名称只允许是&lt;协议&gt;[-&lt;后缀&gt;-]模式；</li>
 <li>Pod必须关联到 Kubernetes服务：如果一个 Pod 属于多个服务，这些服务不能再同一端口上使用不同协议，例如 HTTP 和 TCP。</li>
@@ -611,7 +601,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -633,7 +623,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -694,7 +684,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Istio"><span class="nav-number">1.</span> <span class="nav-text">什么是Istio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Helm部署Istio"><span class="nav-number">2.</span> <span class="nav-text">使用Helm部署Istio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行示例Bookinfo"><span class="nav-number">3.</span> <span class="nav-text">运行示例Bookinfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Ingress暴露管理服务"><span class="nav-number">4.</span> <span class="nav-text">使用Ingress暴露管理服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ingress使用https协议"><span class="nav-number">5.</span> <span class="nav-text">Ingress使用https协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用自签名证书"><span class="nav-number">5.1.</span> <span class="nav-text">使用自签名证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用CA认证机构颁发的证书"><span class="nav-number">5.2.</span> <span class="nav-text">使用CA认证机构颁发的证书</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Istio-对-Pod-和服务的要求"><span class="nav-number">6.</span> <span class="nav-text">Istio 对 Pod 和服务的要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Istio"><span class="nav-number">1.</span> <span class="nav-text">什么是Istio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Helm部署Istio"><span class="nav-number">2.</span> <span class="nav-text">使用Helm部署Istio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行示例Bookinfo"><span class="nav-number">3.</span> <span class="nav-text">运行示例Bookinfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Ingress暴露管理服务"><span class="nav-number">4.</span> <span class="nav-text">使用Ingress暴露管理服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Istio-对-Pod-和服务的要求"><span class="nav-number">5.</span> <span class="nav-text">Istio 对 Pod 和服务的要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
