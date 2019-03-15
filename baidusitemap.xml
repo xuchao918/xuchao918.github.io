@@ -4,16 +4,16 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/03/14/%E4%BD%BF%E7%94%A8cert-manager%E5%AE%9E%E7%8E%B0Ingress-https/</loc>
-    <lastmod>2019-03-14T11:29:37.044Z</lastmod>
+    <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2019-03-15T16:16:14.122Z</lastmod>
     <data>
         <display>
-        <title>使用cert-manager实现Ingress https</title>
-        <pubTime>2019-03-14T11:21:36.000Z</pubTime>
+        <title>Kubernetes Istio微服务架构部署和使用</title>
+        <pubTime>2019-03-01T13:55:02.000Z</pubTime>
         
         <tag>Kubernetes</tag>
          
-        <tag>cert-manager</tag>
+        <tag>Istio</tag>
          
          
            
@@ -26,16 +26,16 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2019-03-14T11:17:19.653Z</lastmod>
+    <loc>http://yoursite.com/2019/03/14/%E4%BD%BF%E7%94%A8cert-manager%E5%AE%9E%E7%8E%B0Ingress-https/</loc>
+    <lastmod>2019-03-15T14:09:39.325Z</lastmod>
     <data>
         <display>
-        <title>Kubernetes Istio微服务架构部署和使用</title>
-        <pubTime>2019-03-01T13:55:02.000Z</pubTime>
+        <title>使用cert-manager实现Ingress https</title>
+        <pubTime>2019-03-14T11:21:36.000Z</pubTime>
         
         <tag>Kubernetes</tag>
          
-        <tag>Istio</tag>
+        <tag>cert-manager</tag>
          
          
            

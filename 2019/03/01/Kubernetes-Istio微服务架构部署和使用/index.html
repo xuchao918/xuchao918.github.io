@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
+<meta name="description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于">
 <meta name="keywords" content="Kubernetes,Istio">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes Istio微服务架构部署和使用">
 <meta property="og:url" content="http://yoursite.com/2019/03/01/Kubernetes-Istio微服务架构部署和使用/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
+<meta property="og:description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/bookinfo-arch.png">
 <meta property="og:image" content="http://yoursite.com/images/bookinfo-istio.png">
@@ -93,10 +93,10 @@
 <meta property="og:image" content="http://yoursite.com/images/kiali-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/prometheus-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/grafana-istio.png">
-<meta property="og:updated_time" content="2019-03-14T11:17:19.653Z">
+<meta property="og:updated_time" content="2019-03-15T16:16:14.122Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Istio微服务架构部署和使用">
-<meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对">
+<meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于">
 <meta name="twitter:image" content="http://yoursite.com/images/bookinfo-arch.png">
 
 
@@ -393,12 +393,12 @@
       
 
       
-        <h2 id="什么是Istio"><a href="#什么是Istio" class="headerlink" title="什么是Istio"></a>什么是Istio</h2><p>Istio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、电路中断、监控、故障注入和智能路由等功能特性。</p>
+        <h2 id="什么是Istio"><a href="#什么是Istio" class="headerlink" title="什么是Istio"></a>什么是Istio</h2><p>Istio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。</p>
 <p>其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于网络是无感知的，只知道所附加的sidecar代理，它将网络依赖抽象成了Sidecar。</p>
 <p><strong>在Service Mesh中，我们需要了解Data Plane和Control Plane两个概念：</strong></p>
 <ul>
-<li>Data Plane的作用是：处理网格内服务间的通信，并完成服务发现、负载均衡、流量管理、健康检查等功能；</li>
-<li>Control Plane的作用是：管理和配置策略用于路由流量，同时也在运行期执行策略。</li>
+<li>Data Plane：作用是处理网格内服务间的通信，并完成服务发现、负载均衡、流量管理、健康检查等功能；</li>
+<li>Control Plane：作用是管理和配置策略用于路由流量，同时也在运行期执行策略。</li>
 </ul>
 <p><strong>Istio核心组件</strong></p>
 <ul>
@@ -471,8 +471,8 @@
 <li>Deployment应带有app以及version标签：每个 Deployment 都应该有一个有意义的 app 标签和一个用于标识 Deployment 版本的 version 标签。Istio 会用 app 和 version 标签来给监控指标数据加入上下文信息。</li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文实践了使用istio官方提供的helm chart在Kubernetes上部署Istio 1.0.6的过程，并使用traefik ingress将Istio集成的Prometheus、Grafana、Jaeger、Kiali等辅助组件暴露到集群外部，并对进入集群的流量进行管理。</p>
-<p>在生产环境中，如果是基于公有云，如阿里云、AWS等运行Istio，建议Ingress的IP地址使用ELB地址；如果是自建的平台，则建议使用HAproxy+Keepalived提供的VIP地址，实现Ingress的高可用。</p>
-<p>同时应当使用CA认证机构颁发的证书https化暴露给集群外部访问的ingress服务。此外，建议使用NFS、Ceph等方案实现Istio监控以及微服务应用的数据持久化存储。</p>
+<p>在生产环境中，如果是基于公有云，如阿里云、AWS等运行Istio，建议Ingress的IP地址使用ELB地址；如果是自建的平台，则建议使用HAproxy+Keepalived提供的VIP地址，作为Ingress的IP地址，实现高可用。</p>
+<p>如果Ingress服务，需要暴露在公网，应当使用CA认证机构颁发的证书https化（如使用cert-manager）。此外建议使用NFS、Ceph等方案实现Istio监控以及微服务应用的数据持久化存储。</p>
 <p><strong>istio参考资料</strong><br><a href="https://istio.io/zh/docs/" target="_blank" rel="noopener">https://istio.io/zh/docs/</a><br><a href="https://jimmysong.io/istio-handbook/" target="_blank" rel="noopener">https://jimmysong.io/istio-handbook/</a><br><a href="http://www.servicemesher.com/" target="_blank" rel="noopener">http://www.servicemesher.com/</a></p>
 
       
