@@ -88,7 +88,7 @@
 <meta property="og:description" content="什么是https超文本传输协议HTTP协议被用于在Web浏览器和网站服务器之间传递信息，HTTP协议以明文方式发送内容，不提供任何方式的数据加密，如果攻击者截取了Web浏览器和网站服务器之间的传输报文，就可以直接读懂其中的信息，因此，HTTP协议不适合传输一些敏感信息，比如：信用卡号、密码等支付信息。 为了解决HTTP协议的这一缺陷，需要使用另一种协议：安全套接字层超文本传输协议HTTPS，为了数">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/cert-manager.png">
-<meta property="og:updated_time" content="2019-03-15T14:09:39.325Z">
+<meta property="og:updated_time" content="2019-03-16T12:47:33.762Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用cert-manager实现Ingress https">
 <meta name="twitter:description" content="什么是https超文本传输协议HTTP协议被用于在Web浏览器和网站服务器之间传递信息，HTTP协议以明文方式发送内容，不提供任何方式的数据加密，如果攻击者截取了Web浏览器和网站服务器之间的传输报文，就可以直接读懂其中的信息，因此，HTTP协议不适合传输一些敏感信息，比如：信用卡号、密码等支付信息。 为了解决HTTP协议的这一缺陷，需要使用另一种协议：安全套接字层超文本传输协议HTTPS，为了数">
@@ -423,7 +423,7 @@
 <li>spec.issuerRef.kind 值为 ClusterIssuer 说明签发机构不在本 namespace 下，而是在全局</li>
 <li>spec.issuerRef.name 我们创建的签发机构的名称 (ClusterIssuer.metadata.name)</li>
 <li>spec.dnsNames 指示该证书的可以用于哪些域名</li>
-<li>spec.acme.config.http01.ingressClass 使用 HTTP-01 方式校验该域名和机器时，cert-manager 会尝试创建Ingress 对象来实现该校验，如果指定该值，会给创建的 Ingress 加上 kubernetes.io/ingress.class 这个 annotation，如果我们的 Ingress Controller 是 Nginx Ingress Controller，指定这个字段可以让创建的 Ingress 被 Nginx Ingress Controller 处理。</li>
+<li>spec.acme.config.http01.ingressClass 使用 HTTP-01 方式校验该域名和机器时，cert-manager 会尝试创建Ingress 对象来实现该校验，如果指定该值，会给创建的 Ingress 加上 kubernetes.io/ingress.class 这个 annotation，如果我们的 Ingress Controller 是 traefik Ingress Controller，指定这个字段可以让创建的 Ingress 被 traefik Ingress Controller 处理。</li>
 <li>spec.acme.config.http01.domains 指示该证书的可以用于哪些域名</li>
 </ul>
 <p>执行部署命令<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> kubectl apply -f cert.yaml</span></span><br></pre></td></tr></table></figure></p>
