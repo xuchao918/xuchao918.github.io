@@ -88,7 +88,7 @@
 <meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/k8s-jiagou.png">
-<meta property="og:updated_time" content="2019-03-22T12:10:09.665Z">
+<meta property="og:updated_time" content="2019-03-22T12:27:44.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈Kubernetes生产架构">
 <meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
@@ -402,8 +402,8 @@
 <ul>
 <li>部署管理：Kubernetes平台除了直接使用公有云如阿里云、AWS等云服务提供商的K8s服务外，我们还可以自己部署和管理等，如使用Kubespray工具。</li>
 <li>网络通信：在容器和容器之间、容器和主机网络方面，可以使用Calico或Flannel等方案。</li>
-<li>HA高可用：Kubernetes节点分为Master和Node两种类型节点，前者负责运行集群相关的控制管理服务，而后者负责运行Pod容器。在多Node节点模式下，由于Kubernetes Pod具有天然的容灾冗余HA高可用实现，因此，我们并不需要关心Node节点的HA高可用，而只需关心Master节点的HA即可，Master节点的HA高可用，通过多Master节点+HAProxy方案实现即可。</li>
-<li>Docker和操作系统：在生产环境中，Docker和操作系统版本应当使用较新的release版本。并且，主机操作系统应当做一定程度的优化配置，如关闭swap内存交换分区，预留一定的CPU核数和内存资源给宿主机使用等。</li>
+<li>HA高可用：Kubernetes节点分为Master和Node两种类型节点，前者负责运行集群相关的控制管理服务，而后者负责运行Pod容器。在多Node节点模式下，由于Kubernetes Pod具有天然的容灾冗余HA高可用实现，因此，我们并不需要关心Node节点的HA高可用，而只需关心Master节点的HA即可，Master节点的HA高可用，通过多Master节点+HAProxy方案实现即可。从Kubernetes 1.12版本起，kube-proxy服务默认使用ipvs实现，取消了之前的iptables。这有助于提升K8s大规模集群环境下的性能和稳定性。</li>
+<li>Docker和操作系统优化：在生产环境中，Docker和操作系统版本应当使用较新的release版本。并且，主机操作系统应当做一定程度的优化配置，如关闭swap内存交换分区，预留一定的CPU核数和内存资源给宿主机使用等。</li>
 </ul>
 <p><strong>Ceph/NFS数据存储</strong><br>Kubernetes平台的数据持久化存储，可以使用Ceph、NFS等存储方案。其中，Ceph适用于有其技术背景或大容量存储需求的公司；而NFS适用于存储容量需求相对较小，无专业存储技术背景的公司。</p>
 <h2 id="业务应用层"><a href="#业务应用层" class="headerlink" title="业务应用层"></a>业务应用层</h2><ul>
@@ -413,8 +413,9 @@
 <li>微服务架构：使用Service Mesh服务网格中的Istio方案；</li>
 <li>Devops：使用Gitlab、Jenkins等持续集成工具；</li>
 <li>单体应用：无状态类服务使用deployment，有状态类服务则使用Statefulset，如果关联的服务较多且复杂则使用Helm。</li>
+<li>规划好Namespace：应当做到每个namespace专属用于某类型的应用，如monitor namespace统一管理诸如监控告警和日志管理方面的pod、service、pvc、ingress等资源。这样，可以较为方便的管理和区分K8s上的各种应用。</li>
 </ul>
-<h2 id="服务访问层"><a href="#服务访问层" class="headerlink" title="服务访问层"></a>服务访问层</h2><p>外部客户端访问K8s集群内的服务、负载均衡和路由规则定义使用Traefik Ingress实现，此外，可以根据自身业务需求，选择是否在Ingress前面部署Nginix软负载均衡或硬件负载均衡。</p>
+<h2 id="服务访问层"><a href="#服务访问层" class="headerlink" title="服务访问层"></a>服务访问层</h2><p>外部客户端访问K8s集群内的服务、负载均衡和路由规则定义使用Traefik Ingress实现。此外，应当实现Ingress服务HA高可用，可以想象在K8s集群中，大量的出入口流量都进过Ingress，其负载是非常大的，其重要程度不言而喻，因此实现HA就非常重要。ingress controller节点（无论是基于nginx还是traefik实现）应当至少为2个节点，并在这些节点上，部署Keepalived和HAproxy共同维护一个VIP地址，将其提供给ingress使用。</p>
 <p>—未完待续</p>
 
       
