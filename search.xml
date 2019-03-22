@@ -26,7 +26,7 @@
   <entry>
     <title><![CDATA[浅谈Kubernetes生产架构]]></title>
     <url>%2F2019%2F03%2F02%2F%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84%2F</url>
-    <content type="text"><![CDATA[注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下： Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Kubernetes平台构建和运行企业业务应用，如CI/CD持续集成、微服务项目、监控告警和日志管理、私有镜像仓库等服务； 基础设施层：即由Kubernetes容器管理平台和Ceph数据持久化存储等系统组成的基础设施服务。 下面，我们分别来谈谈各层的具体实现方案。 基础设施层Kubernetes平台 部署管理：Kubernetes平台除了直接使用公有云如阿里云、AWS等云服务提供商的K8s服务外，我们还可以自己部署和管理等，如使用Kubespray工具。 网络通信：在容器和容器之间、容器和主机网络方面，可以使用Calico或Flannel等方案。 HA高可用：Kubernetes节点分为Master和Node两种类型节点，前者负责运行集群相关的控制管理服务，而后者负责运行Pod容器。在多Node节点模式下，由于Kubernetes Pod具有天然的容灾冗余HA高可用实现，因此，我们并不需要关心Node节点的HA高可用，而只需关心Master节点的HA即可，Master节点的HA高可用，通过多Master节点+HAProxy方案实现即可。从Kubernetes 1.12版本起，kube-proxy服务默认使用ipvs实现，取消了之前的iptables。这有助于提升K8s大规模集群环境下的性能和稳定性。 Docker和操作系统优化：在生产环境中，Docker和操作系统版本应当使用较新的release版本。并且，主机操作系统应当做一定程度的优化配置，如关闭swap内存交换分区，预留一定的CPU核数和内存资源给宿主机使用等。 Ceph/NFS数据存储Kubernetes平台的数据持久化存储，可以使用Ceph、NFS等存储方案。其中，Ceph适用于有其技术背景或大容量存储需求的公司；而NFS适用于存储容量需求相对较小，无专业存储技术背景的公司。 业务应用层 镜像管理：使用Harbor私有镜像仓库服务； 日志管理：使用Elasticsearch、Filebeat 和 Kibana技术栈； 监控告警管理：使用Cadvisor、Prometheus和Grafana技术栈； 微服务架构：使用Service Mesh服务网格中的Istio方案； Devops：使用Gitlab、Jenkins等持续集成工具； 单体应用：无状态类服务使用deployment，有状态类服务则使用Statefulset，如果关联的服务较多且复杂则使用Helm。 规划好Namespace：应当做到每个namespace专属用于某类型的应用，如monitor namespace统一管理诸如监控告警和日志管理方面的pod、service、pvc、ingress等资源。这样，可以较为方便的管理和区分K8s上的各种应用。 服务访问层外部客户端访问K8s集群内的服务、负载均衡和路由规则定义使用Traefik Ingress实现。此外，应当实现Ingress服务HA高可用，可以想象在K8s集群中，大量的出入口流量都进过Ingress，其负载是非常大的，其重要程度不言而喻，因此实现HA就非常重要。ingress controller节点（无论是基于nginx还是traefik实现）应当至少为2个节点，并在这些节点上，部署Keepalived和HAproxy共同维护一个VIP地址，将其提供给ingress使用。 —未完待续]]></content>
+    <content type="text"><![CDATA[注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下： Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Kubernetes平台构建和运行企业业务应用，如CI/CD持续集成、微服务项目、监控告警和日志管理、私有镜像仓库等服务； 基础设施层：即由Kubernetes容器管理平台和Ceph数据持久化存储等系统组成的基础设施服务。 下面，我们分别来谈谈各层的具体实现方案。 基础设施层Kubernetes平台 部署管理：Kubernetes平台除了直接使用公有云如阿里云、AWS等云服务提供商的K8s服务外，我们还可以自己部署和管理等，如使用Kubespray工具。 网络通信：在容器和容器之间、容器和主机网络方面，可以使用Calico或Flannel等方案。 HA高可用：Kubernetes节点分为Master和Node两种类型节点，前者负责运行集群相关的控制管理服务，而后者负责运行Pod容器。在多Node节点模式下，由于Kubernetes Pod具有天然的容灾冗余HA高可用实现，因此，我们并不需要关心Node节点的HA高可用，而只需关心Master节点的HA即可，Master节点的HA高可用，通过多Master节点+HAProxy方案实现即可。从Kubernetes 1.12版本起，kube-proxy服务默认使用ipvs实现，取消了之前的iptables。这有助于提升K8s大规模集群环境下的性能和稳定性。 Docker和操作系统优化：在生产环境中，Docker和操作系统版本应当使用较新的release版本。并且，主机操作系统应当做一定程度的优化配置，如关闭swap内存交换分区，预留一定的CPU核数和内存资源给宿主机使用等。 Ceph/NFS数据存储Kubernetes平台的数据持久化存储，可以使用Ceph、NFS等存储方案。其中，Ceph适用于有其技术背景或大容量存储需求的公司；而NFS适用于存储容量需求相对较小，无专业存储技术背景的公司。 业务应用层 镜像管理：使用Harbor私有镜像仓库服务； 日志管理：使用Elasticsearch、Filebeat 和 Kibana技术栈； 监控告警管理：使用Cadvisor、Prometheus和Grafana技术栈； 微服务架构：使用Service Mesh服务网格中的Istio方案； Devops：使用Gitlab、Jenkins等持续集成工具； 单体应用：无状态类服务使用deployment，有状态类服务则使用Statefulset，如果关联的服务较多且复杂则使用Helm。 规划好Namespace：应当做到每个namespace专属用于某类型的应用，如monitor namespace统一管理诸如监控告警和日志管理方面的pod、service、pvc、ingress等资源。这样，可以较为方便的管理和区分K8s上的各种应用。 服务访问层外部客户端访问K8s集群内的服务、负载均衡和路由规则定义使用Traefik Ingress实现。此外，应当实现Ingress服务HA高可用，可以想象在K8s集群中，大量的出入口流量都进过Ingress，其负载是非常大的，其重要程度不言而喻，因此实现HA就非常重要。ingress controller节点（无论是基于nginx还是traefik实现）应当至少为2个节点，并在这些节点上，部署Keepalived和HAproxy共同维护一个VIP地址，将其提供给ingress使用。 架构如下图所示。 在该架构中，Ingress节点一般使用独立的服务器，即只做将集群外部流量接入到集群内部。除了使用external Ip来暴露ingress的Service到集群外部，还可以使用hostNetwork，如果是公有云，还可以使用LoadBalance。这样Ingress Controller将监听节点的80和443端口，通过热备的形式部署多个ingress节点，并在每个节点上部署Keepalived，多个节点共同维护一个VIP，实现Ingress服务的高可用。 如上图所示，部署两个ingress节点172.16.10.11和172.16.10.12。公网ip映射或转发到内网的VIP地址172.16.10.10上（如果VIP本身是公网IP则可以不用转发）。ingress controller的副本数replicaCount为2，将被调度到node1和node2这两个节点上。同时，使用pod反亲和性禁止ingress pod调度在同一个节点上。]]></content>
       <categories>
         <category>Kubernetes</category>
       </categories>
@@ -172,8 +172,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>OpenStack</tag>
         <tag>Kolla</tag>
+        <tag>OpenStack</tag>
       </tags>
   </entry>
   <entry>
@@ -185,8 +185,8 @@
         <category>Kolla</category>
       </categories>
       <tags>
-        <tag>OpenStack</tag>
         <tag>Kolla</tag>
+        <tag>OpenStack</tag>
         <tag>Docker</tag>
       </tags>
   </entry>
@@ -209,8 +209,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>OpenStack</tag>
         <tag>Kolla</tag>
+        <tag>OpenStack</tag>
       </tags>
   </entry>
   <entry>
@@ -221,8 +221,8 @@
         <category>Docker</category>
       </categories>
       <tags>
-        <tag>OpenStack</tag>
         <tag>Kolla</tag>
+        <tag>OpenStack</tag>
         <tag>Docker</tag>
       </tags>
   </entry>
