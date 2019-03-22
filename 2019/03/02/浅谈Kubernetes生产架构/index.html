@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我将其分为了四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Kube">
+<meta name="description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
 <meta name="keywords" content="Kubernetes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈Kubernetes生产架构">
 <meta property="og:url" content="http://yoursite.com/2019/03/02/浅谈Kubernetes生产架构/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我将其分为了四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Kube">
+<meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/k8s-jiagou.png">
-<meta property="og:updated_time" content="2019-03-02T13:01:26.140Z">
+<meta property="og:updated_time" content="2019-03-22T12:10:09.665Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈Kubernetes生产架构">
-<meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我将其分为了四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Kube">
+<meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
 <meta name="twitter:image" content="http://yoursite.com/images/k8s-jiagou.png">
 
 
@@ -390,7 +390,7 @@
       
         <p><strong>注意</strong><br>本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。</p>
 <p>首先，我们来看下Kubernetes生产架构，如下图所示。<br><img src="/images/k8s-jiagou.png" alt="image"></p>
-<p>在该架构中，我将其分为了四层，如下：</p>
+<p>在该架构中，我们可以将其分为四层，如下：</p>
 <ul>
 <li>Client层：即Kubernetes集群外部用户、客户端等；</li>
 <li>服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等；</li>
@@ -405,15 +405,16 @@
 <li>HA高可用：Kubernetes节点分为Master和Node两种类型节点，前者负责运行集群相关的控制管理服务，而后者负责运行Pod容器。在多Node节点模式下，由于Kubernetes Pod具有天然的容灾冗余HA高可用实现，因此，我们并不需要关心Node节点的HA高可用，而只需关心Master节点的HA即可，Master节点的HA高可用，通过多Master节点+HAProxy方案实现即可。</li>
 <li>Docker和操作系统：在生产环境中，Docker和操作系统版本应当使用较新的release版本。并且，主机操作系统应当做一定程度的优化配置，如关闭swap内存交换分区，预留一定的CPU核数和内存资源给宿主机使用等。</li>
 </ul>
-<p><strong>Ceph/NFS数据存储</strong><br>Kubernetes平台的数据持久化存储，可以使用Ceph、NFS等存储方案。其中，Ceph适用于有其技术背景或大容量存储的公司；而NFS适用于存储容量相对较小，存储技术较低的公司。</p>
+<p><strong>Ceph/NFS数据存储</strong><br>Kubernetes平台的数据持久化存储，可以使用Ceph、NFS等存储方案。其中，Ceph适用于有其技术背景或大容量存储需求的公司；而NFS适用于存储容量需求相对较小，无专业存储技术背景的公司。</p>
 <h2 id="业务应用层"><a href="#业务应用层" class="headerlink" title="业务应用层"></a>业务应用层</h2><ul>
 <li>镜像管理：使用Harbor私有镜像仓库服务；</li>
-<li>日志管理：使用Elasticsearch、Fluentd 和 Kibana技术栈；</li>
+<li>日志管理：使用Elasticsearch、Filebeat 和 Kibana技术栈；</li>
 <li>监控告警管理：使用Cadvisor、Prometheus和Grafana技术栈；</li>
-<li>微服务架构：使用Service Mesh服务网格中的Istio实现方案；</li>
+<li>微服务架构：使用Service Mesh服务网格中的Istio方案；</li>
 <li>Devops：使用Gitlab、Jenkins等持续集成工具；</li>
+<li>单体应用：无状态类服务使用deployment，有状态类服务则使用Statefulset，如果关联的服务较多且复杂则使用Helm。</li>
 </ul>
-<h2 id="服务访问层"><a href="#服务访问层" class="headerlink" title="服务访问层"></a>服务访问层</h2><p>K8s集群内的服务访问、负载均衡和路由规则定义使用Traefik Ingress实现，此外，可以根据自身业务需求，选择是否在Ingress前面部署Nginix软负载均衡或硬件负载均衡。</p>
+<h2 id="服务访问层"><a href="#服务访问层" class="headerlink" title="服务访问层"></a>服务访问层</h2><p>外部客户端访问K8s集群内的服务、负载均衡和路由规则定义使用Traefik Ingress实现，此外，可以根据自身业务需求，选择是否在Ingress前面部署Nginix软负载均衡或硬件负载均衡。</p>
 <p>—未完待续</p>
 
       
@@ -540,7 +541,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -551,7 +552,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

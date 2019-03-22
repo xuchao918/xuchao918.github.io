@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
+    <lastmod>2019-03-22T12:10:09.665Z</lastmod>
+    <data>
+        <display>
+        <title>浅谈Kubernetes生产架构</title>
+        <pubTime>2019-03-02T12:55:43.000Z</pubTime>
+        
+        <tag>Kubernetes</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/03/22/Ceph%E7%A6%BB%E7%BA%BF%E6%BA%90%E5%88%B6%E4%BD%9C-mimic%E7%89%88%E6%9C%AC/</loc>
+    <lastmod>2019-03-22T11:57:40.129Z</lastmod>
+    <data>
+        <display>
+        <title>Ceph离线源制作(mimic版本)</title>
+        <pubTime>2019-03-22T11:48:52.000Z</pubTime>
+        
+        <tag>Ceph</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://yoursite.com/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/03/14/%E4%BD%BF%E7%94%A8cert-manager%E5%AE%9E%E7%8E%B0Ingress-https/</loc>
     <lastmod>2019-03-16T12:47:33.762Z</lastmod>
     <data>
@@ -80,26 +120,6 @@
         <tag>Kubernetes</tag>
          
         <tag>traefik</tag>
-         
-         
-           
-             
-              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2019-03-02T13:01:26.140Z</lastmod>
-    <data>
-        <display>
-        <title>浅谈Kubernetes生产架构</title>
-        <pubTime>2019-03-02T12:55:43.000Z</pubTime>
-        
-        <tag>Kubernetes</tag>
          
          
            
@@ -294,9 +314,9 @@
         <title>从数据删除看备份的重要性</title>
         <pubTime>2018-05-23T14:55:14.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Ceph</tag>
+         
+        <tag>OpenStack</tag>
          
          
            
