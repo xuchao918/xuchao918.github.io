@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
+<meta name="description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
 <meta name="keywords" content="Kubernetes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈Kubernetes生产架构">
 <meta property="og:url" content="http://yoursite.com/2019/03/02/浅谈Kubernetes生产架构/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
+<meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/k8s-jiagou.png">
 <meta property="og:image" content="http://yoursite.com/images/ingress-ha.png">
-<meta property="og:updated_time" content="2019-03-22T13:41:09.002Z">
+<meta property="og:updated_time" content="2019-03-25T12:28:37.849Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈Kubernetes生产架构">
-<meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来看下Kubernetes生产架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业务应用层：即基于Ku">
+<meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
 <meta name="twitter:image" content="http://yoursite.com/images/k8s-jiagou.png">
 
 
@@ -390,7 +390,7 @@
 
       
         <p><strong>注意</strong><br>本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。</p>
-<p>首先，我们来看下Kubernetes生产架构，如下图所示。<br><img src="/images/k8s-jiagou.png" alt="image"></p>
+<p>首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。<br><img src="/images/k8s-jiagou.png" alt="image"></p>
 <p>在该架构中，我们可以将其分为四层，如下：</p>
 <ul>
 <li>Client层：即Kubernetes集群外部用户、客户端等；</li>
