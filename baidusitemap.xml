@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2019/03/22/Ceph%E7%A6%BB%E7%BA%BF%E6%BA%90%E5%88%B6%E4%BD%9C-mimic%E7%89%88%E6%9C%AC/</loc>
-    <lastmod>2019-03-26T13:51:23.739Z</lastmod>
+    <lastmod>2019-03-26T14:02:52.393Z</lastmod>
     <data>
         <display>
         <title>Ceph安装和离线源制作(mimic版本)</title>
@@ -247,9 +247,9 @@
         <title>如何获取Kolla的OpenStack镜像</title>
         <pubTime>2018-05-07T15:16:22.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
         <tag>Docker</tag>
          
@@ -339,9 +339,9 @@
         <title>聊聊OpenStack运维架构那些事儿</title>
         <pubTime>2018-05-09T13:22:43.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -381,9 +381,9 @@
         <title>Kolla中配置OpenStack虚机网络vxlan和vlan共存</title>
         <pubTime>2018-05-03T12:59:32.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -404,9 +404,9 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
         <tag>Docker</tag>
          
