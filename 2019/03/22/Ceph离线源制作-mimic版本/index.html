@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="环境系统：Centos 7.5（系统最小化安装）版本：Ceph mimic（v13.2.0） 系统配置配置主机名hostname、hosts、关闭firewalld、ssh无密码登录、ntp时间同步等，过程略。 保存下载rpm包，安装或升级的同时保留RPM包。yum 默认情况下，升级或者安装后会删除下载的rpm包。不过，我们也可以设置不删除下载的rpm包。1234vim/etc/yum.conf[">
+<meta name="description" content="环境系统：Centos 7（系统最小化安装）版本：Ceph mimic 系统配置配置主机名hostname、hosts、关闭firewalld、ssh无密码登录、ntp时间同步等，过程略。 保存下载rpm包，安装或升级的同时保留RPM包。yum 默认情况下，升级或者安装后会删除下载的rpm包。不过，我们也可以设置不删除下载的rpm包。1234vim/etc/yum.conf[main]cached">
 <meta name="keywords" content="Ceph">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ceph离线源制作(mimic版本)">
+<meta property="og:title" content="Ceph安装和离线源制作(mimic版本)">
 <meta property="og:url" content="http://yoursite.com/2019/03/22/Ceph离线源制作-mimic版本/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="环境系统：Centos 7.5（系统最小化安装）版本：Ceph mimic（v13.2.0） 系统配置配置主机名hostname、hosts、关闭firewalld、ssh无密码登录、ntp时间同步等，过程略。 保存下载rpm包，安装或升级的同时保留RPM包。yum 默认情况下，升级或者安装后会删除下载的rpm包。不过，我们也可以设置不删除下载的rpm包。1234vim/etc/yum.conf[">
+<meta property="og:description" content="环境系统：Centos 7（系统最小化安装）版本：Ceph mimic 系统配置配置主机名hostname、hosts、关闭firewalld、ssh无密码登录、ntp时间同步等，过程略。 保存下载rpm包，安装或升级的同时保留RPM包。yum 默认情况下，升级或者安装后会删除下载的rpm包。不过，我们也可以设置不删除下载的rpm包。1234vim/etc/yum.conf[main]cached">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/ceph-dashboard.png">
-<meta property="og:updated_time" content="2019-03-26T13:48:46.875Z">
+<meta property="og:updated_time" content="2019-03-26T13:51:23.739Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ceph离线源制作(mimic版本)">
-<meta name="twitter:description" content="环境系统：Centos 7.5（系统最小化安装）版本：Ceph mimic（v13.2.0） 系统配置配置主机名hostname、hosts、关闭firewalld、ssh无密码登录、ntp时间同步等，过程略。 保存下载rpm包，安装或升级的同时保留RPM包。yum 默认情况下，升级或者安装后会删除下载的rpm包。不过，我们也可以设置不删除下载的rpm包。1234vim/etc/yum.conf[">
+<meta name="twitter:title" content="Ceph安装和离线源制作(mimic版本)">
+<meta name="twitter:description" content="环境系统：Centos 7（系统最小化安装）版本：Ceph mimic 系统配置配置主机名hostname、hosts、关闭firewalld、ssh无密码登录、ntp时间同步等，过程略。 保存下载rpm包，安装或升级的同时保留RPM包。yum 默认情况下，升级或者安装后会删除下载的rpm包。不过，我们也可以设置不删除下载的rpm包。1234vim/etc/yum.conf[main]cached">
 <meta name="twitter:image" content="http://yoursite.com/images/ceph-dashboard.png">
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>Ceph离线源制作(mimic版本) | 起风了</title>
+  <title>Ceph安装和离线源制作(mimic版本) | 起风了</title>
   
 
 
@@ -316,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Ceph离线源制作(mimic版本)</h1>
+          <h1 class="post-title" itemprop="name headline">Ceph安装和离线源制作(mimic版本)</h1>
         
 
         <div class="post-meta">
@@ -388,7 +388,7 @@
       
 
       
-        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>系统：Centos 7.5（系统最小化安装）<br>版本：Ceph mimic（v13.2.0）</p>
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>系统：Centos 7（系统最小化安装）<br>版本：Ceph mimic</p>
 <h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><p>配置主机名hostname、hosts、关闭firewalld、ssh无密码登录、ntp时间同步等，过程略。</p>
 <p>保存下载rpm包，安装或升级的同时保留RPM包。yum 默认情况下，升级或者安装后会删除下载的rpm包。不过，我们也可以设置不删除下载的rpm包。<br><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim/etc/yum.conf</span><br><span class="line">[main]</span><br><span class="line">cachedir=/var/cache/yum</span><br><span class="line">keepcache=0</span><br></pre></td></tr></table></figure></p>
 <p>将 keepcache=0 修改为 keepcache=1， 安装或者升级后，在目录 /var/cache/yum 下就会有下载的 rpm 包了。</p>
