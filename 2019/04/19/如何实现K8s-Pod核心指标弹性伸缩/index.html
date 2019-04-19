@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kubernetes,自动弹性伸缩," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Metrics-server简介Pod核心指标是相对于自定义指标而言的，也就是指通过采集Pod CPU、内存等核心资源指标实现Pod弹性伸缩。Metrics-server是用来替换heapster获取集群资源指标数据的服务，heapster从1.11开始逐渐被废弃了。 metrics-server，是一种API Server，提供了核心的Metrics API，就像k8s组件kube-apiser">
+<meta name="keywords" content="Kubernetes,自动弹性伸缩">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何实现K8s Pod核心指标弹性伸缩">
+<meta property="og:url" content="http://yoursite.com/2019/04/19/如何实现K8s-Pod核心指标弹性伸缩/index.html">
+<meta property="og:site_name" content="起风了">
+<meta property="og:description" content="Metrics-server简介Pod核心指标是相对于自定义指标而言的，也就是指通过采集Pod CPU、内存等核心资源指标实现Pod弹性伸缩。Metrics-server是用来替换heapster获取集群资源指标数据的服务，heapster从1.11开始逐渐被废弃了。 metrics-server，是一种API Server，提供了核心的Metrics API，就像k8s组件kube-apiser">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/k8s-metrics-01.png">
+<meta property="og:image" content="http://yoursite.com/images/k8s-metrics-02.png">
+<meta property="og:updated_time" content="2019-04-19T15:57:00.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何实现K8s Pod核心指标弹性伸缩">
+<meta name="twitter:description" content="Metrics-server简介Pod核心指标是相对于自定义指标而言的，也就是指通过采集Pod CPU、内存等核心资源指标实现Pod弹性伸缩。Metrics-server是用来替换heapster获取集群资源指标数据的服务，heapster从1.11开始逐渐被废弃了。 metrics-server，是一种API Server，提供了核心的Metrics API，就像k8s组件kube-apiser">
+<meta name="twitter:image" content="http://yoursite.com/images/k8s-metrics-01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/19/如何实现K8s-Pod核心指标弹性伸缩/"/>
+
+
+
+
+
+  <title>如何实现K8s Pod核心指标弹性伸缩 | 起风了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">起风了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xuchao's blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/19/如何实现K8s-Pod核心指标弹性伸缩/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XuChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="起风了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何实现K8s Pod核心指标弹性伸缩</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-19T23:44:46+08:00">
+                2019-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">Kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Metrics-server简介"><a href="#Metrics-server简介" class="headerlink" title="Metrics-server简介"></a>Metrics-server简介</h2><p>Pod核心指标是相对于自定义指标而言的，也就是指通过采集Pod CPU、内存等核心资源指标实现Pod弹性伸缩。Metrics-server是用来替换heapster获取集群资源指标数据的服务，heapster从1.11开始逐渐被废弃了。</p>
+<p>metrics-server，是一种API Server，提供了核心的Metrics API，就像k8s组件kube-apiserver提供了很多API群组一样，但它不是k8s组成部分，而是托管运行在k8s之上的Pod。为了让用户无缝的使用metrics-server当中的API，还需要把这类自定义的API，通过聚合器聚合到核心API组里，然后把此API当作是核心API的一部分，通过kubectl api-versions可直接查看。Metrics server是K8S集群资源使用情况的聚合器。<br><img src="/images/k8s-metrics-01.png" alt="image">                                                                </p>
+<p>metrics-server收集指标数据的方式是从各节点上kubelet提供的Summary API 即10250端口收集数据，收集Node和Pod核心资源指标数据，主要是内存和cpu方面的使用情况，并将收集的信息存储在内存中，所以当通过kubectl top不能查看资源数据的历史情况，其它资源指标数据则通过prometheus采集了。<br><img src="/images/k8s-metrics-02.png" alt="image"></p>
+<p>k8s中很多组件是依赖于资源指标API的功能 ，比如kubectl top 、hpa，如果没有一个资源指标API接口，这些组件是没法运行的。</p>
+<h2 id="安装metrics-server"><a href="#安装metrics-server" class="headerlink" title="安装metrics-server"></a>安装metrics-server</h2><p>下载该链接目录下的六个文件(说明：因为我安装的K8s版本是1.13.1，故此使用的对应分支也是1.13.1)。<br><a href="https://github.com/kubernetes/kubernetes/blob/v1.13.1/cluster/addons/metrics-server/" target="_blank" rel="noopener">https://github.com/kubernetes/kubernetes/blob/v1.13.1/cluster/addons/metrics-server/</a></p>
+<p>查看下载的资源清单文件<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$  ls metrics-server/</span><br><span class="line">auth-delegator<span class="selector-class">.yaml</span>      metrics-server-deployment<span class="selector-class">.yaml</span>     resource-reader.yaml</span><br><span class="line">auth-reader<span class="selector-class">.yaml</span>          metrics-server-service.yaml</span><br><span class="line">metrics-apiservice.yaml</span><br></pre></td></tr></table></figure></p>
+<p>修改配置<br>下载下来的文件不能直接部署，有几处需要修改。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># vim metrics-server-deployment.yaml</span><br><span class="line"><span class="symbol">image:</span> k8s.gcr.io/metrics-server-amd64:v0<span class="meta">.3</span><span class="meta">.1</span> </span><br><span class="line"> //修改为image: xiaoxu780/metrics-server-amd64:v0<span class="meta">.3</span><span class="meta">.1</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">image:</span> k8s.gcr.io/addon-resizer:<span class="number">1.8</span><span class="meta">.4</span></span><br><span class="line">//修改为image: xiaoxu780/addon-resizer:<span class="number">1.8</span><span class="meta">.1</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># vim resource-reader.yaml</span><br><span class="line">rules:</span><br><span class="line">-<span class="ruby"> <span class="symbol">apiGroups:</span></span></span><br><span class="line"><span class="ruby">  - <span class="string">""</span></span></span><br><span class="line"><span class="ruby">  <span class="symbol">resources:</span></span></span><br><span class="line"><span class="ruby">  - pods</span></span><br><span class="line"><span class="ruby">  - nodes</span></span><br><span class="line"><span class="ruby">  - nodes/stats    <span class="comment">#新增这一行</span></span></span><br><span class="line"><span class="ruby">  - namespaces</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"># vim metrics-server-deployment.yaml</span><br><span class="line">#修改containers metrics-server 启动参数，修改好的如下：</span><br><span class="line"> containers:</span><br><span class="line">      -<span class="ruby"> <span class="symbol">name:</span> metrics-server</span></span><br><span class="line"><span class="ruby">        <span class="symbol">image:</span> k8s.gcr.io/metrics-server-<span class="symbol">amd64:</span>v<span class="number">0</span>.<span class="number">3.1</span></span></span><br><span class="line"><span class="ruby">        <span class="symbol">command:</span></span></span><br><span class="line"><span class="ruby">        - <span class="regexp">/metrics-server</span></span></span><br><span class="line"><span class="ruby">        - --metric-resolution=<span class="number">30</span>s</span></span><br><span class="line"><span class="ruby">        - --kubelet-insecure-tls    /<span class="regexp">/表示不验证kubelet API服务的HTTPS证书</span></span></span><br><span class="line"><span class="ruby">        - --kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP</span></span><br><span class="line"><span class="ruby">        <span class="comment"># These are needed for GKE, which doesn't support secure communication yet.</span></span></span><br><span class="line"><span class="ruby">        <span class="comment"># Remove these lines for non-GKE clusters, and when GKE supports token-based auth.</span></span></span><br><span class="line"><span class="ruby">        <span class="comment">#- --kubelet-port=10255</span></span></span><br><span class="line"><span class="ruby">        <span class="comment">#- --deprecated-kubelet-completely-insecure=true</span></span></span><br><span class="line"><span class="ruby">----            </span></span><br><span class="line"><span class="ruby"><span class="comment"># 修改containers，metrics-server-nanny 启动参数，修改好的如下：</span></span></span><br><span class="line"><span class="ruby"><span class="symbol">command:</span></span></span><br><span class="line"><span class="ruby">          - <span class="regexp">/pod_nanny</span></span></span><br><span class="line"><span class="ruby">          - --config-dir=<span class="regexp">/etc/config</span></span></span><br><span class="line"><span class="ruby">          - --cpu=<span class="number">80</span>m</span></span><br><span class="line"><span class="ruby">          - --extra-cpu=<span class="number">0</span>.<span class="number">5</span>m</span></span><br><span class="line"><span class="ruby">          - --memory=<span class="number">80</span>Mi</span></span><br><span class="line"><span class="ruby">          - --extra-memory=<span class="number">8</span>Mi</span></span><br><span class="line"><span class="ruby">          - --threshold=<span class="number">5</span></span></span><br><span class="line"><span class="ruby">          - --deployment=metrics-server-v<span class="number">0</span>.<span class="number">3.1</span></span></span><br><span class="line"><span class="ruby">          - --container=metrics-server</span></span><br><span class="line"><span class="ruby">          - --poll-period=<span class="number">300000</span></span></span><br><span class="line"><span class="ruby">          - --estimator=exponential</span></span><br><span class="line"><span class="ruby">          <span class="comment"># Specifies the smallest cluster (defined in number of nodes)</span></span></span><br><span class="line"><span class="ruby">          <span class="comment"># resources will be scaled to.</span></span></span><br><span class="line"><span class="ruby">          <span class="comment">#- --minClusterSize=&#123;&#123; metrics_server_min_cluster_size &#125;&#125;</span></span></span><br></pre></td></tr></table></figure>
+<p>应用到集群<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># kubectl create -f ./</span></span><br><span class="line">clusterrolebinding.rbac.authorization.k8s.io/metrics-<span class="keyword">server</span>:system:auth-delegator created</span><br><span class="line">rolebinding.rbac.authorization.k8s.io/metrics-<span class="keyword">server</span>-auth-reader created</span><br><span class="line">apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created</span><br><span class="line">serviceaccount/metrics-<span class="keyword">server</span> created</span><br><span class="line">configmap/metrics-<span class="keyword">server</span>-config created</span><br><span class="line">deployment.extensions/metrics-<span class="keyword">server</span>-v0<span class="number">.3</span><span class="number">.1</span> created</span><br><span class="line">service/metrics-<span class="keyword">server</span> created</span><br><span class="line">clusterrole.rbac.authorization.k8s.io/system:metrics-<span class="keyword">server</span> created</span><br><span class="line">clusterrolebinding.rbac.authorization.k8s.io/system:metrics-<span class="keyword">server</span> created</span><br></pre></td></tr></table></figure></p>
+<h2 id="验证metrics-server"><a href="#验证metrics-server" class="headerlink" title="验证metrics-server"></a>验证metrics-server</h2><p>查看是否成功运行<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$  kubectl get pod -n kube-system </span><br><span class="line">NAME                                       READY   STATUS    RESTARTS   AGE</span><br><span class="line">metrics-server-v0<span class="number">.3</span><span class="number">.1</span><span class="number">-75</span>d77b57cd-hlwlh     <span class="number">2</span>/<span class="number">2</span>     Running   <span class="number">0</span>          <span class="number">3</span>m</span><br></pre></td></tr></table></figure></p>
+<p>查看api<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> kubectl api-versions | grep metrics-server</span></span><br><span class="line">metrics.k8s.io/v1beta1</span><br></pre></td></tr></table></figure></p>
+<p>查看Metrics API数据</p>
+<p>#启动一个代理以便curl api<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kubectl proxy --port=8091</span></span><br><span class="line">Starting <span class="keyword">to</span> serve <span class="keyword">on</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8091</span></span><br></pre></td></tr></table></figure></p>
+<p>直接查看接口数据：</p>
+<p>#可获取的资源：nodes和pods<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># curl localhost:8091/apis/metrics.k8s.io/v1beta1</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"kind"</span>: <span class="string">"APIResourceList"</span>,</span><br><span class="line">  <span class="string">"apiVersion"</span>: <span class="string">"v1"</span>,</span><br><span class="line">  <span class="string">"groupVersion"</span>: <span class="string">"metrics.k8s.io/v1beta1"</span>,</span><br><span class="line">  <span class="string">"resources"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"name"</span>: <span class="string">"nodes"</span>,</span><br><span class="line">      <span class="string">"singularName"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="string">"namespaced"</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="string">"kind"</span>: <span class="string">"NodeMetrics"</span>,</span><br><span class="line">      <span class="string">"verbs"</span>: [</span><br><span class="line">        <span class="string">"get"</span>,</span><br><span class="line">        <span class="string">"list"</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"name"</span>: <span class="string">"pods"</span>,</span><br><span class="line">      <span class="string">"singularName"</span>: <span class="string">""</span>,</span><br><span class="line">      <span class="string">"namespaced"</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="string">"kind"</span>: <span class="string">"PodMetrics"</span>,</span><br><span class="line">      <span class="string">"verbs"</span>: [</span><br><span class="line">        <span class="string">"get"</span>,</span><br><span class="line">        <span class="string">"list"</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br></pre></td></tr></table></figure></p>
+<p>查看获取到的Node资源指标数据：cpu和内存<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># curl localhost:<span class="number">8091</span><span class="regexp">/apis/m</span>etrics.k8s.io<span class="regexp">/v1beta1/</span>nodes</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"kind"</span>: <span class="string">"NodeMetricsList"</span>,</span><br><span class="line">  <span class="string">"apiVersion"</span>: <span class="string">"metrics.k8s.io/v1beta1"</span>,</span><br><span class="line">  <span class="string">"metadata"</span>: &#123;</span><br><span class="line">    <span class="string">"selfLink"</span>: <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"items"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"metadata"</span>: &#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"k8s-node02"</span>,</span><br><span class="line">        <span class="string">"selfLink"</span>: <span class="string">"/apis/metrics.k8s.io/v1beta1/nodes/k8s-node02"</span>,</span><br><span class="line">        <span class="string">"creationTimestamp"</span>: <span class="string">"2018-10-06T08:48:51Z"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">"timestamp"</span>: <span class="string">"2018-10-06T08:48:23Z"</span>,</span><br><span class="line">      <span class="string">"window"</span>: <span class="string">"30s"</span>,</span><br><span class="line">      <span class="string">"usage"</span>: &#123;</span><br><span class="line">        <span class="string">"cpu"</span>: <span class="string">"118493217n"</span>,</span><br><span class="line">        <span class="string">"memory"</span>: <span class="string">"1320848Ki"</span></span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure></p>
+<p>kubectl top查看<br>既然通过接口查看到了数据，就可以使用kubectl top直接查看了。<br>查看node<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># kubectl top node </span><br><span class="line">NAME   CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   </span><br><span class="line">k8s    <span class="number">135</span>m         <span class="number">1</span>%     <span class="number">2476</span>Mi          <span class="number">7</span>%</span><br></pre></td></tr></table></figure></p>
+<p>查看pod<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># kubectl top pods -n kube-system</span><br><span class="line">NAME                                       CPU(cores)   MEMORY(bytes)   </span><br><span class="line">calico-kube-controllers<span class="number">-687</span>b7cc79c-knj87   <span class="number">1</span>m           <span class="number">12</span>Mi            </span><br><span class="line">calico-node<span class="number">-7</span>rj8c                          <span class="number">13</span>m          <span class="number">33</span>Mi            </span><br><span class="line">coredns<span class="number">-5</span>b47d4476c<span class="number">-8</span>wdb7                   <span class="number">2</span>m           <span class="number">20</span>Mi            </span><br><span class="line">coredns<span class="number">-5</span>b47d4476c<span class="number">-92</span>wnq                   <span class="number">2</span>m           <span class="number">19</span>Mi            </span><br><span class="line">dns-autoscaler<span class="number">-5</span>b547856bc<span class="number">-95</span>cft            <span class="number">1</span>m           <span class="number">10</span>Mi            </span><br><span class="line">kube-apiserver-k8s                         <span class="number">19</span>m          <span class="number">410</span>Mi           </span><br><span class="line">kube-controller-manager-k8s                <span class="number">34</span>m          <span class="number">68</span>Mi            </span><br><span class="line">kube-proxy-cdlzp                           <span class="number">2</span>m           <span class="number">29</span>Mi            </span><br><span class="line">kube-scheduler-k8s                         <span class="number">8</span>m           <span class="number">22</span>Mi            </span><br><span class="line">kubernetes-dashboard-d7978b5cc-lvf6l       <span class="number">1</span>m           <span class="number">21</span>Mi            </span><br><span class="line">metrics-server-v0<span class="number">.3</span><span class="number">.1</span><span class="number">-584</span>d9c57d4-cbkw2     <span class="number">1</span>m           <span class="number">28</span>Mi</span><br></pre></td></tr></table></figure></p>
+<p>Metrics Server从Kubernetes集群中每个Node上kubelet的API收集metrics数据。通过Metrics API可以获取Kubernetes资源的Metrics指标，Metrics API挂载/apis/metrics.k8s.io/ 下。 可以使用kubectl top命令访问Metrics API，例如:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#  kubectl get --raw <span class="meta-string">"/apis/metrics.k8s.io/v1beta1/nodes"</span></span></span><br><span class="line">&#123;<span class="string">"kind"</span>:<span class="string">"NodeMetricsList"</span>,<span class="string">"apiVersion"</span>:<span class="string">"metrics.k8s.io/v1beta1"</span>,<span class="string">"metadata"</span>:&#123;<span class="string">"selfLink"</span>:<span class="string">"/apis/metrics.k8s.io/v1beta1/nodes"</span>&#125;,<span class="string">"items"</span>:[&#123;<span class="string">"metadata"</span>:&#123;<span class="string">"name"</span>:<span class="string">"k8s"</span>,<span class="string">"selfLink"</span>:<span class="string">"/apis/metrics.k8s.io/v1beta1/nodes/k8s"</span>,<span class="string">"creationTimestamp"</span>:<span class="string">"2019-01-07T15:25:55Z"</span>&#125;,<span class="string">"timestamp"</span>:<span class="string">"2019-01-07T15:25:52Z"</span>,<span class="string">"window"</span>:<span class="string">"30s"</span>,<span class="string">"usage"</span>:&#123;<span class="string">"cpu"</span>:<span class="string">"135838412n"</span>,<span class="string">"memory"</span>:<span class="string">"2532372Ki"</span>&#125;&#125;]&#125;</span><br></pre></td></tr></table></figure></p>
+<p>metrics-server已经可以正常工作了，核心指标已经获取到了，其它的自定义指标获取则要借助于prometheus了。</p>
+<p>k8s v1.10版本之前仍然要通过heapster获取指标数据，否则即使部署了metrics-server，kubectl top这个指令仍然连接heapster。</p>
+<h2 id="HPA介绍和使用"><a href="#HPA介绍和使用" class="headerlink" title="HPA介绍和使用"></a>HPA介绍和使用</h2><p>HPA是k8s一个非常强大的功能，根据Pod的cpu、内存及其它指标自动伸缩Pod副本数量，<br>HPA目前有两个版本，通过kubectl api-versions查看：<br><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># kubectl api-versions | grep autoscal</span></span><br><span class="line">autoscaling/v1</span><br><span class="line">autoscaling/v2beta1</span><br><span class="line">autoscaling/v2beta2</span><br></pre></td></tr></table></figure></p>
+<p>autoscaling/v1：仅支持核心指标API，目前是由metrics-service提供的metrics.k8s.io/v1beta1， 提供的指标来定义，也就是cpu和内存，而内存是不可压缩型资源，不支持弹性缩放，所以只能支持cpu指标来弹性伸缩。<br>autoscaling/v2：除了核心指标之外，还支持定义自定义指标，目前是由custom-metrics-apiserver服务提供的custom.metrics.k8s.io/v1beta1，比如内存、网络方面的指标，前提是配置了自定义指标API服务。</p>
+<p>下面创建一个Pod，然后创建一个HPA监控Pod的CPU使用率，再对Pod实施压测，查看HPA是否根据Pod的cpu使用率伸缩Pod副本。</p>
+<p>创建一个Pod<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$  kubectl <span class="builtin-name">run</span> php-apache <span class="attribute">--image</span>=k8s.gcr.io/hpa-example <span class="attribute">--requests</span>=cpu=200m --expose <span class="attribute">--port</span>=80</span><br><span class="line">service/php-apache created</span><br><span class="line">deployment.apps/php-apache created</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl <span class="builtin-name">get</span> pod -o wide</span><br><span class="line">NAME                         READY   STATUS    RESTARTS   AGE   <span class="built_in"> IP </span>              NODE         NOMINATED NODE</span><br><span class="line">php-apache-b5f58cc5f-6csfw   1/1     Running   0          28s    192.168.85.198   k8s-node01   &lt;none&gt;</span><br></pre></td></tr></table></figure>
+<p>定义HPA</p>
+<p>#HPA监控目标对象的cpu使用率，确保所有副本的Pod的CPU使用不超50%, 并适当的进行伸缩。<br>$ kubectl autoscale deployment php-apache –cpu-percent=50 –min=1 –max=10<br>horizontalpodautoscaler.autoscaling/php-apache autoscaled</p>
+<p>#当前为0%<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get hpa</span><br><span class="line">NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE</span><br><span class="line">php-apache   Deployment/php-apache   <span class="number">0</span>%/<span class="number">50</span>%    <span class="number">1</span>         <span class="number">10</span>        <span class="number">1</span>          <span class="number">30</span>s</span><br></pre></td></tr></table></figure></p>
+<p>启动一个程序对其压测<br><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl run -i --tty <span class="keyword">load</span>-generator --image=busybox /bin/sh</span><br><span class="line">/ # while <span class="keyword">true</span><span class="comment">; do wget -q -O- http://php-apache.default.svc.cluster.local; done</span></span><br><span class="line"><span class="comment">OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK!OK</span></span><br></pre></td></tr></table></figure></p>
+<p>等一会查看hpa<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get hpa</span><br><span class="line">NAME         REFERENCE               TARGETS    MINPODS   MAXPODS   REPLICAS   AGE</span><br><span class="line">php-apache   Deployment/php-apache   <span class="number">481</span>%/<span class="number">50</span>%   <span class="number">1</span>         <span class="number">10</span>        <span class="number">1</span>          <span class="number">21</span>m</span><br></pre></td></tr></table></figure></p>
+<p>POD的cpu占用率已达481%，因此hpa控制器自动将pod副本调整到了10个。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$  kubectl get deployments php-apache </span><br><span class="line">NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">php-apache   <span class="number">10</span>        <span class="number">10</span>        <span class="number">10</span>           <span class="number">10</span>          <span class="number">25</span>m</span><br></pre></td></tr></table></figure>
+<p>停止压测，过几分钟后查看，HPA自动缩减至1个。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$  kubectl get hpa</span><br><span class="line">NAME         REFERENCE               TARGETS   MINPODS   MAXPODS   REPLICAS   AGE</span><br><span class="line">php-apache   Deployment/php-apache   <span class="number">0</span>%/<span class="number">50</span>%    <span class="number">1</span>         <span class="number">10</span>        <span class="number">1</span>          <span class="number">39</span>m</span><br><span class="line"></span><br><span class="line">$  kubectl get deployments php-apache </span><br><span class="line">NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE</span><br><span class="line">php-apache   <span class="number">1</span>         <span class="number">1</span>         <span class="number">1</span>            <span class="number">1</span>           <span class="number">39</span></span><br></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1.通过Metrics API我们可以获取到指定node或者pod的当前资源使用情况，但是该服务并不存储任何信息也不支持其他后端存储，所以我们不可能通过Metrics API来获取资源的历史使用情况。<br>2.由于Metrics Server只能获取核心资源指标，对于其他指标（如网络、HTTP等），还得使用prometheus，并实现数据持久化存储。</p>
+<p>参考资料<br><a href="http://blog.51cto.com/newfly/2294112" target="_blank" rel="noopener">http://blog.51cto.com/newfly/2294112</a> </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          
+            <a href="/tags/自动弹性伸缩/" rel="tag"># 自动弹性伸缩</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/22/Ceph离线源制作-mimic版本/" rel="next" title="Ceph安装和离线源制作(mimic版本)">
+                <i class="fa fa-chevron-left"></i> Ceph安装和离线源制作(mimic版本)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.jpg"
+                alt="XuChao" />
+            
+              <p class="site-author-name" itemprop="name">XuChao</p>
+              <p class="site-description motion-element" itemprop="description">热爱开源技术，OpenStack、Kubernetes、CI/CD工程师一枚</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-globe"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://douban.com/people" target="_blank" title="豆瓣">
+                      
+                        <i class="fa fa-fw fa-globe"></i>豆瓣</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Metrics-server简介"><span class="nav-number">1.</span> <span class="nav-text">Metrics-server简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装metrics-server"><span class="nav-number">2.</span> <span class="nav-text">安装metrics-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证metrics-server"><span class="nav-number">3.</span> <span class="nav-text">验证metrics-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HPA介绍和使用"><span class="nav-number">4.</span> <span class="nav-text">HPA介绍和使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=461525011&auto=1&height=66"></iframe>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XuChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
