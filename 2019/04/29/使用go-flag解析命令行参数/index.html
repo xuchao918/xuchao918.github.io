@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="flag 包概述flag 包实现了命令行参数的解析。 定义 flags 有三种方式 1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等；返回一个相应类型的指针，如：1var ip = flag.Int(&quot;flagname&quot;, 1234, &quot;help message for flagname&quot;) 第一个参数 ：flag名称为flagname第二个参数 ：flagnam">
+<meta name="description" content="flag 包概述flag 包实现了命令行参数的解析。 定义 flags 有三种方式 1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等，返回一个相应类型的指针，如：1var ip = flag.Int(&quot;flagname&quot;, 1234, &quot;help message for flagname&quot;) 第一个参数 ：flag名称为flagname第二个参数 ：flagnam">
 <meta name="keywords" content="Go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用go flag解析命令行参数">
 <meta property="og:url" content="http://yoursite.com/2019/04/29/使用go-flag解析命令行参数/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="flag 包概述flag 包实现了命令行参数的解析。 定义 flags 有三种方式 1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等；返回一个相应类型的指针，如：1var ip = flag.Int(&quot;flagname&quot;, 1234, &quot;help message for flagname&quot;) 第一个参数 ：flag名称为flagname第二个参数 ：flagnam">
+<meta property="og:description" content="flag 包概述flag 包实现了命令行参数的解析。 定义 flags 有三种方式 1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等，返回一个相应类型的指针，如：1var ip = flag.Int(&quot;flagname&quot;, 1234, &quot;help message for flagname&quot;) 第一个参数 ：flag名称为flagname第二个参数 ：flagnam">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-29T14:07:18.371Z">
+<meta property="og:updated_time" content="2019-04-29T14:33:22.306Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用go flag解析命令行参数">
-<meta name="twitter:description" content="flag 包概述flag 包实现了命令行参数的解析。 定义 flags 有三种方式 1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等；返回一个相应类型的指针，如：1var ip = flag.Int(&quot;flagname&quot;, 1234, &quot;help message for flagname&quot;) 第一个参数 ：flag名称为flagname第二个参数 ：flagnam">
+<meta name="twitter:description" content="flag 包概述flag 包实现了命令行参数的解析。 定义 flags 有三种方式 1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等，返回一个相应类型的指针，如：1var ip = flag.Int(&quot;flagname&quot;, 1234, &quot;help message for flagname&quot;) 第一个参数 ：flag名称为flagname第二个参数 ：flagnam">
 
 
 
@@ -388,7 +388,7 @@
       
         <h2 id="flag-包概述"><a href="#flag-包概述" class="headerlink" title="flag 包概述"></a>flag 包概述</h2><p>flag 包实现了命令行参数的解析。</p>
 <p>定义 flags 有三种方式</p>
-<h3 id="1）flag-Xxx-，其中-Xxx-可以是-Int、String，Bool-等；返回一个相应类型的指针，如："><a href="#1）flag-Xxx-，其中-Xxx-可以是-Int、String，Bool-等；返回一个相应类型的指针，如：" class="headerlink" title="1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等；返回一个相应类型的指针，如："></a>1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等；返回一个相应类型的指针，如：</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var<span class="built_in"> ip </span>= flag.Int(<span class="string">"flagname"</span>, 1234, <span class="string">"help message for flagname"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="1）flag-Xxx-，其中-Xxx-可以是-Int、String，Bool-等，返回一个相应类型的指针，如："><a href="#1）flag-Xxx-，其中-Xxx-可以是-Int、String，Bool-等，返回一个相应类型的指针，如：" class="headerlink" title="1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等，返回一个相应类型的指针，如："></a>1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等，返回一个相应类型的指针，如：</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var<span class="built_in"> ip </span>= flag.Int(<span class="string">"flagname"</span>, 1234, <span class="string">"help message for flagname"</span>)</span><br></pre></td></tr></table></figure>
 <p>第一个参数 ：flag名称为flagname<br>第二个参数 ：flagname默认值为1234<br>第三个参数 ：flagname的提示信息</p>
 <p>返回的ip是指针类型，所以这种方式获取ip的值应该fmt.Println(*ip)</p>
 <h3 id="2）flag-XxxVar-，将-flag-绑定到一个变量上，如："><a href="#2）flag-XxxVar-，将-flag-绑定到一个变量上，如：" class="headerlink" title="2）flag.XxxVar()，将 flag 绑定到一个变量上，如："></a>2）flag.XxxVar()，将 flag 绑定到一个变量上，如：</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> flagValue <span class="keyword">int</span></span><br><span class="line">flag.IntVar(&amp;flagValue, <span class="string">"flagname"</span>, <span class="number">1234</span>, <span class="string">"help message for flagname"</span>)</span><br></pre></td></tr></table></figure>
@@ -612,7 +612,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#flag-包概述"><span class="nav-number">1.</span> <span class="nav-text">flag 包概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1）flag-Xxx-，其中-Xxx-可以是-Int、String，Bool-等；返回一个相应类型的指针，如："><span class="nav-number">1.1.</span> <span class="nav-text">1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等；返回一个相应类型的指针，如：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2）flag-XxxVar-，将-flag-绑定到一个变量上，如："><span class="nav-number">1.2.</span> <span class="nav-text">2）flag.XxxVar()，将 flag 绑定到一个变量上，如：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3）自定义flag"><span class="nav-number">1.3.</span> <span class="nav-text">3）自定义flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装spf13-pflag"><span class="nav-number">2.</span> <span class="nav-text">安装spf13/pflag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用flag"><span class="nav-number">3.</span> <span class="nav-text">使用flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义参数类型："><span class="nav-number">4.</span> <span class="nav-text">自定义参数类型：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#flag-包概述"><span class="nav-number">1.</span> <span class="nav-text">flag 包概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1）flag-Xxx-，其中-Xxx-可以是-Int、String，Bool-等，返回一个相应类型的指针，如："><span class="nav-number">1.1.</span> <span class="nav-text">1）flag.Xxx()，其中 Xxx 可以是 Int、String，Bool 等，返回一个相应类型的指针，如：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2）flag-XxxVar-，将-flag-绑定到一个变量上，如："><span class="nav-number">1.2.</span> <span class="nav-text">2）flag.XxxVar()，将 flag 绑定到一个变量上，如：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3）自定义flag"><span class="nav-number">1.3.</span> <span class="nav-text">3）自定义flag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装spf13-pflag"><span class="nav-number">2.</span> <span class="nav-text">安装spf13/pflag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用flag"><span class="nav-number">3.</span> <span class="nav-text">使用flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义参数类型："><span class="nav-number">4.</span> <span class="nav-text">自定义参数类型：</span></a></li></ol></div>
             
 
           </div>
