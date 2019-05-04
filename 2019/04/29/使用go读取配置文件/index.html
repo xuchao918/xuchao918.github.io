@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="起风了">
 <meta property="og:description" content="配置工具的选择通常，在一个或多个项目中会有多种格式的配置文件，比如PHP的php.ini文件、Nginx的server.conf文件，那么使用Golang怎么去读取这些不同格式的配置文件呢？ 比如常见的有 JSON文件、INI文件、YAML文件和TOML文件等等。其中这些文件，对应的Golang处理库如下：  encoding/json – 标准库中的包，可以处理JSON配置文件，缺点是不能加注释">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-04T07:24:47.410Z">
+<meta property="og:updated_time" content="2019-05-04T07:37:44.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用go读取配置文件">
 <meta name="twitter:description" content="配置工具的选择通常，在一个或多个项目中会有多种格式的配置文件，比如PHP的php.ini文件、Nginx的server.conf文件，那么使用Golang怎么去读取这些不同格式的配置文件呢？ 比如常见的有 JSON文件、INI文件、YAML文件和TOML文件等等。其中这些文件，对应的Golang处理库如下：  encoding/json – 标准库中的包，可以处理JSON配置文件，缺点是不能加注释">
@@ -375,23 +375,11 @@
 <p>通常情况下，推荐使用viper库来读取配置文件，虽然它不支持ini格式的配置文件，但我们可以使用goconfig 或gcfg.v1库读取ini 格式配置文件。</p>
 <p><strong>viper 支持以下功能：</strong></p>
 <ul>
-<li><ol>
 <li>支持Yaml、Json、 TOML、HCL 等格式的配置文件</li>
-</ol>
-</li>
-<li><ol start="2">
 <li>可以从文件、 io.Reader 、环境变量、cli命令行读取配置</li>
-</ol>
-</li>
-<li><ol start="3">
 <li>支持自动转换的类型解析</li>
-</ol>
-</li>
-<li><ol start="4">
 <li>可以远程从Key/Value中读取配置，需要导入 viper/remote 包</li>
-</ol>
-</li>
-<li>5.监听配置文件。以往我们修改配置文件后需要重启服务生效，而Viper使用watch函数可以让配置自动生效。</li>
+<li>监听配置文件。以往我们修改配置文件后需要重启服务生效，而Viper使用watch函数可以让配置自动生效。</li>
 </ul>
 <h2 id="安装viper"><a href="#安装viper" class="headerlink" title="安装viper"></a>安装viper</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> github.<span class="keyword">com</span>/spf13/viper</span><br><span class="line"><span class="keyword">go</span> <span class="built_in">get</span> github.<span class="keyword">com</span>/fsnotify/fsnotify</span><br></pre></td></tr></table></figure>
 <h3 id="使用viper读取JSON配置文件"><a href="#使用viper读取JSON配置文件" class="headerlink" title="使用viper读取JSON配置文件"></a>使用viper读取JSON配置文件</h3><p>假设现在有一份 json 格式的配置文件 config.json<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"date"</span>: <span class="string">"2019-04-30"</span>,</span><br><span class="line">  <span class="attr">"mysql"</span>: &#123;</span><br><span class="line">    <span class="attr">"url"</span>: <span class="string">"127.0.0.1:3306"</span>,</span><br><span class="line">    <span class="attr">"username"</span>: <span class="string">"root"</span>,</span><br><span class="line">    <span class="attr">"password"</span>: <span class="string">"123456"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>

@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/05/04/%E4%BD%BF%E7%94%A8go%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</loc>
-    <lastmod>2019-05-04T07:27:37.181Z</lastmod>
+    <loc>http://yoursite.com/2019/04/29/%E4%BD%BF%E7%94%A8go%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</loc>
+    <lastmod>2019-05-04T07:37:44.536Z</lastmod>
     <data>
         <display>
-        <title>使用go发送邮件</title>
-        <pubTime>2019-05-04T07:13:54.000Z</pubTime>
+        <title>使用go读取配置文件</title>
+        <pubTime>2019-04-29T14:47:37.000Z</pubTime>
         
         <tag>go</tag>
          
@@ -21,12 +21,12 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/04/29/%E4%BD%BF%E7%94%A8go%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</loc>
-    <lastmod>2019-05-04T07:24:47.410Z</lastmod>
+    <loc>http://yoursite.com/2019/05/04/%E4%BD%BF%E7%94%A8go%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6/</loc>
+    <lastmod>2019-05-04T07:27:37.181Z</lastmod>
     <data>
         <display>
-        <title>使用go读取配置文件</title>
-        <pubTime>2019-04-29T14:47:37.000Z</pubTime>
+        <title>使用go发送邮件</title>
+        <pubTime>2019-05-04T07:13:54.000Z</pubTime>
         
         <tag>go</tag>
          
