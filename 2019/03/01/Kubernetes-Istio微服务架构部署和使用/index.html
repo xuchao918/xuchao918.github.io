@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/images/kiali-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/prometheus-istio.png">
 <meta property="og:image" content="http://yoursite.com/images/grafana-istio.png">
-<meta property="og:updated_time" content="2019-03-15T16:16:14.122Z">
+<meta property="og:updated_time" content="2019-05-14T14:20:10.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Istio微服务架构部署和使用">
 <meta name="twitter:description" content="什么是IstioIstio是Service Mesh（服务网格）的主流实现方案。该方案降低了与微服务架构相关的复杂性，并提供了负载均衡、服务发现、流量管理、断路器、监控、故障注入和智能路由等功能特性。 其中，Sidecar模式是一种将应用功能从应用本身剥离出来作为单独进程的方式。该模式允许我们向应用无侵入添加多种功能，避免了为满足第三方组件需求而向应用添加额外的配置代码。从某种意义上来说，服务对于">
@@ -398,7 +398,7 @@
 <p><strong>在Service Mesh中，我们需要了解Data Plane和Control Plane两个概念：</strong></p>
 <ul>
 <li>Data Plane：作用是处理网格内服务间的通信，并完成服务发现、负载均衡、流量管理、健康检查等功能；</li>
-<li>Control Plane：作用是管理和配置策略用于路由流量，同时也在运行期执行策略。</li>
+<li>Control Plane：作用是管理和配置智能代理用于路由流量，同时配置Mixers来应用策略、收集指标。</li>
 </ul>
 <p><strong>Istio核心组件</strong></p>
 <ul>
