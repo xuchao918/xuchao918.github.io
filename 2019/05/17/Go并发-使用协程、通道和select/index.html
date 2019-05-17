@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Kubernetes," />
+  <meta name="keywords" content="Go," />
 
 
 
@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
-<meta name="keywords" content="Kubernetes">
+<meta name="description" content="通道和阻塞通道（channel）和协程（goroutine）是实现Go并发程序的两种机制。其中，通道又分为无缓冲通道和有缓冲通道两种，在编写实际的并发程序时，基本都使用异步模式的有缓冲通道。通道又可细分为支持读和写的双向通道，只读的通道，只写的通道三种。 通道阻塞场景无论是有缓存通道、无缓冲通道都存在阻塞的情况。阻塞场景共4个，有缓存和无缓冲各2个。 无缓冲通道的特点是，发送的数据需要被读取后发送">
+<meta name="keywords" content="Go">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈Kubernetes生产架构">
-<meta property="og:url" content="http://yoursite.com/2019/03/02/浅谈Kubernetes生产架构/index.html">
+<meta property="og:title" content="Go并发-使用协程、通道和select">
+<meta property="og:url" content="http://yoursite.com/2019/05/17/Go并发-使用协程、通道和select/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
+<meta property="og:description" content="通道和阻塞通道（channel）和协程（goroutine）是实现Go并发程序的两种机制。其中，通道又分为无缓冲通道和有缓冲通道两种，在编写实际的并发程序时，基本都使用异步模式的有缓冲通道。通道又可细分为支持读和写的双向通道，只读的通道，只写的通道三种。 通道阻塞场景无论是有缓存通道、无缓冲通道都存在阻塞的情况。阻塞场景共4个，有缓存和无缓冲各2个。 无缓冲通道的特点是，发送的数据需要被读取后发送">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/k8s-jiagou.png">
-<meta property="og:image" content="http://yoursite.com/images/ingress-ha.png">
-<meta property="og:updated_time" content="2019-03-25T12:28:37.849Z">
+<meta property="og:updated_time" content="2019-05-17T11:24:04.737Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅谈Kubernetes生产架构">
-<meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
-<meta name="twitter:image" content="http://yoursite.com/images/k8s-jiagou.png">
+<meta name="twitter:title" content="Go并发-使用协程、通道和select">
+<meta name="twitter:description" content="通道和阻塞通道（channel）和协程（goroutine）是实现Go并发程序的两种机制。其中，通道又分为无缓冲通道和有缓冲通道两种，在编写实际的并发程序时，基本都使用异步模式的有缓冲通道。通道又可细分为支持读和写的双向通道，只读的通道，只写的通道三种。 通道阻塞场景无论是有缓存通道、无缓冲通道都存在阻塞的情况。阻塞场景共4个，有缓存和无缓冲各2个。 无缓冲通道的特点是，发送的数据需要被读取后发送">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/02/浅谈Kubernetes生产架构/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/05/17/Go并发-使用协程、通道和select/"/>
 
 
 
 
 
-  <title>浅谈Kubernetes生产架构 | 起风了</title>
+  <title>Go并发-使用协程、通道和select | 起风了</title>
   
 
 
@@ -300,7 +297,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/浅谈Kubernetes生产架构/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/17/Go并发-使用协程、通道和select/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="XuChao">
@@ -317,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">浅谈Kubernetes生产架构</h1>
+          <h1 class="post-title" itemprop="name headline">Go并发-使用协程、通道和select</h1>
         
 
         <div class="post-meta">
@@ -329,8 +326,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-02T20:55:43+08:00">
-                2019-03-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-17T19:20:02+08:00">
+                2019-05-17
               </time>
             
 
@@ -339,28 +336,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernetes/" itemprop="url" rel="index">
-                    <span itemprop="name">Kubernetes</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -389,37 +364,40 @@
       
 
       
-        <p><strong>注意</strong><br>本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。</p>
-<p>首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。<br><img src="/images/k8s-jiagou.png" alt="image"></p>
-<p>在该架构中，我们可以将其分为四层，如下：</p>
+        <h2 id="通道和阻塞"><a href="#通道和阻塞" class="headerlink" title="通道和阻塞"></a>通道和阻塞</h2><p>通道（channel）和协程（goroutine）是实现Go并发程序的两种机制。其中，通道又分为无缓冲通道和有缓冲通道两种，在编写实际的并发程序时，基本都使用异步模式的有缓冲通道。通道又可细分为支持读和写的双向通道，只读的通道，只写的通道三种。</p>
+<h3 id="通道阻塞场景"><a href="#通道阻塞场景" class="headerlink" title="通道阻塞场景"></a>通道阻塞场景</h3><p>无论是有缓存通道、无缓冲通道都存在阻塞的情况。阻塞场景共4个，有缓存和无缓冲各2个。</p>
+<p>无缓冲通道的特点是，发送的数据需要被读取后发送才会完成，它阻塞场景：</p>
 <ul>
-<li>Client层：即Kubernetes集群外部用户、客户端等；</li>
-<li>服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等；</li>
-<li>业务应用层：即基于Kubernetes平台构建和运行企业业务应用，如CI/CD持续集成、微服务项目、监控告警和日志管理、私有镜像仓库等服务；</li>
-<li>基础设施层：即由Kubernetes容器管理平台和Ceph数据持久化存储等系统组成的基础设施服务。</li>
+<li>通道中无数据，但执行读通道。</li>
+<li>通道中无数据，向通道写数据，但无协程读取。</li>
 </ul>
-<p>下面，我们分别来谈谈各层的具体实现方案。</p>
-<h2 id="基础设施层"><a href="#基础设施层" class="headerlink" title="基础设施层"></a>基础设施层</h2><p><strong>Kubernetes平台</strong></p>
+<p>有缓存通道的特点是，有缓存时可以向通道中写入数据后直接返回，它阻塞场景是：</p>
 <ul>
-<li>部署管理：Kubernetes平台除了直接使用公有云如阿里云、AWS等云服务提供商的K8s服务外，我们还可以自己部署和管理等，如使用Kubespray工具。</li>
-<li>网络通信：在容器和容器之间、容器和主机网络方面，可以使用Calico或Flannel等方案。</li>
-<li>HA高可用：Kubernetes节点分为Master和Node两种类型节点，前者负责运行集群相关的控制管理服务，而后者负责运行Pod容器。在多Node节点模式下，由于Kubernetes Pod具有天然的容灾冗余HA高可用实现，因此，我们并不需要关心Node节点的HA高可用，而只需关心Master节点的HA即可，Master节点的HA高可用，通过多Master节点+HAProxy方案实现即可。从Kubernetes 1.12版本起，kube-proxy服务默认使用ipvs实现，取消了之前的iptables。这有助于提升K8s大规模集群环境下的性能和稳定性。</li>
-<li>Docker和操作系统优化：在生产环境中，Docker和操作系统版本应当使用较新的release版本。并且，主机操作系统应当做一定程度的优化配置，如关闭swap内存交换分区，预留一定的CPU核数和内存资源给宿主机使用等。</li>
+<li>通道缓存无数据，但执行读通道(接收数据)。</li>
+<li>通道缓存已经占满，向通道写数据(发送数据)，但无协程读。</li>
 </ul>
-<p><strong>Ceph/NFS数据存储</strong><br>Kubernetes平台的数据持久化存储，可以使用Ceph、NFS等存储方案。其中，Ceph适用于有其技术背景或大容量存储需求的公司；而NFS适用于存储容量需求相对较小，无专业存储技术背景的公司。</p>
-<h2 id="业务应用层"><a href="#业务应用层" class="headerlink" title="业务应用层"></a>业务应用层</h2><ul>
-<li>镜像管理：使用Harbor私有镜像仓库服务；</li>
-<li>日志管理：使用Elasticsearch、Filebeat 和 Kibana技术栈；</li>
-<li>监控告警管理：使用Cadvisor、Prometheus和Grafana技术栈；</li>
-<li>微服务架构：使用Service Mesh服务网格中的Istio方案；</li>
-<li>Devops：使用Gitlab、Jenkins等持续集成工具；</li>
-<li>单体应用：无状态类服务使用deployment，有状态类服务则使用Statefulset，如果关联的服务较多且复杂则使用Helm。</li>
-<li>规划好Namespace：应当做到每个namespace专属用于某类型的应用，如monitor namespace统一管理诸如监控告警和日志管理方面的pod、service、pvc、ingress等资源。这样，可以较为方便的管理和区分K8s上的各种应用。</li>
+<h2 id="使用协程、通道和select"><a href="#使用协程、通道和select" class="headerlink" title="使用协程、通道和select"></a>使用协程、通道和select</h2><p>Go的select关键字可以让我们操作多个通道，将协程（goroutine），通道（channel）和select结合起来构成了Go的一个强大特性。</p>
+<p>首先，我们来看一个简短代码，如下所示<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    c1 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">1</span>)         <span class="comment">//定义两个有缓冲通道，容量为1</span></span><br><span class="line">    c2 := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        time.Sleep(time.Second * <span class="number">1</span>)   <span class="comment">//每隔1秒发送数据</span></span><br><span class="line">        c1 &lt;- <span class="string">"name: xuchao"</span></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        time.Sleep(time.Second * <span class="number">2</span>)    <span class="comment">//每隔2秒发送数据</span></span><br><span class="line">        c2 &lt;- <span class="string">"age: 25"</span></span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;<span class="number">2</span>; i++ &#123;                <span class="comment">//使用select来等待这两个通道的值，然后输出</span></span><br><span class="line">        <span class="keyword">select</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> msg1 := &lt;- c1:</span><br><span class="line">            fmt.Println(msg1)</span><br><span class="line">        <span class="keyword">case</span> msg2 := &lt;- c2:</span><br><span class="line">            fmt.Println(msg2)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行结果<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># go run channel.go </span></span><br><span class="line"><span class="symbol">name:</span> xuchao</span><br><span class="line"><span class="symbol">age:</span> <span class="number">25</span></span><br></pre></td></tr></table></figure></p>
+<p>如我们所期望的，程序输出了正确的值。对于select语句而言，它不断地检测通道是否有值过来，一旦发现有值过来，立刻获取输出。</p>
+<h2 id="使用Select-超时实现无阻塞读写"><a href="#使用Select-超时实现无阻塞读写" class="headerlink" title="使用Select+超时实现无阻塞读写"></a>使用Select+超时实现无阻塞读写</h2><p>select是执行选择操作的一个结构，它里面有一组case语句，它会执行其中无阻塞的那一个，如果都阻塞了，那就等待其中一个不阻塞，进而继续执行，它有一个default语句，该语句是永远不会阻塞的，我们可以借助它实现无阻塞的操作。</p>
+<p>但使用default实现的无阻塞通道阻塞有一个缺陷：当通道不可读或写的时候，会即可返回。实际场景更多的需求是，我们希望尝试读一会数据，或者尝试写一会数据，如果实在没法读写再返回，程序继续做其它的事情。</p>
+<p>使用定时器替代default可以解决这个问题，给通道增加读写数据的容忍时间，如果500ms内无法读写，就即刻返回。示例代码修改一下会是这样：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ReadWithSelect</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span> <span class="params">(x <span class="keyword">int</span>, err error)</span></span> &#123;</span><br><span class="line">    timeout := time.NewTimer(time.Microsecond * <span class="number">500</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> x = &lt;-ch:</span><br><span class="line">        <span class="keyword">return</span> x, <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">case</span> &lt;-timeout.C:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>, errors.New(<span class="string">"read time out"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">WriteChWithSelect</span><span class="params">(ch <span class="keyword">chan</span> <span class="keyword">int</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">    timeout := time.NewTimer(time.Microsecond * <span class="number">500</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">select</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> ch &lt;- <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">case</span> &lt;-timeout.C:</span><br><span class="line">        <span class="keyword">return</span> errors.New(<span class="string">"write time out"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果就会变成超时返回：<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> <span class="built_in">time</span> out</span><br><span class="line"><span class="built_in">write</span> <span class="built_in">time</span> out</span><br><span class="line"><span class="built_in">read</span> <span class="built_in">time</span> out</span><br><span class="line"><span class="built_in">write</span> <span class="built_in">time</span> out</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>为什么Go语言对通道要限制长度而不提供无限长度的通道？</strong><br>我们知道通道（channel）是在两个 goroutine间通信的桥梁。当数据提供方供给速度大于消费方数据处理速度时，如果通道不限制长度，那么内存将不断膨胀直到应用崩溃。因此，限制通道的长度有利于约束数据提供方的供给速度，才能正常地处理数据。</p>
+<p><strong>常用的select场景</strong></p>
+<ul>
+<li>无阻塞的读、写通道。即使通道是带缓存的，也是存在阻塞的情况，使用select可以完美的解决阻塞读写。</li>
+<li>给某个请求/处理/操作，设置超时时间，一旦超时时间内无法完成，则停止处理。</li>
+<li>select本色：多通道处理。</li>
 </ul>
-<h2 id="服务访问层"><a href="#服务访问层" class="headerlink" title="服务访问层"></a>服务访问层</h2><p>外部客户端访问K8s集群内的服务、负载均衡和路由规则定义使用Traefik Ingress实现。此外，应当实现Ingress服务HA高可用，可以想象在K8s集群中，大量的出入口流量都进过Ingress，其负载是非常大的，其重要程度不言而喻，因此实现HA就非常重要。ingress controller节点（无论是基于nginx还是traefik实现）应当至少为2个节点，并在这些节点上，部署Keepalived和HAproxy共同维护一个VIP地址，将其提供给ingress使用。</p>
-<p>架构如下图所示。<br><img src="/images/ingress-ha.png" alt="image"></p>
-<p>在该架构中，Ingress节点一般使用独立的服务器，即只做将集群外部流量接入到集群内部。除了使用external Ip来暴露ingress的Service到集群外部，还可以使用hostNetwork，如果是公有云，还可以使用LoadBalance。这样Ingress Controller将监听节点的80和443端口，通过热备的形式部署多个ingress节点，并在每个节点上部署Keepalived，多个节点共同维护一个VIP，实现Ingress服务的高可用。</p>
-<p>如上图所示，部署两个ingress节点172.16.10.11和172.16.10.12。公网ip映射或转发到内网的VIP地址172.16.10.10上（如果VIP本身是公网IP则可以不用转发）。ingress controller的副本数replicaCount为2，将被调度到node1和node2这两个节点上。同时，使用pod反亲和性禁止ingress pod调度在同一个节点上。</p>
+<p><strong>解决阻塞的2种办法</strong></p>
+<ul>
+<li>使用select的default语句，在channel不可读写时，即可返回</li>
+<li>使用select+定时器，在超时时间内，channel不可读写，则返回（推荐方式）</li>
+</ul>
+<p>记住，在for循环里不要使用select + time.After的组合，易造成内存泄漏，应当使用NewTimer来做定时器。当使用golang过程中，遇到性能和内存gc问题，都可以使用golang tool pprof来排查分析问题。</p>
+<p>希望这篇文章对你开发Go并发程序有所启发。</p>
 
       
     </div>
@@ -437,7 +415,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+            <a href="/tags/Go/" rel="tag"># Go</a>
           
         </div>
       
@@ -450,8 +428,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/01/Kubernetes-Istio微服务架构部署和使用/" rel="next" title="Kubernetes Istio微服务架构部署和使用">
-                <i class="fa fa-chevron-left"></i> Kubernetes Istio微服务架构部署和使用
+              <a href="/2019/05/10/Go语言中什么时候使用指针/" rel="next" title="Go语言中什么时候使用指针">
+                <i class="fa fa-chevron-left"></i> Go语言中什么时候使用指针
               </a>
             
           </div>
@@ -459,10 +437,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/14/使用cert-manager实现Ingress-https/" rel="prev" title="使用cert-manager实现Ingress https">
-                使用cert-manager实现Ingress https <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -628,7 +602,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础设施层"><span class="nav-number">1.</span> <span class="nav-text">基础设施层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务应用层"><span class="nav-number">2.</span> <span class="nav-text">业务应用层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务访问层"><span class="nav-number">3.</span> <span class="nav-text">服务访问层</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通道和阻塞"><span class="nav-number">1.</span> <span class="nav-text">通道和阻塞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通道阻塞场景"><span class="nav-number">1.1.</span> <span class="nav-text">通道阻塞场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用协程、通道和select"><span class="nav-number">2.</span> <span class="nav-text">使用协程、通道和select</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Select-超时实现无阻塞读写"><span class="nav-number">3.</span> <span class="nav-text">使用Select+超时实现无阻塞读写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

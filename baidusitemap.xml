@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/05/17/Go%E5%B9%B6%E5%8F%91-%E4%BD%BF%E7%94%A8%E5%8D%8F%E7%A8%8B%E3%80%81%E9%80%9A%E9%81%93%E5%92%8Cselect/</loc>
+    <lastmod>2019-05-17T11:24:04.737Z</lastmod>
+    <data>
+        <display>
+        <title>Go并发-使用协程、通道和select</title>
+        <pubTime>2019-05-17T11:20:02.000Z</pubTime>
+        
+        <tag>Go</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/03/01/Kubernetes-Istio%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E9%83%A8%E7%BD%B2%E5%92%8C%E4%BD%BF%E7%94%A8/</loc>
     <lastmod>2019-05-14T14:20:10.800Z</lastmod>
     <data>
