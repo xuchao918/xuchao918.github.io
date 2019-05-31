@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2019/05/31/Centos7%E5%AE%89%E8%A3%85%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0CDH-6-2/</loc>
-    <lastmod>2019-05-31T14:50:17.447Z</lastmod>
+    <lastmod>2019-05-31T14:56:23.990Z</lastmod>
     <data>
         <display>
         <title>Centos7安装大数据平台CDH 6.2</title>
@@ -394,9 +394,9 @@
         <title>如何获取Kolla的OpenStack镜像</title>
         <pubTime>2018-05-07T15:16:22.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
         <tag>Docker</tag>
          
@@ -486,9 +486,9 @@
         <title>聊聊OpenStack运维架构那些事儿</title>
         <pubTime>2018-05-09T13:22:43.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
          
            
@@ -528,9 +528,9 @@
         <title>Kolla中配置OpenStack虚机网络vxlan和vlan共存</title>
         <pubTime>2018-05-03T12:59:32.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
          
            
@@ -551,9 +551,9 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Kolla</tag>
+         
+        <tag>OpenStack</tag>
          
         <tag>Docker</tag>
          
