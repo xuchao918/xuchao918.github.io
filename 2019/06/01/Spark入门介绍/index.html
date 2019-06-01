@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://yoursite.com/images/spark-01.png">
 <meta property="og:image" content="http://yoursite.com/images/spark-02.png">
 <meta property="og:image" content="http://yoursite.com/images/spark-03.png">
-<meta property="og:updated_time" content="2019-06-01T15:39:02.318Z">
+<meta property="og:updated_time" content="2019-06-01T15:50:01.580Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark入门介绍">
 <meta name="twitter:description" content="Spark介绍Apache Spark 是用Scala语言开发的专为大数据处理而设计的计算引擎，类似于Hadoop MapReduce框架，Spark拥有Hadoop MapReduce所具有的优点，即Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法。 Spark组件介绍，下图蓝色部分。 Spark有很">
@@ -419,7 +419,7 @@
 <li>共享底层存储，避免数据跨集群迁移</li>
 </ul>
 <p>3、实际上，Spark可以看作是Hadoop MapReduce的一个替代品而不是Hadoop的替代品。</p>
-<h2 id="Hadoop-MR和Spark优缺点"><a href="#Hadoop-MR和Spark优缺点" class="headerlink" title="Hadoop MR和Spark优缺点"></a>Hadoop MR和Spark优缺点</h2><ul>
+<h2 id="Hadoop和Spark优缺点"><a href="#Hadoop和Spark优缺点" class="headerlink" title="Hadoop和Spark优缺点"></a>Hadoop和Spark优缺点</h2><ul>
 <li>使用Hadoop进行迭代计算非常耗资源。MapReduce是把中间结果写入到HDFS中，带来了大量的数据复制、磁盘IO和序列化开销。</li>
 <li>Spark将中间结果保存在内存中，之后的迭代计算都可以直接使用内存中的中间结果作运算，避免了从磁盘中频繁读取数据。</li>
 <li>Hadoop Storm在实时延迟度上比Spark Streaming好很多，前者是纯实时（纯实时的流式处理框架，即来一条数据就处理一条数据），后者是准实时（对一个时间段内的数据收集起来再做处理）。而且，Storm的事务机制、健壮性 / 容错性等特性，都要比Spark Streaming更加优秀。</li>
@@ -430,7 +430,7 @@
 <li>spark on yarn模式，yarn是统一的资源管理机制，在上面可以运行多套计算框架，如map reduce、storm等根据driver在集群中的位置不同，分为yarn client和yarn cluster。生产环境上一般使用yarn cluster模式。</li>
 <li>spark on mesos模式，mesos是一个更强大的分布式资源管理框架，它允许多种不同的框架部署在其上，包括yarn。</li>
 </ul>
-<p>一般，Spark使用CDH安装部署，具体步骤，请参考：<a href="链接网址" title="标题">链接文字</a></p>
+<p>一般，Spark使用CDH安装部署，具体步骤，请参考：<a href="https://xuchao918.github.io/2019/05/31/Centos7%E5%AE%89%E8%A3%85%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0CDH-6-2/" title="Centos7安装大数据平台CDH 6.2" target="_blank" rel="noopener">Centos7安装大数据平台CDH 6.2</a></p>
 
       
     </div>
@@ -635,7 +635,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark介绍"><span class="nav-number">1.</span> <span class="nav-text">Spark介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-Core"><span class="nav-number">1.1.</span> <span class="nav-text">Spark Core</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-Streaming"><span class="nav-number">1.2.</span> <span class="nav-text">Spark Streaming</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-SQL"><span class="nav-number">1.3.</span> <span class="nav-text">Spark SQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphX"><span class="nav-number">1.4.</span> <span class="nav-text">GraphX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MlLib-Machine-Learning"><span class="nav-number">1.5.</span> <span class="nav-text">MlLib (Machine Learning)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark架构分布"><span class="nav-number">2.</span> <span class="nav-text">Spark架构分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用基于Hadoop的Spark"><span class="nav-number">3.</span> <span class="nav-text">使用基于Hadoop的Spark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark各组件应用场景"><span class="nav-number">3.1.</span> <span class="nav-text">Spark各组件应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有了Hadoop，为什么使用spark"><span class="nav-number">3.2.</span> <span class="nav-text">有了Hadoop，为什么使用spark</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop-MR和Spark优缺点"><span class="nav-number">4.</span> <span class="nav-text">Hadoop MR和Spark优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spark三种部署模式区别和介绍"><span class="nav-number">5.</span> <span class="nav-text">spark三种部署模式区别和介绍</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark介绍"><span class="nav-number">1.</span> <span class="nav-text">Spark介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-Core"><span class="nav-number">1.1.</span> <span class="nav-text">Spark Core</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-Streaming"><span class="nav-number">1.2.</span> <span class="nav-text">Spark Streaming</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-SQL"><span class="nav-number">1.3.</span> <span class="nav-text">Spark SQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphX"><span class="nav-number">1.4.</span> <span class="nav-text">GraphX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MlLib-Machine-Learning"><span class="nav-number">1.5.</span> <span class="nav-text">MlLib (Machine Learning)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark架构分布"><span class="nav-number">2.</span> <span class="nav-text">Spark架构分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用基于Hadoop的Spark"><span class="nav-number">3.</span> <span class="nav-text">使用基于Hadoop的Spark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark各组件应用场景"><span class="nav-number">3.1.</span> <span class="nav-text">Spark各组件应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有了Hadoop，为什么使用spark"><span class="nav-number">3.2.</span> <span class="nav-text">有了Hadoop，为什么使用spark</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop和Spark优缺点"><span class="nav-number">4.</span> <span class="nav-text">Hadoop和Spark优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spark三种部署模式区别和介绍"><span class="nav-number">5.</span> <span class="nav-text">spark三种部署模式区别和介绍</span></a></li></ol></div>
             
 
           </div>
