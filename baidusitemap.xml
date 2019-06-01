@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/06/01/Spark%E5%85%A5%E9%97%A8%E4%BB%8B%E7%BB%8D/</loc>
+    <lastmod>2019-06-01T15:39:02.318Z</lastmod>
+    <data>
+        <display>
+        <title>Spark入门介绍</title>
+        <pubTime>2019-06-01T15:29:44.000Z</pubTime>
+        
+        <tag>Spark</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/05/31/Centos7%E5%AE%89%E8%A3%85%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0CDH-6-2/</loc>
     <lastmod>2019-05-31T14:56:23.990Z</lastmod>
     <data>
@@ -461,9 +478,9 @@
         <title>从数据删除看备份的重要性</title>
         <pubTime>2018-05-23T14:55:14.000Z</pubTime>
         
-        <tag>Ceph</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Ceph</tag>
          
          
            
