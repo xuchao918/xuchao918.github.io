@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
+    <lastmod>2019-06-16T08:49:38.104Z</lastmod>
+    <data>
+        <display>
+        <title>浅谈Kubernetes生产架构</title>
+        <pubTime>2019-03-02T12:55:43.000Z</pubTime>
+        
+        <tag>Kubernetes</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/06/13/Go%E6%93%8D%E4%BD%9CMySql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%96%B9%E5%BC%8F/</loc>
     <lastmod>2019-06-13T14:31:02.408Z</lastmod>
     <data>
@@ -220,26 +240,6 @@
            
              
               <breadCrumb title="Ceph" url="http://yoursite.com/categories/Ceph/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
-    <lastmod>2019-03-25T12:28:37.849Z</lastmod>
-    <data>
-        <display>
-        <title>浅谈Kubernetes生产架构</title>
-        <pubTime>2019-03-02T12:55:43.000Z</pubTime>
-        
-        <tag>Kubernetes</tag>
-         
-         
-           
-             
-              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
           
         </display>
     </data>
@@ -495,9 +495,9 @@
         <title>从数据删除看备份的重要性</title>
         <pubTime>2018-05-23T14:55:14.000Z</pubTime>
         
-        <tag>Ceph</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Ceph</tag>
          
          
            

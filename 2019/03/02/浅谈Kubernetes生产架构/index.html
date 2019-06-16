@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
+<meta name="description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产环境一个粗略的业务架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业">
 <meta name="keywords" content="Kubernetes">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈Kubernetes生产架构">
 <meta property="og:url" content="http://yoursite.com/2019/03/02/浅谈Kubernetes生产架构/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
+<meta property="og:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产环境一个粗略的业务架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/k8s-jiagou.png">
 <meta property="og:image" content="http://yoursite.com/images/ingress-ha.png">
-<meta property="og:updated_time" content="2019-03-25T12:28:37.849Z">
+<meta property="og:updated_time" content="2019-06-16T08:49:38.104Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈Kubernetes生产架构">
-<meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义">
+<meta name="twitter:description" content="注意本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。 首先，我们来梳理下Kubernetes生产环境一个粗略的业务架构，如下图所示。 在该架构中，我们可以将其分为四层，如下：  Client层：即Kubernetes集群外部用户、客户端等； 服务访问层：即由Traefik ingress实现服务发现、负载均衡和路由规则定义等； 业">
 <meta name="twitter:image" content="http://yoursite.com/images/k8s-jiagou.png">
 
 
@@ -390,7 +390,7 @@
 
       
         <p><strong>注意</strong><br>本文，只是笔者针对Kubernetes生产环境运行的一些关于架构设计和实现方案的总结，内容很粗糙，同时也会不断完善。</p>
-<p>首先，我们来梳理下Kubernetes生产架构，其设计适用于绝大多数环境。如下图所示。<br><img src="/images/k8s-jiagou.png" alt="image"></p>
+<p>首先，我们来梳理下Kubernetes生产环境一个粗略的业务架构，如下图所示。<br><img src="/images/k8s-jiagou.png" alt="image"></p>
 <p>在该架构中，我们可以将其分为四层，如下：</p>
 <ul>
 <li>Client层：即Kubernetes集群外部用户、客户端等；</li>
@@ -418,8 +418,8 @@
 </ul>
 <h2 id="服务访问层"><a href="#服务访问层" class="headerlink" title="服务访问层"></a>服务访问层</h2><p>外部客户端访问K8s集群内的服务、负载均衡和路由规则定义使用Traefik Ingress实现。此外，应当实现Ingress服务HA高可用，可以想象在K8s集群中，大量的出入口流量都进过Ingress，其负载是非常大的，其重要程度不言而喻，因此实现HA就非常重要。ingress controller节点（无论是基于nginx还是traefik实现）应当至少为2个节点，并在这些节点上，部署Keepalived和HAproxy共同维护一个VIP地址，将其提供给ingress使用。</p>
 <p>架构如下图所示。<br><img src="/images/ingress-ha.png" alt="image"></p>
-<p>在该架构中，Ingress节点一般使用独立的服务器，即只做将集群外部流量接入到集群内部。除了使用external Ip来暴露ingress的Service到集群外部，还可以使用hostNetwork，如果是公有云，还可以使用LoadBalance。这样Ingress Controller将监听节点的80和443端口，通过热备的形式部署多个ingress节点，并在每个节点上部署Keepalived，多个节点共同维护一个VIP，实现Ingress服务的高可用。</p>
-<p>如上图所示，部署两个ingress节点172.16.10.11和172.16.10.12。公网ip映射或转发到内网的VIP地址172.16.10.10上（如果VIP本身是公网IP则可以不用转发）。ingress controller的副本数replicaCount为2，将被调度到node1和node2这两个节点上。同时，使用pod反亲和性禁止ingress pod调度在同一个节点上。</p>
+<p>在该架构中，Ingress节点一般使用独立的服务器部署在K8s平台的边缘节点，即只做将集群外部流量接入到集群内部。除了使用external Ip来暴露ingress的Service到集群外部，还可以使用hostNetwork，如果是公有云，还可以使用LoadBalance。这样Ingress Controller将监听节点的80和443端口。</p>
+<p>如上图所示，当外部客户端访问域名”<a href="http://www.taobao.com“时（举例而已，切勿当真），首先经过LVS/F5第一层负载均衡，然后经由两个Traefik" target="_blank" rel="noopener">www.taobao.com“时（举例而已，切勿当真），首先经过LVS/F5第一层负载均衡，然后经由两个Traefik</a> Ingress集群做第二层负载分发（每个集群由2个节点实现主备HA高可用），其次客户端流量请求转发到第三层负载均衡Service，最后转发到后端对应的Pod。K8s平台和后端业务平台均是内网环境，通过第一层负载均衡的公网IP进行转发或映射，实现内外网通信和安全隔离。</p>
 
       
     </div>
