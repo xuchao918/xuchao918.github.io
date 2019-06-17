@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/06/13/Go%E6%93%8D%E4%BD%9CMySql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%96%B9%E5%BC%8F/</loc>
+    <lastmod>2019-06-17T15:23:03.770Z</lastmod>
+    <data>
+        <display>
+        <title>Go操作MySql数据库的方式</title>
+        <pubTime>2019-06-13T14:26:27.000Z</pubTime>
+        
+        <tag>Go</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/03/02/%E6%B5%85%E8%B0%88Kubernetes%E7%94%9F%E4%BA%A7%E6%9E%B6%E6%9E%84/</loc>
     <lastmod>2019-06-16T08:49:38.104Z</lastmod>
     <data>
@@ -18,23 +35,6 @@
              
               <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/06/13/Go%E6%93%8D%E4%BD%9CMySql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%96%B9%E5%BC%8F/</loc>
-    <lastmod>2019-06-13T14:31:02.408Z</lastmod>
-    <data>
-        <display>
-        <title>Go操作MySql数据库的方式</title>
-        <pubTime>2019-06-13T14:26:27.000Z</pubTime>
-        
-        <tag>Go</tag>
-         
-         
-           
         </display>
     </data>
     </url>
