@@ -4,6 +4,45 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/07/09/Go-Vue-js%E5%BC%80%E5%8F%91Web%E5%BA%94%E7%94%A8/</loc>
+    <lastmod>2019-07-09T13:47:15.132Z</lastmod>
+    <data>
+        <display>
+        <title>Go+Vue开发Web应用</title>
+        <pubTime>2019-07-09T13:00:50.000Z</pubTime>
+        
+        <tag>Go</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/03/01/Kubernetes-traefik-ingress%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2019-06-20T13:39:40.789Z</lastmod>
+    <data>
+        <display>
+        <title>Kubernetes traefik ingress使用</title>
+        <pubTime>2019-03-01T12:33:08.000Z</pubTime>
+        
+        <tag>Kubernetes</tag>
+         
+        <tag>traefik</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/06/13/Go%E6%93%8D%E4%BD%9CMySql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E6%96%B9%E5%BC%8F/</loc>
     <lastmod>2019-06-17T15:23:03.770Z</lastmod>
     <data>
@@ -291,28 +330,6 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/03/01/Kubernetes-traefik-ingress%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2019-03-11T13:41:08.740Z</lastmod>
-    <data>
-        <display>
-        <title>Kubernetes traefik ingress使用</title>
-        <pubTime>2019-03-01T12:33:08.000Z</pubTime>
-        
-        <tag>Kubernetes</tag>
-         
-        <tag>traefik</tag>
-         
-         
-           
-             
-              <breadCrumb title="Kubernetes" url="http://yoursite.com/categories/Kubernetes/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2019/01/04/%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2K8s-1-13-1%E9%9B%86%E7%BE%A4/</loc>
     <lastmod>2019-03-01T12:54:18.264Z</lastmod>
     <data>
@@ -495,9 +512,9 @@
         <title>从数据删除看备份的重要性</title>
         <pubTime>2018-05-23T14:55:14.000Z</pubTime>
         
-        <tag>OpenStack</tag>
-         
         <tag>Ceph</tag>
+         
+        <tag>OpenStack</tag>
          
          
            
