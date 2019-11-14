@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://yoursite.com/images/6.png">
 <meta property="og:image" content="http://yoursite.com/images/7.png">
 <meta property="og:image" content="http://yoursite.com/images/8.png">
-<meta property="og:updated_time" content="2019-11-14T14:47:31.943Z">
+<meta property="og:updated_time" content="2019-11-14T14:59:10.704Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次挖矿处理">
 <meta name="twitter:description" content="11月10日周日晚上21:58分收到阿里云监控告警邮件，提示云服务器被挖矿，顿时意识到事情严重，于是立马登陆到机器上处理。 定位并清除挖矿程序由于这是一个线上服务器，当前首要任务是找到并Kill掉挖矿病毒，恢复正常。首先，使用top命令定位挖矿程序，发现是一个名称为base64的进程，妥妥的，CPU使用率飙到了715%。  然后，查看该挖矿进程是如何运行的  找到之后，我们要想办法尽快干掉它，恢复">
@@ -385,7 +385,7 @@
 <p>于是只有重复上面步骤。<br>再次使用top命令查看，发现bash64挖矿进程消失，持续观察一段时间后进程没有再起来，总算先抑制住了，可以松口气了！</p>
 <p><strong>遗留问题1：挖矿病毒暂时无法删除</strong></p>
 <h2 id="定位并清除crontab定时任务"><a href="#定位并清除crontab定时任务" class="headerlink" title="定位并清除crontab定时任务"></a>定位并清除crontab定时任务</h2><p>OK，这里只是暂时压制住了这个邪恶的东西，继续排查其他问题。<br>接下来查看有无crontab定时任务<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># crontab -l</span></span><br><span class="line">*/1 * * * * <span class="builtin-name">export</span> <span class="attribute">DISPLAY</span>=:0 &amp;&amp; /root/.tmp00/bash &gt;/dev/<span class="literal">null</span> 2&gt;&amp;1</span><br></pre></td></tr></table></figure></p>
-<p>果然有，于是尝试使用crontab -e 删除掉crontab，纳尼，删掉后又自动创建了。</p>
+<p>果然有，于是尝试使用crontab -e 删除掉crontab，但删掉后又自动创建了。这里我们已经知道该定时任务为每分钟执行一次。所以我们怎么删也无用，crontab服务被破坏掉了，无法正常停止，当然最粗暴的是先备份crontab可执行程序，然后删掉它。</p>
 <p>好吧，试试其他办法，于是<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /var/spool/cron</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> rm -f root VM</span></span><br></pre></td></tr></table></figure></p>
 <p><img src="/images/5.png" alt="image"></p>
 <p>纳尼，root文件可以删除，VM删除后又自动生成，好吧，我尝试去修改它，发现修改后又会自动生成新的一行。<br><img src="/images/6.png" alt="image"></p>
@@ -400,7 +400,7 @@
 <p>由于挖矿程序base和base64没有时间去解码，所以看不到程序代码。根据我的个人推测，挖矿病毒需要使用这个url地址去做些勾当，为了保险起见，于是使用iptables禁止访问这个url地址。<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -A <span class="keyword">INPUT</span> -s proxkekman.<span class="keyword">ru</span> -j <span class="keyword">DROP</span> </span><br><span class="line">iptables -A OUTPUT -<span class="keyword">d</span> proxkekman.<span class="keyword">ru</span> -j <span class="keyword">DROP</span></span><br></pre></td></tr></table></figure></p>
 <p>其实，在最开始kill掉该进程前，我们可以使用netstat查看该进程使用的端口号。然后使用安全组规则或iptables drop该端口的连接。</p>
 <p>流程走到这里时，有2个问题没有处理掉，即挖矿病毒文件和crontab定时任务没有清除掉。山雨欲来风满楼，刚好此时在网上找解决方法时，ssh连接因超时自动退出（做等保时加了配置），此时再次以root用户或其他用户登陆再执行sudo等命令时，发现该挖矿病毒在我最开始登陆之后的1分钟左右把root用户删掉了，重新创建了一个VM的超管账号，并破坏掉了sudo等命令。</p>
-<p>综合评估最优选择，经过内部商议，决定回滚该云服务器的系统盘恢复系统（该实例运行的是边缘业务）。</p>
+<p>综合评估最优选择，经过内部商议，决定回滚该云服务器的系统盘快照恢复系统（该实例运行的是边缘业务）。</p>
 <h2 id="补充要点"><a href="#补充要点" class="headerlink" title="补充要点"></a>补充要点</h2><h3 id="如何快速定位异常用户"><a href="#如何快速定位异常用户" class="headerlink" title="如何快速定位异常用户"></a>如何快速定位异常用户</h3><p>检查系统用户，查看是否有异常的系统用户<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cat /etc/passwd</span></span><br></pre></td></tr></table></figure></p>
 <p>查看是否产生了新用户，UID和GID为0的用户<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">grep</span> “<span class="number">0</span>” <span class="regexp">/etc/</span>passwd</span><br></pre></td></tr></table></figure></p>
 <p>查看passwd的修改时间，判断是否在不知的情况下添加用户<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ls -l /etc/passwd</span></span><br></pre></td></tr></table></figure></p>
