@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://yoursite.com/2019/11/13/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%8C%96%E7%9F%BF%E5%A4%84%E7%90%86/</loc>
-    <lastmod>2019-11-13T15:21:05.277Z</lastmod>
+    <lastmod>2019-11-14T14:23:32.600Z</lastmod>
     <data>
         <display>
         <title>记一次挖矿处理</title>
@@ -462,9 +462,9 @@
         <title>如何获取Kolla的OpenStack镜像</title>
         <pubTime>2018-05-07T15:16:22.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
         <tag>Docker</tag>
          
@@ -554,9 +554,9 @@
         <title>聊聊OpenStack运维架构那些事儿</title>
         <pubTime>2018-05-09T13:22:43.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -596,9 +596,9 @@
         <title>Kolla中配置OpenStack虚机网络vxlan和vlan共存</title>
         <pubTime>2018-05-03T12:59:32.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
          
            
@@ -619,9 +619,9 @@
         <title>如何删除Registry中kolla-ansible的镜像</title>
         <pubTime>2018-04-30T15:16:19.000Z</pubTime>
         
-        <tag>Kolla</tag>
-         
         <tag>OpenStack</tag>
+         
+        <tag>Kolla</tag>
          
         <tag>Docker</tag>
          
