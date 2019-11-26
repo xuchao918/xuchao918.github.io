@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，它将应用程序构建为松散耦合服务的集合，这些服务实现了各种业务功能。微服务体系支持大型复杂应用程序的持续交付/部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任">
+<meta name="description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，每个微服务实现了各种业务功能，微服务架构天然的支持持续集成和持续部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。通常，每个任务代表着一个小的业务能力。">
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go微服务架构技术-概念篇（一）">
 <meta property="og:url" content="http://yoursite.com/2019/11/24/Go微服务架构技术-概念篇（一）/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，它将应用程序构建为松散耦合服务的集合，这些服务实现了各种业务功能。微服务体系支持大型复杂应用程序的持续交付/部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任">
+<meta property="og:description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，每个微服务实现了各种业务功能，微服务架构天然的支持持续集成和持续部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。通常，每个任务代表着一个小的业务能力。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/go-micro-2.png">
 <meta property="og:image" content="http://yoursite.com/images/go-micro-3.png">
-<meta property="og:updated_time" content="2019-11-24T14:29:41.593Z">
+<meta property="og:updated_time" content="2019-11-26T12:55:30.451Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go微服务架构技术-概念篇（一）">
-<meta name="twitter:description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，它将应用程序构建为松散耦合服务的集合，这些服务实现了各种业务功能。微服务体系支持大型复杂应用程序的持续交付/部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任">
+<meta name="twitter:description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，每个微服务实现了各种业务功能，微服务架构天然的支持持续集成和持续部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。通常，每个任务代表着一个小的业务能力。">
 <meta name="twitter:image" content="http://yoursite.com/images/go-micro-2.png">
 
 
@@ -367,7 +367,7 @@
       
 
       
-        <h2 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="什么是微服务"></a>什么是微服务</h2><p>微服务是一种典型的“高内聚、低耦合”的软件架构，它将应用程序构建为松散耦合服务的集合，这些服务实现了各种业务功能。微服务体系支持大型复杂应用程序的持续交付/部署。</p>
+        <h2 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="什么是微服务"></a>什么是微服务</h2><p>微服务是一种典型的“高内聚、低耦合”的软件架构，每个微服务实现了各种业务功能，微服务架构天然的支持持续集成和持续部署。</p>
 <p>简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。通常，每个任务代表着一个小的业务能力。</p>
 <h3 id="为什么要用微服务"><a href="#为什么要用微服务" class="headerlink" title="为什么要用微服务"></a>为什么要用微服务</h3><p>我们先来看看传统的单体式应用架构，比如电商系统，有用户登录注册业务，订单业务、支付业务、退款业务、评论业务等。当这些业务都糅杂成一个应用来实现时，这种方式有很大的局限性，我们来看看这种单体式架构有哪些问题。</p>
 <ul>
@@ -381,10 +381,10 @@
 <p>为了解决这个问题，就诞生了一个新的概念 ——”微服务”</p>
 <h3 id="微服务如何解决复杂问题"><a href="#微服务如何解决复杂问题" class="headerlink" title="微服务如何解决复杂问题"></a>微服务如何解决复杂问题</h3><ul>
 <li>每个服务专注实现不同的特性或功能<br>例如订单管理、客户管理等。每一个微服务都是一个迷你应用，它自己的六边形架构包括了业务逻辑以及多个适配器。</li>
-<li>每个微服务会暴露一个供其他微服务或客户端消费的 API<br>其他微服务可能实现了一个 web UI。在运行时，需要服务间相互访问。</li>
+<li>每个微服务会暴露一个供其他微服务或客户端调用的 API<br>其他微服务可能实现了一个 web UI。在运行时，需要服务间相互访问。</li>
 </ul>
-<h3 id="一个单体应用如何拆分成微服务"><a href="#一个单体应用如何拆分成微服务" class="headerlink" title="一个单体应用如何拆分成微服务"></a>一个单体应用如何拆分成微服务</h3><p>一般按照“功能模块”来划分，比如用户管理模块，支付模块，订单模块等。最主要是根据实际业务场景去划分。</p>
-<h3 id="微服务架构特点"><a href="#微服务架构特点" class="headerlink" title="微服务架构特点"></a>微服务架构特点</h3><p>微服务架构模式可以实现每个微服务独立部署，独立扩展。微服务的架构优势有：</p>
+<h3 id="一个单体应用如何拆分成微服务"><a href="#一个单体应用如何拆分成微服务" class="headerlink" title="一个单体应用如何拆分成微服务"></a>一个单体应用如何拆分成微服务</h3><p>一般按照“功能模块”来划分，比如用户管理模块、支付模块、订单模块等，也可以根据康威定律按照团队组织来拆分，当然最主要是根据实际业务场景去划分。</p>
+<h3 id="微服务架构特点"><a href="#微服务架构特点" class="headerlink" title="微服务架构特点"></a>微服务架构特点</h3><p>微服务架构模式可以实现每个微服务独立部署，独立扩展。微服务的架构优势包括但不限于：</p>
 <ul>
 <li>独立扩展<br>基于Kubernetes平台的Pod级别扩展</li>
 <li>快速发布<br>功能简单，测试简单，无过多依赖，配置简单，发布简单。</li>
@@ -393,11 +393,11 @@
 </ul>
 <h3 id="微服务的劣势"><a href="#微服务的劣势" class="headerlink" title="微服务的劣势"></a>微服务的劣势</h3><ul>
 <li>性能损失，微服务之间都是通过restfull或grpc的方式进行通信。</li>
-<li>系统复杂，一个应用系统会有非常多的服务</li>
-<li>服务太多监控复杂。</li>
-<li>微服务架构不适用于资源密集型应用，如对单机性能要求高的数据库、存储系统等</li>
-<li>对运维要求比较高</li>
-<li>接口调整成本高</li>
+<li>系统复杂，一个应用系统会有非常多的服务。</li>
+<li>服务太多监控复杂，排查定位问题较麻烦。</li>
+<li>微服务架构不适用于资源密集型应用，如对单机性能要求高的数据库、存储系统等。</li>
+<li>对运维要求比较高。</li>
+<li>接口调整成本高。</li>
 </ul>
 <h3 id="使用微服务面临的一些问题"><a href="#使用微服务面临的一些问题" class="headerlink" title="使用微服务面临的一些问题"></a>使用微服务面临的一些问题</h3><ul>
 <li>如何发现服务</li>
@@ -410,7 +410,14 @@
 <h2 id="微服务有哪些特性"><a href="#微服务有哪些特性" class="headerlink" title="微服务有哪些特性"></a>微服务有哪些特性</h2><h3 id="分布式链路跟踪"><a href="#分布式链路跟踪" class="headerlink" title="分布式链路跟踪"></a>分布式链路跟踪</h3><p>当微服务被引入后，每个服务的运行时长会变得很难追踪，当调试一个问题时，因为微服务很多（达到成百上千时）此时去找问题就会很麻烦，那么通过Tracing的方式就可以很容易的找到调用的东西从而大大降低了寻找问题的时间成本。主流的基于Service Mesh的微服务技术架构，可以使用Jaeger来做服务的请求等链路追踪。</p>
 <h3 id="熔断"><a href="#熔断" class="headerlink" title="熔断"></a>熔断</h3><p>当一个服务因为各种原因停止响应时，调用方通常会等待一段时间，然后超时或者收到错误返回。如果调用链路比较长，可能会导致请求堆积，整条链路占用大量资源一直在等待下游响应。所以当多次访问一个服务失败时，应熔断，标记该服务已停止工作，直接返回错误。直至该服务恢复正常后再重新建立连接。</p>
 <h3 id="降级"><a href="#降级" class="headerlink" title="降级"></a>降级</h3><p>什么是服务降级？当服务器压力剧增的情况下，根据实际业务情况及流量，对一些服务和页面有策略的不处理或换种简单的方式处理，从而释放服务器资源以保证核心交易正常运作或高效运作。</p>
-<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p>一个服务挂掉后，调用者或者用户一般会习惯性地重试访问。这导致一旦服务恢复正常，很可能因为瞬间网络流量过大又立刻挂掉，因此服务需要能够自我保护 —— 限流。限流策略有很多，最简单的比如当单位时间内请求数过多时，丢弃多余的请求。典型的如每年双11时，部分用户抢单时失败提示“网络问题，请稍后重试”。</p>
+<p>当我们去秒杀或者抢购一些限购商品时，此时可能会因为访问量太大而导致系统崩溃，此时开发者会使用限流来进行限制访问量，当达到限流阀值，后续请求会被降级；降级后的处理方案可以是：排队页面（将用户导流到排队页面等一会重试）、无货（直接告知用户没货了）、错误页（如活动太火爆了，稍后重试）。</p>
+<p><strong>降级和熔断区别</strong></p>
+<ul>
+<li>触发原因不太一样，服务熔断一般是某个服务故障引起，而服务降级一般是从整体负载考虑；</li>
+<li>管理层次不太一样，熔断是一个框架级的处理，每个微服务都需要（无层级之分），而降级一般对业务有层级之分（比如降级一般是从最外围服务开始）；</li>
+<li>实现方式不太一样；</li>
+</ul>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p>一个服务挂掉后，调用者或者用户一般会习惯性地重试访问。这导致一旦服务恢复正常，很可能因为瞬间网络流量过大又立刻挂掉，因此服务需要能够自我保护 —— 限流。限流策略有很多，最简单的比如当单位时间内请求数过多时，丢弃多余的请求。典型的如每年双11时，部分用户抢单时提示失败提示“网络问题，请稍后重试”。</p>
 <h3 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h3><p>服务调用者使用Service名称去访问其他服务，通过K8s Coredns和Etcd组件反向代理到服务的IP地址+端口。</p>
 <h3 id="健康检测"><a href="#健康检测" class="headerlink" title="健康检测"></a>健康检测</h3><p>比如给服务增加延时，给服务注入错误等。</p>
 <h3 id="负载均衡和流量网关-amp-流量调度"><a href="#负载均衡和流量网关-amp-流量调度" class="headerlink" title="负载均衡和流量网关&amp;流量调度"></a>负载均衡和流量网关&amp;流量调度</h3><h3 id="灰度发布和A-B测试"><a href="#灰度发布和A-B测试" class="headerlink" title="灰度发布和A/B测试"></a>灰度发布和A/B测试</h3><p>把请求路由到服务的指定版本；根据服务版本权重拆分流量；根据请求信息路由到服务的不同版本。</p>
@@ -482,15 +489,15 @@
 <li>server 用于处理请求</li>
 </ul>
 <p>Server服务端包是使用编写服务的构建包，可以命名服务，注册请求处理器，增加中间件等等。服务构建在以上说的包之上，提供独立的接口来服务请求。现在服务的构建是RPC系统，在未来可能还会有其它的实现。服务端允许定义多个不同的编码来服务不同的编码消息。</p>
-<h3 id="服务发现-1"><a href="#服务发现-1" class="headerlink" title="服务发现"></a>服务发现</h3><p>在服务发现框架中，一般使用Consul或Etcd。Consul是HashiCorp公司推出的开源工具，用于实现分布式系统的服务发现与配置。 Consul是分布式的、高可用的、可横向扩展的。它具备以下特性 :</p>
+<p><strong>服务发现</strong><br>在服务发现框架中，一般使用Consul或Etcd。Consul是HashiCorp公司推出的开源工具，用于实现分布式系统的服务发现与配置。 Consul是分布式的、高可用的、可横向扩展的。它具备以下特性 :</p>
 <ul>
 <li>service discovery：consul通过DNS或者HTTP接口使服务注册和服务发现变的很容易，一些外部服务，例如saas提供的也可以一样注册。</li>
 <li>health checking：健康检测使consul可以快速的告警在集群中的操作。和服务发现的集成，可以防止服务转发到故障的服务上面。</li>
 <li>key/value storage：一个用来存储动态配置的系统。提供简单的HTTP接口，可以在任何地方操作。</li>
 <li>multi-datacenter：无需复杂的配置，即可支持任意数量的区域。</li>
 </ul>
-<p><strong>什么是服务发现</strong><br>微服务的框架体系中，服务发现是不能不提的一个模块。这里我只是简单的提一下，毕竟这不是我们的重点。我们看下面的一幅图片：<br><img src="/images/go-micro-2.png" alt="image"><br>图中，客户端的一个接口，需要调用服务A-N。客户端必须要知道所有服务的网络位置的，以往的做法是配置是配置文件中，或者有些配置在数据库中。这里就带出几个问题：<br>• 需要配置N个服务的网络位置，加大配置的复杂性<br>• 服务的网络位置变化，都需要改变每个调用者的配置<br>• 集群的情况下，难以做负载（反向代理的方式除外）</p>
-<p><img src="/images/go-micro-3.png" alt="image"><br>与上一张不同的是，加了个服务发现模块。图比较简单，这边文字描述下。服务A-N把当前自己的网络位置注册到服务发现模块（这里注册的意思就是告诉），服务发现就以K-V的方式记录下，K一般是服务名，V就是IP:PORT。服务发现模块定时的轮询查看这些服务能不能访问的了（这就是健康检查）。客户端在调用服务A-N的时候，就跑去服务发现模块问下它们的网络位置，然后再调用它们的服务。这样的方式是不是就可以解决上面的问题了呢？客户端完全不需要记录这些服务网络位置，客户端和服务端完全解耦！<br>这个过程大体是这样，当然服务器发现模块没这么简单，里面包含的东西还很多，这样表示只是方便理解。</p>
+<p>微服务的框架体系中，服务发现是不能不提的一个模块。这里简单的提一下，我们看下面的一幅图片：<br><img src="/images/go-micro-2.png" alt="image"><br>图中，客户端的一个接口，需要调用服务A-N。客户端必须要知道所有服务的网络位置的，以往的做法是配置是配置文件中，或者有些配置在数据库中。这里就带出几个问题：<br>• 需要配置N个服务的网络位置，加大配置的复杂性<br>• 服务的网络位置变化，都需要改变每个调用者的配置<br>• 集群的情况下，难以做负载（反向代理的方式除外）</p>
+<p><img src="/images/go-micro-3.png" alt="image"><br>与上一张不同的是，加了个服务发现模块。图比较简单，这边文字描述下。服务A-N把当前自己的网络位置注册到服务发现模块（这里注册的意思就是告诉），服务发现就以K-V的方式记录下，K一般是服务名，V就是IP:PORT。服务发现模块定时的轮询查看这些服务能不能访问的了（这就是健康检查）。客户端在调用服务A-N的时候，就跑去服务发现模块问下它们的网络位置，然后再调用它们的服务。这样的方式是不是就可以解决上面的问题了呢？客户端完全不需要记录这些服务网络位置，客户端和服务端完全解耦！这个过程大体是这样，当然服务器发现模块没这么简单，里面包含的东西还很多，这样表示只是方便理解。</p>
 <p>OK，关于Go微服务架构技术之概念篇就暂时写到这里，后面尝试通过写Demo程序来更深入的理解。</p>
 
       
@@ -696,7 +703,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是微服务"><span class="nav-number">1.</span> <span class="nav-text">什么是微服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要用微服务"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要用微服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务如何解决复杂问题"><span class="nav-number">1.2.</span> <span class="nav-text">微服务如何解决复杂问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个单体应用如何拆分成微服务"><span class="nav-number">1.3.</span> <span class="nav-text">一个单体应用如何拆分成微服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务架构特点"><span class="nav-number">1.4.</span> <span class="nav-text">微服务架构特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务的劣势"><span class="nav-number">1.5.</span> <span class="nav-text">微服务的劣势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用微服务面临的一些问题"><span class="nav-number">1.6.</span> <span class="nav-text">使用微服务面临的一些问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微服务有哪些特性"><span class="nav-number">2.</span> <span class="nav-text">微服务有哪些特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式链路跟踪"><span class="nav-number">2.1.</span> <span class="nav-text">分布式链路跟踪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#熔断"><span class="nav-number">2.2.</span> <span class="nav-text">熔断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#降级"><span class="nav-number">2.3.</span> <span class="nav-text">降级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限流"><span class="nav-number">2.4.</span> <span class="nav-text">限流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务发现"><span class="nav-number">2.5.</span> <span class="nav-text">服务发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#健康检测"><span class="nav-number">2.6.</span> <span class="nav-text">健康检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡和流量网关-amp-流量调度"><span class="nav-number">2.7.</span> <span class="nav-text">负载均衡和流量网关&amp;流量调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#灰度发布和A-B测试"><span class="nav-number">2.8.</span> <span class="nav-text">灰度发布和A/B测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鉴权和访问控制"><span class="nav-number">2.9.</span> <span class="nav-text">鉴权和访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动弹性伸缩"><span class="nav-number">2.10.</span> <span class="nav-text">自动弹性伸缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go微服务架构技术"><span class="nav-number">3.</span> <span class="nav-text">Go微服务架构技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GRPC介绍"><span class="nav-number">3.1.</span> <span class="nav-text">GRPC介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-Micro介绍"><span class="nav-number">3.2.</span> <span class="nav-text">Go-Micro介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务发现-1"><span class="nav-number">3.3.</span> <span class="nav-text">服务发现</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是微服务"><span class="nav-number">1.</span> <span class="nav-text">什么是微服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要用微服务"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要用微服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务如何解决复杂问题"><span class="nav-number">1.2.</span> <span class="nav-text">微服务如何解决复杂问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个单体应用如何拆分成微服务"><span class="nav-number">1.3.</span> <span class="nav-text">一个单体应用如何拆分成微服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务架构特点"><span class="nav-number">1.4.</span> <span class="nav-text">微服务架构特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务的劣势"><span class="nav-number">1.5.</span> <span class="nav-text">微服务的劣势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用微服务面临的一些问题"><span class="nav-number">1.6.</span> <span class="nav-text">使用微服务面临的一些问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微服务有哪些特性"><span class="nav-number">2.</span> <span class="nav-text">微服务有哪些特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式链路跟踪"><span class="nav-number">2.1.</span> <span class="nav-text">分布式链路跟踪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#熔断"><span class="nav-number">2.2.</span> <span class="nav-text">熔断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#降级"><span class="nav-number">2.3.</span> <span class="nav-text">降级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限流"><span class="nav-number">2.4.</span> <span class="nav-text">限流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务发现"><span class="nav-number">2.5.</span> <span class="nav-text">服务发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#健康检测"><span class="nav-number">2.6.</span> <span class="nav-text">健康检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡和流量网关-amp-流量调度"><span class="nav-number">2.7.</span> <span class="nav-text">负载均衡和流量网关&amp;流量调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#灰度发布和A-B测试"><span class="nav-number">2.8.</span> <span class="nav-text">灰度发布和A/B测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鉴权和访问控制"><span class="nav-number">2.9.</span> <span class="nav-text">鉴权和访问控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动弹性伸缩"><span class="nav-number">2.10.</span> <span class="nav-text">自动弹性伸缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go微服务架构技术"><span class="nav-number">3.</span> <span class="nav-text">Go微服务架构技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GRPC介绍"><span class="nav-number">3.1.</span> <span class="nav-text">GRPC介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-Micro介绍"><span class="nav-number">3.2.</span> <span class="nav-text">Go-Micro介绍</span></a></li></ol></li></ol></div>
             
 
           </div>
