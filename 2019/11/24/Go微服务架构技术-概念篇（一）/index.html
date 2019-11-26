@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/go-micro-2.png">
 <meta property="og:image" content="http://yoursite.com/images/go-micro-3.png">
-<meta property="og:updated_time" content="2019-11-26T12:55:30.451Z">
+<meta property="og:updated_time" content="2019-11-26T13:03:05.189Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go微服务架构技术-概念篇（一）">
 <meta name="twitter:description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，每个微服务实现了各种业务功能，微服务架构天然的支持持续集成和持续部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。通常，每个任务代表着一个小的业务能力。">
@@ -420,7 +420,8 @@
 <h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p>一个服务挂掉后，调用者或者用户一般会习惯性地重试访问。这导致一旦服务恢复正常，很可能因为瞬间网络流量过大又立刻挂掉，因此服务需要能够自我保护 —— 限流。限流策略有很多，最简单的比如当单位时间内请求数过多时，丢弃多余的请求。典型的如每年双11时，部分用户抢单时提示失败提示“网络问题，请稍后重试”。</p>
 <h3 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h3><p>服务调用者使用Service名称去访问其他服务，通过K8s Coredns和Etcd组件反向代理到服务的IP地址+端口。</p>
 <h3 id="健康检测"><a href="#健康检测" class="headerlink" title="健康检测"></a>健康检测</h3><p>比如给服务增加延时，给服务注入错误等。</p>
-<h3 id="负载均衡和流量网关-amp-流量调度"><a href="#负载均衡和流量网关-amp-流量调度" class="headerlink" title="负载均衡和流量网关&amp;流量调度"></a>负载均衡和流量网关&amp;流量调度</h3><h3 id="灰度发布和A-B测试"><a href="#灰度发布和A-B测试" class="headerlink" title="灰度发布和A/B测试"></a>灰度发布和A/B测试</h3><p>把请求路由到服务的指定版本；根据服务版本权重拆分流量；根据请求信息路由到服务的不同版本。</p>
+<h3 id="负载均衡和流量网关-amp-流量调度"><a href="#负载均衡和流量网关-amp-流量调度" class="headerlink" title="负载均衡和流量网关&amp;流量调度"></a>负载均衡和流量网关&amp;流量调度</h3><p>在K8s+Istio的方案中，在集群内部使用K8s service或virtual service做四层负载均衡，在集群外部使用ingress或gateway做流量网关和流量调度，在集群内部使用Envoy Sidecar做流量控制等等。</p>
+<h3 id="灰度发布和A-B测试"><a href="#灰度发布和A-B测试" class="headerlink" title="灰度发布和A/B测试"></a>灰度发布和A/B测试</h3><p>把请求路由到服务的指定版本；根据服务版本权重拆分流量；根据请求信息路由到服务的不同版本。</p>
 <h3 id="鉴权和访问控制"><a href="#鉴权和访问控制" class="headerlink" title="鉴权和访问控制"></a>鉴权和访问控制</h3><p>鉴权和访问控制放在API gateway 这一层来做，比如客户端调用登录接口，passport 会把 token 和 userid，传到 API gateway，API gateway 再把相应的 token 传到这个 APP 端。客户端下次请求就拿 token 请求，如果 token 验证不过，就返回客户端。如果验证通过再调用后端不同的服务获取结果，最后返回结果给客户端。</p>
 <h3 id="自动弹性伸缩"><a href="#自动弹性伸缩" class="headerlink" title="自动弹性伸缩"></a>自动弹性伸缩</h3><p>基于资源使用率的Pod级别自动弹性伸缩。</p>
 <h2 id="Go微服务架构技术"><a href="#Go微服务架构技术" class="headerlink" title="Go微服务架构技术"></a>Go微服务架构技术</h2><p>当前的主流趋势是使用Go技术栈来开发微服务，那么针对上述这些问题和特性有哪些开源的解决方案呢？用到的技术栈，包括但不限于：</p>
