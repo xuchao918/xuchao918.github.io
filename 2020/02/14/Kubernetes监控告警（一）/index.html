@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Spark," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,22 +79,21 @@
 
 
 
-<meta name="description" content="Spark介绍Apache Spark 是用Scala语言开发的专为大数据处理而设计的计算引擎，类似于Hadoop MapReduce框架，Spark拥有Hadoop MapReduce所具有的优点，即Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法。 Spark组件介绍，下图蓝色部分。 Spark有很">
-<meta name="keywords" content="Spark">
+<meta name="description" content="一.监控告警1.监控告警架构 从上图中，我们可以清晰的看到Kubernetes平台监控体系，总体分为三层，即K8s节点资源层、Pod集合层、Ingress层和API Gateway层(若有)。按照告警级别来分，可分为警告、严重、紧急告警，告警使用钉钉、邮件、短信和电话等方式。如下简要的做说明。 Kubernetes定义了三种不同的监控数据接口，分别是Resource Metric，Custom M">
+<meta name="keywords" content="openstack,docker,kubernetes,devops,ci&#x2F;cd,运维,开发,ceph,架构,设计,存储,部署">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark入门介绍">
-<meta property="og:url" content="http://yoursite.com/2019/06/01/Spark入门介绍/index.html">
+<meta property="og:title" content="Kubernetes Pod监控实现（一）">
+<meta property="og:url" content="http://yoursite.com/2020/02/14/Kubernetes监控告警（一）/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="Spark介绍Apache Spark 是用Scala语言开发的专为大数据处理而设计的计算引擎，类似于Hadoop MapReduce框架，Spark拥有Hadoop MapReduce所具有的优点，即Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法。 Spark组件介绍，下图蓝色部分。 Spark有很">
+<meta property="og:description" content="一.监控告警1.监控告警架构 从上图中，我们可以清晰的看到Kubernetes平台监控体系，总体分为三层，即K8s节点资源层、Pod集合层、Ingress层和API Gateway层(若有)。按照告警级别来分，可分为警告、严重、紧急告警，告警使用钉钉、邮件、短信和电话等方式。如下简要的做说明。 Kubernetes定义了三种不同的监控数据接口，分别是Resource Metric，Custom M">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/spark-01.png">
-<meta property="og:image" content="http://yoursite.com/images/spark-02.png">
-<meta property="og:image" content="http://yoursite.com/images/spark-03.png">
-<meta property="og:updated_time" content="2019-06-01T15:50:01.580Z">
+<meta property="og:image" content="http://yoursite.com/images/k8s-monitor-1.png">
+<meta property="og:image" content="http://yoursite.com/images/k8s-monitor-2.png">
+<meta property="og:updated_time" content="2020-02-14T10:33:00.809Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark入门介绍">
-<meta name="twitter:description" content="Spark介绍Apache Spark 是用Scala语言开发的专为大数据处理而设计的计算引擎，类似于Hadoop MapReduce框架，Spark拥有Hadoop MapReduce所具有的优点，即Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法。 Spark组件介绍，下图蓝色部分。 Spark有很">
-<meta name="twitter:image" content="http://yoursite.com/images/spark-01.png">
+<meta name="twitter:title" content="Kubernetes Pod监控实现（一）">
+<meta name="twitter:description" content="一.监控告警1.监控告警架构 从上图中，我们可以清晰的看到Kubernetes平台监控体系，总体分为三层，即K8s节点资源层、Pod集合层、Ingress层和API Gateway层(若有)。按照告警级别来分，可分为警告、严重、紧急告警，告警使用钉钉、邮件、短信和电话等方式。如下简要的做说明。 Kubernetes定义了三种不同的监控数据接口，分别是Resource Metric，Custom M">
+<meta name="twitter:image" content="http://yoursite.com/images/k8s-monitor-1.png">
 
 
 
@@ -124,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/06/01/Spark入门介绍/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/02/14/Kubernetes监控告警（一）/"/>
 
 
 
 
 
-  <title>Spark入门介绍 | 起风了</title>
+  <title>Kubernetes Pod监控实现（一） | 起风了</title>
   
 
 
@@ -301,7 +300,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/01/Spark入门介绍/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/14/Kubernetes监控告警（一）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="XuChao">
@@ -318,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spark入门介绍</h1>
+          <h1 class="post-title" itemprop="name headline">Kubernetes Pod监控实现（一）</h1>
         
 
         <div class="post-meta">
@@ -330,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-01T23:29:44+08:00">
-                2019-06-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-14T17:36:17+08:00">
+                2020-02-14
               </time>
             
 
@@ -368,69 +367,45 @@
       
 
       
-        <h2 id="Spark介绍"><a href="#Spark介绍" class="headerlink" title="Spark介绍"></a>Spark介绍</h2><p>Apache Spark 是用Scala语言开发的专为大数据处理而设计的计算引擎，类似于Hadoop MapReduce框架，Spark拥有Hadoop MapReduce所具有的优点，即Job中间输出结果可以保存在内存中，从而不再需要读写HDFS，因此Spark能更好地适用于数据挖掘与机器学习等需要迭代的MapReduce的算法。</p>
-<p>Spark组件介绍，下图蓝色部分。<br><img src="/images/spark-01.png" alt="image"></p>
-<p>Spark有很多组件来解决使用Hadoop MapReduce时出现的问题。Spark有以下组件：</p>
+        <h2 id="一-监控告警"><a href="#一-监控告警" class="headerlink" title="一.监控告警"></a>一.监控告警</h2><h3 id="1-监控告警架构"><a href="#1-监控告警架构" class="headerlink" title="1.监控告警架构"></a>1.监控告警架构</h3><p><img src="/images/k8s-monitor-1.png" alt="image"></p>
+<p>从上图中，我们可以清晰的看到Kubernetes平台监控体系，总体分为三层，即K8s节点资源层、Pod集合层、Ingress层和API Gateway层(若有)。按照告警级别来分，可分为警告、严重、紧急告警，告警使用钉钉、邮件、短信和电话等方式。如下简要的做说明。</p>
+<p>Kubernetes定义了三种不同的监控数据接口，分别是Resource Metric，Custom Metric以及External Metric，如下所示。</p>
 <ul>
-<li>Spark Core</li>
-<li>Spark Streaming</li>
-<li>Spark SQL</li>
-<li>GraphX</li>
-<li>MLlib (Machine Learning)</li>
+<li>Resource Metric：通常是Metrics-Server进行采集的，提供的主要是Pod、Node、Namespcae等Kubernetes中内置逻辑对象的监控；</li>
+<li>Custom Metric：是用户自定义的监控指标，通常是通过Prometheus进行采集，再通过Horizontal Pod Autoscaler(自动弹性伸缩)进行消费；</li>
+<li>External Metric：主要针对外部指标，通常是面向云场景的，例如希望在Kubernetes集群中获取SLB的最大连接数作为弹性指标或者其他云服务的监控指标，那么通常是通过云厂商的External Metric实现来提供的，目前阿里云的alibaba-cloud-metrics-adapter提供了SLB、SLS(Ingress)、云监控等指标。</li>
 </ul>
-<h3 id="Spark-Core"><a href="#Spark-Core" class="headerlink" title="Spark Core"></a>Spark Core</h3><p>Spark Core是大规模并行和分布式数据处理的基础引擎。 核心是分布式执行引擎，Java，Scala和Python API为分布式ETL应用程序开发提供了一个平台。 此外，在核心上构建的其他库允许用于流式传输，SQL和机器学习的各种工作负载。 它负责：</p>
+<p>此处，针对Kubernetes平台的Pod层进行监控告警，我们使用Resource Metric（由Metrics-Server实现）和Custom Metric（由Prometheus实现）这两种监控数据接口。这里，简单介绍下Prometheus。</p>
+<h3 id="2-什么是Prometheus"><a href="#2-什么是Prometheus" class="headerlink" title="2.什么是Prometheus"></a>2.什么是Prometheus</h3><p>谈K8s或Docker监控，Prometheus不得不谈。Prometheus 作为容器生态下集群监控的首选方案，是一套开源的系统监控报警框架。它启发于 Google 的 borgmon 监控系统，2016 年，Prometheus 正式加入 Cloud Native Computing Foundation，成为受欢迎度仅次于 Kubernetes 的项目。和传统的监控工具如Zabbix使用Push模式不一样，Prometheus使用Pull模式（即server端主动从exporter监控端拉取最新的数据，避免有问题的服务器推送有问题的指标 (metrics)）。</p>
+<p><strong>Prometheus 优势</strong></p>
 <ul>
-<li>内存管理和故障恢复</li>
-<li>在群集上调度，分发和监视作业</li>
-<li>与存储系统交互</li>
+<li>灵活的数据模型：在 Prometheus 里，监控数据是由值、时间戳和标签表组成的，其中监控数据的源信息是完全记录在标签表里的；同时 Prometheus 支持在监控数据采集阶段对监控数据的标签表进行修改，这使其具备强大的扩展能力；</li>
+<li>强大的查询能力：Prometheus 提供有数据查询语言 PromQL。从表现上来看，PromQL 提供了大量的数据计算函数，大部分情况下用户都可以直接通过 PromQL 从 Prometheus 里查询到需要的聚合数据；</li>
+<li>健全的生态: Prometheus 能够直接对常见操作系统、中间件、数据库、硬件及编程语言进行监控；同时社区提供有 Java/Golang/Ruby 语言客户端 SDK，用户能够快速实现自定义监控项及监控逻辑；</li>
+<li>良好的性能：在硬件资源满足的情况下，Prometheus 单实例在每秒采集 10w 条监控数据的情况下，在数据处理和查询方面依然有着不错的性能表现；</li>
+<li>优秀的架构：采用推模型的监控系统，客户端需要负责在服务端上进行注册及监控数据推送；而在 Prometheus 采用的拉模型架构里，具体的数据拉取行为是完全由服务端来决定的。服务端是可以基于某种服务发现机制来自动发现监控对象，多个服务端之间能够通过集群机制来实现数据分片。总之就是太牛逼，学不过来。</li>
 </ul>
-<h3 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h3><p>Spark Streaming是Spark的组件，用于处理实时流数据。支持实时数据流的高吞吐量和容错流处理。 基本流单元是DStream，它基本上是一系列用于处理实时数据的RDD（弹性分布式数据集）。</p>
-<h3 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h3><p>Spark SQL是Spark中的一个新模块，它使用Spark编程API实现集成关系处理。 它支持通过SQL或Hive查询查询数据。 对于那些熟悉RDBMS的人来说，Spark SQL将很容易从之前的工具过渡到可以扩展传统关系数据处理的边界。</p>
-<p>Spark SQL通过函数编程API集成关系处理。 此外，它为各种数据源提供支持，并且使用代码转换编织SQL查询，从而产生一个非常强大的工具。以下是Spark SQL的四个库。</p>
+<p>基于Prometheus监控Kubernetes的整体服务架构<br><img src="/images/k8s-monitor-2.png" alt="image"><br>图：<a href="https://www.cnblogs.com/kevingrace/p/11151649.html" target="_blank" rel="noopener">https://www.cnblogs.com/kevingrace/p/11151649.html</a></p>
+<p>针对Kubernetes监控告警，需要的组件如下所示：</p>
 <ul>
-<li>Data Source API</li>
-<li>DataFrame API</li>
-<li>Interpreter &amp; Optimizer</li>
-<li>SQL Service</li>
+<li>metric-server：从api-server服务中获取cpu、内存使用率这种监控指标，可集成prometheus存储数据，他当前的核心作用是为HPA等组件提供决策指标支持。也用于收集apiserver，scheduler，controller-manager，kubelet组件数据。</li>
+<li>kube-state-metrics：获取k8s各种资源的最新状态，如Pod、service、endpoint、deployment等内置逻辑对象的数据，之所以没有把kube-state-metrics纳入到metric-server范畴中，是因为他们的关注点本质上是不一样的。</li>
+<li>node_exporter：收集集群中各节点的数据。</li>
+<li>prometheus：整个监控告警平台的核心，即server端。</li>
+<li>alertmanager：实现监控报警，支持钉钉、邮件等。</li>
+<li>grafana：实现数据可视化。</li>
 </ul>
-<h3 id="GraphX"><a href="#GraphX" class="headerlink" title="GraphX"></a>GraphX</h3><p>GraphX是用于图形和图形并行计算的Spark API。 因此，它使用弹性分布式属性图扩展了Spark RDD。</p>
-<h3 id="MlLib-Machine-Learning"><a href="#MlLib-Machine-Learning" class="headerlink" title="MlLib (Machine Learning)"></a>MlLib (Machine Learning)</h3><p>MLlib代表机器学习库。 Spark MLlib用于在Apache Spark中执行机器学习。</p>
-<h2 id="Spark架构分布"><a href="#Spark架构分布" class="headerlink" title="Spark架构分布"></a>Spark架构分布</h2><p>下面来看看spark各个节点的分布图，如下<br><img src="/images/spark-02.png" alt="image"></p>
-<p>Spark采用的是Master-Slave模型，从上面可以看出分为四个部分，Client、Driver、ClusterManager、Worker。</p>
+<p>Kubernetes监控告警主要流程，如下所示：</p>
 <ul>
-<li>client：客户端进程，负责提交job到master</li>
-<li>Driver：运行Application，主要是做一些job的初始化工作，包括job的解析，DAG的构建和划分并提交和监控task</li>
-<li>Cluster Manager：在standalone模式中即为Master主节点，控制整个集群，监控worker，在YARN模式中为资源管理器ResourceManager</li>
-<li>Worker：负责管理本节点的资源，定期向Master汇报心跳，接收Master的命令，启动Driver。Executor，即真正执行作业的地方，一个Executor可以执行一到多个Task</li>
+<li>首先，Prometheus通过exporter监控端采集K8s节点、Pod的资源使用情况以及Pod的状态信息数据后，Server端使用pull模式主动拉取exporter端的数据，按照“metrics-name &lt;label_name=value,……&gt;”的格式存储时序数据；在 Kubernetes 下，Promethues 通过与 Kubernetes API 集成，可以实现自动发现，目前支持5中服务发现模式，分别是：Node、Service、Pod、Endpoints、Ingress；</li>
+<li>其次，客户端这边通过PromQL语句从server端查询相关监控指标数据，另外还可以集成使用alertmanager服务发送告警信息；</li>
+<li>最后，将prometheus作为grafana的数据源，由Grafana做前端界面展示，也可使用PromQL语句查询相关数据。</li>
 </ul>
-<h2 id="使用基于Hadoop的Spark"><a href="#使用基于Hadoop的Spark" class="headerlink" title="使用基于Hadoop的Spark"></a>使用基于Hadoop的Spark</h2><p>Spark与Hadoop兼容性的。 因此，这是一种非常强大的技术组合。Hadoop组件可以通过以下方式与Spark一起使用：</p>
-<ul>
-<li>HDFS：Spark可以在HDFS之上运行，以利用分布式存储。</li>
-<li>MapReduce：Spark可以与MapReduce一起用于同一个Hadoop集群，也可以单独作为处理框架使用。</li>
-<li>YARN：可以使Spark应用程序在YARN上运行。</li>
-<li>批处理和实时处理：MapReduce和Spark一起使用，其中MapReduce用于批处理，Spark用于实时处理。</li>
-</ul>
-<h3 id="Spark各组件应用场景"><a href="#Spark各组件应用场景" class="headerlink" title="Spark各组件应用场景"></a>Spark各组件应用场景</h3><p>Spark的生态系统主要包含了Spark Core、Spark SQL、Spark Streaming、MLLib和GraphX 等组件。Spark生态系统组件的应用场景：<br><img src="/images/spark-03.png" alt="image"></p>
-<h3 id="有了Hadoop，为什么使用spark"><a href="#有了Hadoop，为什么使用spark" class="headerlink" title="有了Hadoop，为什么使用spark"></a>有了Hadoop，为什么使用spark</h3><p>1、Spark Streaming是基于Spark实现的高吞吐与低延迟的分布式流处理系统。与Hadoop Storm相比，两者在功能上是一致的，都实现了数据流的实时处理；但Storm的延迟在豪秒级别，而Spark Streaming是在秒级别，所以在一些实时响应要求高的应用场景中，需要使用Storm。</p>
-<p>2、由于Hadoop生态系统中的一些组件所实现的功能，目前是无法由Spark取代的，比如Storm、HDFS。现有的Hadoop组件开发的应用，完全转移到Spark上需要一定的成本，不同的计算框架统一运行在YARN中，可以带来如下好处：</p>
-<ul>
-<li>计算资源按需伸缩</li>
-<li>不用负载应用混搭，集群利用率高</li>
-<li>共享底层存储，避免数据跨集群迁移</li>
-</ul>
-<p>3、实际上，Spark可以看作是Hadoop MapReduce的一个替代品而不是Hadoop的替代品。</p>
-<h2 id="Hadoop和Spark优缺点"><a href="#Hadoop和Spark优缺点" class="headerlink" title="Hadoop和Spark优缺点"></a>Hadoop和Spark优缺点</h2><ul>
-<li>使用Hadoop进行迭代计算非常耗资源。MapReduce是把中间结果写入到HDFS中，带来了大量的数据复制、磁盘IO和序列化开销。</li>
-<li>Spark将中间结果保存在内存中，之后的迭代计算都可以直接使用内存中的中间结果作运算，避免了从磁盘中频繁读取数据。</li>
-<li>Hadoop Storm在实时延迟度上比Spark Streaming好很多，前者是纯实时（纯实时的流式处理框架，即来一条数据就处理一条数据），后者是准实时（对一个时间段内的数据收集起来再做处理）。而且，Storm的事务机制、健壮性 / 容错性等特性，都要比Spark Streaming更加优秀。</li>
-</ul>
-<h2 id="spark三种部署模式区别和介绍"><a href="#spark三种部署模式区别和介绍" class="headerlink" title="spark三种部署模式区别和介绍"></a>spark三种部署模式区别和介绍</h2><p>Spark支持的主要三种分布式部署方式分别是standalone、spark on mesos和 spark on YARN。</p>
-<ul>
-<li>standalone模式，即独立模式，自带完整的服务，可单独部署到一个集群中，无需依赖任何其他资源管理系统。它是Spark实现的资源调度框架，其主要的节点有Client节点、Master节点和Worker节点。</li>
-<li>spark on yarn模式，yarn是统一的资源管理机制，在上面可以运行多套计算框架，如map reduce、storm等根据driver在集群中的位置不同，分为yarn client和yarn cluster。生产环境上一般使用yarn cluster模式。</li>
-<li>spark on mesos模式，mesos是一个更强大的分布式资源管理框架，它允许多种不同的框架部署在其上，包括yarn。</li>
-</ul>
-<p>一般，Spark使用CDH安装部署，具体步骤，请参考：<a href="https://xuchao918.github.io/2019/05/31/Centos7%E5%AE%89%E8%A3%85%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0CDH-6-2/" title="Centos7安装大数据平台CDH 6.2" target="_blank" rel="noopener">Centos7安装大数据平台CDH 6.2</a></p>
+<p>说明：Kubernetes和Prometheus监控告警组件部署网上有许多资料，这里过程略。</p>
+<h2 id="二-监控告警实现"><a href="#二-监控告警实现" class="headerlink" title="二.监控告警实现"></a>二.监控告警实现</h2><h3 id="1-资源类监控"><a href="#1-资源类监控" class="headerlink" title="1.资源类监控"></a>1.资源类监控</h3><p>监控内容: 针对Pod集合单位时间内的CPU、内存、网络流量等资源使用量监控告警。<br>说明：为什么不建议基于资源使用率告警，原因是当Pod未使用Limit声明限制资源时，会无限制的使用主机资源，在这种情况下使用使用率是不靠谱的也是没有意义的。</p>
+<p>监控告警项目：<br>| 监控对象 | PromQL语句 | 说明| 告警条件 | 告警方式 |<br>| —— | —— | —— | —— | —— |<br>| Pod | sum by (pod_name,namespace) (irate (container_network_receive_bytes_total{namespace=”app”}[1m])) /1024/1024 &gt;= 2 | pod入流量监控 | 每分钟pod入流量&gt;=2MB    | 钉钉、邮件、短信 |<br>| Pod | sum by (pod_name,namespace) (irate(container_cpu_usage_seconds_total{namespace=”app”}[1m])) &gt;=2     | pod cpu监控     | 每分钟pod cpu使用核数 &gt;=2核    | 钉钉、邮件、短信 |<br>| Pod | sum by (pod_name,namespace) (irate (container_memory_working_set_bytes{namespace=”app”}[1m])) /1024/1024/1024 &gt;=5    | pod 内存监控     | 每分钟pod 内存使用量 &gt;=5GB    | 钉钉、邮件、短信 |</p>
+<h3 id="2-状态类监控"><a href="#2-状态类监控" class="headerlink" title="2.状态类监控"></a>2.状态类监控</h3><p>监控内容：针对Pod处于CrashLoopBackOff、Failed、Unknown等状态时告警，以及发生重启时则告警。</p>
+<p>监控告警项目：<br>| 监控对象 | PromQL语句 | 说明| 告警条件 | 告警方式 |<br>| —— | —— | —— | —— | —— |<br>| Pod | count (kube_pod_status_phase{phase!=”Running”,phase !=”Succeeded”,namespace=”app”}) by (pod,phase,namespace) | pod状态监控 | 每分钟Pod状态不等于Running、Succeeded        | 钉钉、邮件、短信 |<br>| Pod | sum (irate (kube_pod_container_status_restarts_total{namespace=”app”}[1m])) by (namespace,pod) &gt;0     | pod重启监控     | 每分钟Pod重启次数大于0        | 钉钉、邮件、短信 |<br>有了监控只是实现了第一步，还得需要告警来落地，更高端的用法是故障自愈。下一篇：Kubernetes Pod告警实现（二）</p>
 
       
     </div>
@@ -446,12 +421,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Spark/" rel="tag"># Spark</a>
-          
-        </div>
-      
 
       
       
@@ -461,8 +430,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/31/Centos7安装大数据平台CDH-6-2/" rel="next" title="Centos7安装大数据平台CDH 6.2">
-                <i class="fa fa-chevron-left"></i> Centos7安装大数据平台CDH 6.2
+              <a href="/2019/11/24/Go微服务架构技术-概念篇（一）/" rel="next" title="Go微服务架构技术-概念篇（一）">
+                <i class="fa fa-chevron-left"></i> Go微服务架构技术-概念篇（一）
               </a>
             
           </div>
@@ -470,10 +439,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/13/Go操作MySql数据库的方式/" rel="prev" title="Go操作MySql数据库的方式">
-                Go操作MySql数据库的方式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -639,7 +604,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark介绍"><span class="nav-number">1.</span> <span class="nav-text">Spark介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-Core"><span class="nav-number">1.1.</span> <span class="nav-text">Spark Core</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-Streaming"><span class="nav-number">1.2.</span> <span class="nav-text">Spark Streaming</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark-SQL"><span class="nav-number">1.3.</span> <span class="nav-text">Spark SQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphX"><span class="nav-number">1.4.</span> <span class="nav-text">GraphX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MlLib-Machine-Learning"><span class="nav-number">1.5.</span> <span class="nav-text">MlLib (Machine Learning)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark架构分布"><span class="nav-number">2.</span> <span class="nav-text">Spark架构分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用基于Hadoop的Spark"><span class="nav-number">3.</span> <span class="nav-text">使用基于Hadoop的Spark</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark各组件应用场景"><span class="nav-number">3.1.</span> <span class="nav-text">Spark各组件应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有了Hadoop，为什么使用spark"><span class="nav-number">3.2.</span> <span class="nav-text">有了Hadoop，为什么使用spark</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hadoop和Spark优缺点"><span class="nav-number">4.</span> <span class="nav-text">Hadoop和Spark优缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spark三种部署模式区别和介绍"><span class="nav-number">5.</span> <span class="nav-text">spark三种部署模式区别和介绍</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-监控告警"><span class="nav-number">1.</span> <span class="nav-text">一.监控告警</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-监控告警架构"><span class="nav-number">1.1.</span> <span class="nav-text">1.监控告警架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-什么是Prometheus"><span class="nav-number">1.2.</span> <span class="nav-text">2.什么是Prometheus</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-监控告警实现"><span class="nav-number">2.</span> <span class="nav-text">二.监控告警实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-资源类监控"><span class="nav-number">2.1.</span> <span class="nav-text">1.资源类监控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-状态类监控"><span class="nav-number">2.2.</span> <span class="nav-text">2.状态类监控</span></a></li></ol></li></ol></div>
             
 
           </div>
