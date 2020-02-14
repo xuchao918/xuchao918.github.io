@@ -89,7 +89,9 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/k8s-monitor-1.png">
 <meta property="og:image" content="http://yoursite.com/images/k8s-monitor-2.png">
-<meta property="og:updated_time" content="2020-02-14T10:37:46.475Z">
+<meta property="og:image" content="http://yoursite.com/images/k8s-monitor-3.png">
+<meta property="og:image" content="http://yoursite.com/images/k8s-monitor-4.png">
+<meta property="og:updated_time" content="2020-02-14T10:40:39.922Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes Pod监控实现（一）">
 <meta name="twitter:description" content="一.监控告警1.监控告警架构 从上图中，我们可以清晰的看到Kubernetes平台监控体系，总体分为三层，即K8s节点层、Pod集合层、Ingress层和API Gateway层(若有)。按照告警级别来分，可分为警告、严重、紧急告警，告警使用钉钉、邮件、短信和电话等方式。如下简要的做说明。 Kubernetes定义了三种不同的监控数据接口，分别是Resource Metric，Custom Met">
@@ -403,9 +405,8 @@
 </ul>
 <p>说明：Kubernetes和Prometheus监控告警组件部署网上有许多资料，这里过程略。</p>
 <h2 id="二-监控告警实现"><a href="#二-监控告警实现" class="headerlink" title="二.监控告警实现"></a>二.监控告警实现</h2><h3 id="1-资源类监控"><a href="#1-资源类监控" class="headerlink" title="1.资源类监控"></a>1.资源类监控</h3><p>监控内容: 针对Pod集合单位时间内的CPU、内存、网络流量等资源使用量监控告警。<br>说明：为什么不建议基于资源使用率告警，原因是当Pod未使用Limit声明限制资源时，会无限制的使用主机资源，在这种情况下使用使用率是不靠谱的也是没有意义的。</p>
-<p>监控告警项目：<br>| 监控对象 | PromQL语句 | 说明| 告警条件 | 告警方式 |<br>| —— | —— | —— | —— | —— |<br>| Pod | sum by (pod_name,namespace) (irate (container_network_receive_bytes_total{namespace=”app”}[1m])) /1024/1024 &gt;= 2 | pod入流量监控 | 每分钟pod入流量&gt;=2MB    | 钉钉、邮件、短信 |<br>| Pod | sum by (pod_name,namespace) (irate(container_cpu_usage_seconds_total{namespace=”app”}[1m])) &gt;=2     | pod cpu监控     | 每分钟pod cpu使用核数 &gt;=2核    | 钉钉、邮件、短信 |<br>| Pod | sum by (pod_name,namespace) (irate (container_memory_working_set_bytes{namespace=”app”}[1m])) /1024/1024/1024 &gt;=5    | pod 内存监控     | 每分钟pod 内存使用量 &gt;=5GB    | 钉钉、邮件、短信 |</p>
-<h3 id="2-状态类监控"><a href="#2-状态类监控" class="headerlink" title="2.状态类监控"></a>2.状态类监控</h3><p>监控内容：针对Pod处于CrashLoopBackOff、Failed、Unknown等状态时告警，以及发生重启时则告警。</p>
-<p>监控告警项目：<br>| 监控对象 | PromQL语句 | 说明| 告警条件 | 告警方式 |<br>| —— | —— | —— | —— | —— |<br>| Pod | count (kube_pod_status_phase{phase!=”Running”,phase !=”Succeeded”,namespace=”app”}) by (pod,phase,namespace) | pod状态监控 | 每分钟Pod状态不等于Running、Succeeded        | 钉钉、邮件、短信 |<br>| Pod | sum (irate (kube_pod_container_status_restarts_total{namespace=”app”}[1m])) by (namespace,pod) &gt;0     | pod重启监控     | 每分钟Pod重启次数大于0        | 钉钉、邮件、短信 |</p>
+<p>监控告警项目：<br><img src="/images/k8s-monitor-3.png" alt="image"></p>
+<h3 id="2-状态类监控"><a href="#2-状态类监控" class="headerlink" title="2.状态类监控"></a>2.状态类监控</h3><p>监控内容：针对Pod处于CrashLoopBackOff、Failed、Unknown等状态时告警，以及发生重启时则告警。<br>监控告警项目：<br><img src="/images/k8s-monitor-4.png" alt="image"></p>
 <p>有了监控只是实现了第一步，还得需要告警来落地，更高端的用法是故障自愈。下一篇：Kubernetes Pod告警实现（二）</p>
 
       
