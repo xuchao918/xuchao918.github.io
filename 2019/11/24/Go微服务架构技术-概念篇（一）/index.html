@@ -87,13 +87,12 @@
 <meta property="og:site_name" content="起风了">
 <meta property="og:description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，每个微服务实现了各种业务功能，微服务架构天然的支持持续集成和持续部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。通常，每个任务代表着一个小的业务能力。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/go-micro-2.png">
 <meta property="og:image" content="http://yoursite.com/images/go-micro-3.png">
-<meta property="og:updated_time" content="2020-02-22T14:33:23.564Z">
+<meta property="og:updated_time" content="2020-02-22T14:48:38.047Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Go微服务架构技术-概念篇（一）">
 <meta name="twitter:description" content="什么是微服务微服务是一种典型的“高内聚、低耦合”的软件架构，每个微服务实现了各种业务功能，微服务架构天然的支持持续集成和持续部署。 简单来说，微服务架构就是将一个完整的应用从数据存储开始垂直拆分成多个不同的服务，每个服务能独立部署、独立维护、独立扩展。系统中的各个微服务可被独立部署，各个微服务之间是松耦合的。每个微服务仅关注于完成一件任务并很好地完成该任务。通常，每个任务代表着一个小的业务能力。">
-<meta name="twitter:image" content="http://yoursite.com/images/go-micro-2.png">
+<meta name="twitter:image" content="http://yoursite.com/images/go-micro-3.png">
 
 
 
@@ -475,16 +474,9 @@
 <li>server 用于处理请求</li>
 </ul>
 <p>Server服务端包是使用编写服务的构建包，可以命名服务，注册请求处理器，增加中间件等等。服务构建在以上说的包之上，提供独立的接口来服务请求。现在服务的构建是RPC系统，在未来可能还会有其它的实现。服务端允许定义多个不同的编码来服务不同的编码消息。</p>
-<p><strong>服务发现</strong><br>在服务发现框架中，一般使用Consul或Etcd。Consul是HashiCorp公司推出的开源工具，用于实现分布式系统的服务发现与配置。 Consul是分布式的、高可用的、可横向扩展的。它具备以下特性 :</p>
-<ul>
-<li>service discovery：consul通过DNS或者HTTP接口使服务注册和服务发现变的很容易，一些外部服务，例如saas提供的也可以一样注册。</li>
-<li>health checking：健康检测使consul可以快速的告警在集群中的操作。和服务发现的集成，可以防止服务转发到故障的服务上面。</li>
-<li>key/value storage：一个用来存储动态配置的系统。提供简单的HTTP接口，可以在任何地方操作。</li>
-<li>multi-datacenter：无需复杂的配置，即可支持任意数量的区域。</li>
-</ul>
-<p>微服务的框架体系中，服务发现是不能不提的一个模块。这里简单的提一下，我们看下面的一幅图片：<br><img src="/images/go-micro-2.png" alt="image"><br>图中，客户端的一个接口，需要调用服务A-N。客户端必须要知道所有服务的网络位置的，以往的做法是配置是配置文件中，或者有些配置在数据库中。这里就带出几个问题：<br>• 需要配置N个服务的网络位置，加大配置的复杂性<br>• 服务的网络位置变化，都需要改变每个调用者的配置<br>• 集群的情况下，难以做负载（反向代理的方式除外）</p>
-<p><img src="/images/go-micro-3.png" alt="image"><br>与上一张不同的是，加了个服务发现模块。图比较简单，这边文字描述下。服务A-N把当前自己的网络位置注册到服务发现模块（这里注册的意思就是告诉），服务发现就以K-V的方式记录下，K一般是服务名，V就是IP:PORT。服务发现模块定时的轮询查看这些服务能不能访问的了（这就是健康检查）。客户端在调用服务A-N的时候，就跑去服务发现模块问下它们的网络位置，然后再调用它们的服务。这样的方式是不是就可以解决上面的问题了呢？客户端完全不需要记录这些服务网络位置，客户端和服务端完全解耦！这个过程大体是这样，当然服务器发现模块没这么简单，里面包含的东西还很多，这样表示只是方便理解。</p>
-<p>OK，关于Go微服务架构技术之概念篇就暂时写到这里，后面尝试通过写Demo程序来更深入的理解。</p>
+<p><strong>服务发现</strong><br>在服务发现框架中，一般使用Consul或Etcd用于实现分布式系统的服务发现与配置。Consul是分布式的、高可用的、可横向扩展的。我们看下面的一幅图片来理解：</p>
+<p><img src="/images/go-micro-3.png" alt="image"><br>在K8s环境中，服务A-N把当前自己的网络位置注册到K8s集群的Etcd服务中，服务发现就以K-V的方式记录下，K一般是服务名，V就是IP:PORT，如AppName.NameSpace.svc.cluster.local:8000。客户端在调用服务A-N的时候，就跑去服务发现模块问下它们的网络位置，然后再调用它们的服务。最后客户端依赖的配置文件使用Consul管理，这样客户端完全不需要记录服务A-N的网络位置，这个过程大体是这样，里面包含的东西还很多，这样表示只是方便理解。</p>
+<p>OK，关于Go微服务架构技术之概念篇就写到这里，后面尝试通过写Demo程序来更深入的理解。</p>
 
       
     </div>
