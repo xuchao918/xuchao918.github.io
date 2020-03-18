@@ -6,11 +6,6 @@
     <content type="text"><![CDATA[一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708 二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady 2.容器大部分处于Exit状态，Pod大部分处于Pending、Unknown等状态这里说一下，Pod处于Pending、Unknown等状态代表什么含义，前者基本上是scheduler失败的问题如节点资源不足等，后者则是Pod所在的节点有问题如kublet和其他K8s组件通信异常等。 三.问题排查1.定位问题的思路A.查看notReady节点状态信息，提示无法连接到docker，实际上该节点的docker服务是处于Active运行状态的，这就说明k8s的某个组件和docker daemon交互有问题。不用想，K8s组件中和docker daemon交互最紧密的服务当然是Kubelet。1kubectl describe node $NODE_NAME 提示错误信息，这里忘记截图了。1Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? B.到有问题的节点上查看kubelet的日志1journalctl -f -u kubelet OK，这里看到有关信息了。由于此非线上环境相对不是特别急，因此看看能否从其他线索中发现更多具体有用信息。 C.查看系统日志（没看到有用信息）1tail -n 40 -f /var/log/messages D.查看有问题的主机负载和该节点上的Pod资源使用率，可以看到主机资源使用率和负载还是非常高的 没有资源使用异常高的Pod，或者说并不是某个Pod资源使用异常导致节点有问题。 E.下下策，重启docker、Kubelet、节点（无效果，此非线上环境，线上环境请慎重）1systemctl restart kubelet 2.进一步查找问题原因根据上面B步骤定位问题时提示的Kubelet问题信息，可以大概知道与Pleg问题有关 什么是Pleg？ Pleg，即Pod生命周期事件生成器，Pleg是Kubelet二进制文件中的内部模块，主要职责就是通过每个匹配的 Pod级别事件来调整容器运行时的状态，并将调整的结果写入缓存，使 Pod 的缓存保持最新状态。对于 Pod，Kubelet 会从多个数据来源 watch Pod spec 中的变化。对于容器，Kubelet 会定期（默认是10s）轮询容器运行时，以获取所有容器的最新状态。 随着 Pod 和容器数量的增加，轮询会产生不可忽略的开销，并且会由于 Kubelet 的并行操作而加剧这种开销（为每个 Pod 分配一个 goruntine，用来获取容器的状态）。轮询带来的周期性大量并发请求会导致较高的 CPU 使用率峰值（即使 Pod 的定义和容器的状态没有发生改变），降低性能。最后容器运行时可能不堪重负，从而降低系统的可靠性。 PLEG is not healthy 如何发生？ Kubelet 在一个同步循环（SyncLoop() 函数）中会定期（默认是 10s）调用 Healthy() 函数。Healthy() 函数会检查 relist 进程（PLEG 的关键任务，重新列出节点上的所有容器（例如 docker ps），并与上一次的容器列表进行对比，以此来判断容器状态的变化）是否在 3 分钟内完成。如果 relist 进程的完成时间超过了 3 分钟，就会报告 PLEG is not healthy。一般而言当节点上运行有大量的Pod，亦或者负载过高性能下降，或者出现Bug时，PLEG便无法在3分钟内完成所有这些操作。 Kubelet的PLEG问题出现的原因包括但不限于： RPC 调用过程中容器运行时响应超时（有可能是性能下降，死锁或者出现了 bug）。 节点上的 Pod 数量太多，导致 relist操作无法在 3 分钟内完成。事件数量和延时与 Pod 数量成正比，与节点资源无关。 relist 出现了死锁，该 bug 已在 Kubernetes 1.14 中修复。 获取 Pod 的网络堆栈信息时CNI插件出现了bug（简而言之即容器管理系统和网络插件之间通过 JSON 格式的文件进行通信，实现容器的网络功能）。此处摘自，https://fuckcloudnative.io/posts/understanding-the-pleg-is-not-healthy/ 由此，问题原因即每台K8s Worker节点运行的Pod数量过多（80+）导致系统负载过高性能下降（机器配置8核32GB），Docker守护程序无法及时响应，relist 进程无法在 3 分钟内完成，进而导致Kubelet节点Notready，Pod反复创建又导致数量攀升（节点达到了110个pod，Jenkins在发布项目），进一步加剧了服务的崩溃。(也有可能是Bug诱发导致) 。 在 Kubernetes 社区中，PLEG is not healthy 成名已久，只要出现这个报错就有很大概率造成 Node 状态变成 NotReady。GitHub上相关Issue，请见：https://github.com/kubernetes/kubernetes/issues/45419https://stackoverflow.com/questions/53872739/how-to-fix-container-runtime-is-down-pleg-is-not-healthy 三.当前解决办法1.添加一台Worker节点，让每台节点运行合适数量的Pod； 2.依序重启所有的Worker节点，让Pod全部重新调度启动； 四.防范措施重启节点是有风险的，特别是线上环境。如何长效规避该类似问题的发生特别重要。如下： 1.当前使用的Kubernetes 1.12版本和Docker版本客观上比较老，当前版本存在Bug（一定条件下触发），应尽可能使用Kubernetes新版本（如1.17）和Docker新版本（如19.03.4）；https://github.com/kubernetes/kubernetes/issues/454192.部署的Pod，应尽可能设置Resource的request和limit，不能任其使用主机系统资源；3.每台Worker节点应当为系统设置预留资源，如预留4核6GB内存给Kubernetes服务和Systemd管理的进程使用；4.Kubernetes集群每台Worker节点Pod运行数量不宜太多（基于现有配置从当前正常的线上环境来看不应超过70个），集群负载非常高时需及时扩容节点；5.修改PLEG的检查时间为30s，可参考IBM文章，https://www.ibm.com/support/knowledgecenter/SSFC4F_1.1.0/troubleshoot/docker_pods_overload.html6.除了针对Pod运行状态进行监控告警，还需要支持K8s节点运行状态的监控告警，这样能第一时间发现问题，介入处理降低风险；]]></content>
   </entry>
   <entry>
-    <title><![CDATA[Go微服务架构技术-grpc开发（二）]]></title>
-    <url>%2F2020%2F02%2F23%2FGo%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E6%8A%80%E6%9C%AF-grpc%E5%BC%80%E5%8F%91%EF%BC%88%E4%BA%8C%EF%BC%89%2F</url>
-    <content type="text"><![CDATA[go mod是当前Go开发中推荐且主流使用的包依赖管理工具。现在我们来简单使用它。 mkdir gomod-testcd gomod-testgo mod init gomod-test这时可看到目录内多了 go.mod 文件，内容很简单只有两行： module gomod-test go 1.12首行为当前的模块名称，接下来是 go 的使用版本。这两行和 npm package.json 的 name 和 engine 字段的功能很类似。 然后新建一个 main.go 写入以下内容，这里我们引用了 rsc.io/quote 包，注意我们现在还没有下载这个包。 package main import ( “fmt” &quot;rsc.io/quote&quot; ) func main() { fmt.Println(quote.Hello())}如果是默认情况下，使用 go run main.go 肯定会提示找不到这个包的错误，但是当前 gomod 模式，如果没有此依赖回先下载这个依赖。 $ go run main.gogo: finding rsc.io/quote v1.5.2go: finding rsc.io/sampler v1.3.0go: finding golang.org/x/text v0.0.0-20170915032832-14c0d48ead0cgo: downloading rsc.io/quote v1.5.2go: extracting rsc.io/quote v1.5.2go: downloading rsc.io/sampler v1.3.0go: extracting rsc.io/sampler v1.3.0go: downloading golang.org/x/text v0.0.0-20170915032832-14c0d48ead0cgo: extracting golang.org/x/text v0.0.0-20170915032832-14c0d48ead0cHello, world.因为包含 http://golang.org 下的包，记得设置代理。这个时候当前包目录除了 go.mod 还有一个 go.sum 的文件，这个类似 npm package-lock.json。 gomod 不会在 $GOPATH/src 目录下保存 rsc.io 包的源码，而是包源码和链接库保存在 $GOPATH/pkg/mod 目录下。 $ ls $GOPATH/pkg/modcache golang.org rsc.io除了 go run 命令以外，go build、go test 等命令也能自动下载相关依赖包。]]></content>
-  </entry>
-  <entry>
     <title><![CDATA[Kubernetes Pod监控实现（一）]]></title>
     <url>%2F2020%2F02%2F14%2FKubernetes%E7%9B%91%E6%8E%A7%E5%91%8A%E8%AD%A6%EF%BC%88%E4%B8%80%EF%BC%89%2F</url>
     <content type="text"><![CDATA[一.监控告警1.监控告警架构 从上图中，我们可以清晰的看到Kubernetes平台监控体系，总体分为三层，即K8s节点层、Pod集合层、Ingress层和API Gateway层(若有)。按照告警级别来分，可分为警告、严重、紧急告警，告警使用钉钉、邮件、短信和电话等方式。如下简要的做说明。 Kubernetes定义了三种不同的监控数据接口，分别是Resource Metric，Custom Metric以及External Metric，如下所示。 Resource Metric：通常是Metrics-Server进行采集的，提供的主要是Pod、Node、Namespcae等Kubernetes中内置逻辑对象的监控； Custom Metric：是用户自定义的监控指标，通常是通过Prometheus进行采集，再通过Horizontal Pod Autoscaler(自动弹性伸缩)进行消费； External Metric：主要针对外部指标，通常是面向云场景的，例如希望在Kubernetes集群中获取SLB的最大连接数作为弹性指标或者其他云服务的监控指标，那么通常是通过云厂商的External Metric实现来提供的，目前阿里云的alibaba-cloud-metrics-adapter提供了SLB、SLS(Ingress)、云监控等指标。 此处，针对Kubernetes平台的Pod层进行监控告警，我们使用Resource Metric（由Metrics-Server实现）和Custom Metric（由Prometheus实现）这两种监控数据接口。这里，简单介绍下Prometheus。 2.什么是Prometheus谈K8s或Docker监控，Prometheus不得不谈。Prometheus 作为容器生态下集群监控的首选方案，是一套开源的系统监控报警框架。它启发于 Google 的 borgmon 监控系统，2016 年，Prometheus 正式加入 Cloud Native Computing Foundation，成为受欢迎度仅次于 Kubernetes 的项目。和传统的监控工具如Zabbix使用Push模式不一样，Prometheus使用Pull模式（即server端主动从exporter监控端拉取最新的数据，避免有问题的服务器推送有问题的指标 (metrics)）。 Prometheus 优势 灵活的数据模型：在 Prometheus 里，监控数据是由值、时间戳和标签表组成的，其中监控数据的源信息是完全记录在标签表里的；同时 Prometheus 支持在监控数据采集阶段对监控数据的标签表进行修改，这使其具备强大的扩展能力； 强大的查询能力：Prometheus 提供有数据查询语言 PromQL。从表现上来看，PromQL 提供了大量的数据计算函数，大部分情况下用户都可以直接通过 PromQL 从 Prometheus 里查询到需要的聚合数据； 健全的生态: Prometheus 能够直接对常见操作系统、中间件、数据库、硬件及编程语言进行监控；同时社区提供有 Java/Golang/Ruby 语言客户端 SDK，用户能够快速实现自定义监控项及监控逻辑； 良好的性能：在硬件资源满足的情况下，Prometheus 单实例在每秒采集 10w 条监控数据的情况下，在数据处理和查询方面依然有着不错的性能表现； 优秀的架构：采用推模型的监控系统，客户端需要负责在服务端上进行注册及监控数据推送；而在 Prometheus 采用的拉模型架构里，具体的数据拉取行为是完全由服务端来决定的。服务端是可以基于某种服务发现机制来自动发现监控对象，多个服务端之间能够通过集群机制来实现数据分片。总之就是太牛逼，学不过来。 基于Prometheus监控Kubernetes的整体服务架构图：https://www.cnblogs.com/kevingrace/p/11151649.html 针对Kubernetes监控告警，需要的组件如下所示： metric-server：从api-server服务中获取cpu、内存使用率这种监控指标，可集成prometheus存储数据，他当前的核心作用是为HPA等组件提供决策指标支持。也用于收集apiserver，scheduler，controller-manager，kubelet组件数据。 kube-state-metrics：获取k8s各种资源的最新状态，如Pod、service、endpoint、deployment等内置逻辑对象的数据，之所以没有把kube-state-metrics纳入到metric-server范畴中，是因为他们的关注点本质上是不一样的。 node_exporter：收集集群中各节点的数据。 prometheus：整个监控告警平台的核心，即server端。 alertmanager：实现监控报警，支持钉钉、邮件等。 grafana：实现数据可视化。 Kubernetes监控告警主要流程，如下所示： 首先，Prometheus通过exporter监控端采集K8s节点、Pod的资源使用情况以及Pod的状态信息数据后，Server端使用pull模式主动拉取exporter端的数据，按照“metrics-name &lt;label_name=value,……&gt;”的格式存储时序数据；在 Kubernetes 下，Promethues 通过与 Kubernetes API 集成，可以实现自动发现，目前支持5中服务发现模式，分别是：Node、Service、Pod、Endpoints、Ingress； 其次，客户端这边通过PromQL语句从server端查询相关监控指标数据，另外还可以集成使用alertmanager服务发送告警信息； 最后，将prometheus作为grafana的数据源，由Grafana做前端界面展示，也可使用PromQL语句查询相关数据。 说明：Kubernetes和Prometheus监控告警组件部署网上有许多资料，这里过程略。 二.监控告警实现1.资源类监控监控内容: 针对Pod集合单位时间内的CPU、内存、网络流量等资源使用量监控告警。 说明：为什么不建议基于资源使用率告警，原因是当Pod未使用Limit声明限制资源时，会无限制的使用主机资源，在这种情况下使用使用率是不靠谱的也是没有意义的。 监控告警项目： PromQL监控查询样图，如下所示 2.状态类监控监控内容：针对Pod处于CrashLoopBackOff、Failed、Unknown等状态时告警，以及发生重启时则告警。监控告警项目： 有了监控只是实现了第一步，还得需要告警来落地，更高端的用法是故障自愈。下一篇：Kubernetes Pod告警实现（二）]]></content>
@@ -301,8 +296,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -314,8 +309,8 @@
         <category>Kolla</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
         <tag>Docker</tag>
       </tags>
   </entry>
@@ -338,8 +333,8 @@
         <category>OpenStack</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
       </tags>
   </entry>
   <entry>
@@ -350,8 +345,8 @@
         <category>Docker</category>
       </categories>
       <tags>
-        <tag>Kolla</tag>
         <tag>OpenStack</tag>
+        <tag>Kolla</tag>
         <tag>Docker</tag>
       </tags>
   </entry>
