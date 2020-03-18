@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://yoursite.com/images/0004.png">
 <meta property="og:image" content="http://yoursite.com/images/0005.png">
 <meta property="og:image" content="http://yoursite.com/images/0006.png">
-<meta property="og:updated_time" content="2020-03-18T15:54:56.429Z">
+<meta property="og:updated_time" content="2020-03-18T15:55:36.622Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes节点频繁NotReady-处理和防范">
 <meta name="twitter:description" content="一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708  二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady 2.容器大部分处于Exit状态，Pod大部分处于Pendin">
@@ -398,8 +398,9 @@
 <li>RPC 调用过程中容器运行时响应超时（有可能是性能下降，死锁或者出现了 bug）。</li>
 <li>节点上的 Pod 数量太多，导致 relist操作无法在 3 分钟内完成。事件数量和延时与 Pod 数量成正比，与节点资源无关。</li>
 <li>relist 出现了死锁，该 bug 已在 Kubernetes 1.14 中修复。</li>
-<li>获取 Pod 的网络堆栈信息时CNI插件出现了bug（简而言之即容器管理系统和网络插件之间通过 JSON 格式的文件进行通信，实现容器的网络功能）。<br>此处摘自，<a href="https://fuckcloudnative.io/posts/understanding-the-pleg-is-not-healthy/" target="_blank" rel="noopener">https://fuckcloudnative.io/posts/understanding-the-pleg-is-not-healthy/</a></li>
+<li>获取 Pod 的网络堆栈信息时CNI插件出现了bug（简而言之即容器管理系统和网络插件之间通过 JSON 格式的文件进行通信，实现容器的网络功能）。</li>
 </ul>
+<p>此处摘自，<a href="https://fuckcloudnative.io/posts/understanding-the-pleg-is-not-healthy/" target="_blank" rel="noopener">https://fuckcloudnative.io/posts/understanding-the-pleg-is-not-healthy/</a></p>
 <p>由此，问题原因即每台K8s Worker节点运行的Pod数量过多（80+）导致系统负载过高性能下降（机器配置8核32GB），Docker守护程序无法及时响应，relist 进程无法在 3 分钟内完成，进而导致Kubelet节点Notready，Pod反复创建又导致数量攀升（节点达到了110个pod，Jenkins在发布项目），进一步加剧了服务的崩溃。(也有可能是Bug诱发导致) 。</p>
 <p>在 Kubernetes 社区中，PLEG is not healthy 成名已久，只要出现这个报错就有很大概率造成 Node 状态变成 NotReady。GitHub上相关Issue，请见：<br><a href="https://github.com/kubernetes/kubernetes/issues/45419" target="_blank" rel="noopener">https://github.com/kubernetes/kubernetes/issues/45419</a><br><a href="https://stackoverflow.com/questions/53872739/how-to-fix-container-runtime-is-down-pleg-is-not-healthy" target="_blank" rel="noopener">https://stackoverflow.com/questions/53872739/how-to-fix-container-runtime-is-down-pleg-is-not-healthy</a></p>
 <h2 id="三-当前解决办法"><a href="#三-当前解决办法" class="headerlink" title="三.当前解决办法"></a>三.当前解决办法</h2><p>1.添加一台Worker节点，让每台节点运行合适数量的Pod；<br><img src="/images/0005.png" alt="image"></p>
