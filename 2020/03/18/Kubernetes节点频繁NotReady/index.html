@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708  二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady 2.容器大部分处于Exit状态，Pod大部分处于Pendin">
+<meta name="description" content="一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708  二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady。 2.容器大部分处于Exit状态，Pod大部分处于Pendi">
 <meta name="keywords" content="openstack,docker,kubernetes,devops,ci&#x2F;cd,运维,开发,ceph,架构,设计,存储,部署">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes节点频繁NotReady-处理和防范">
 <meta property="og:url" content="http://yoursite.com/2020/03/18/Kubernetes节点频繁NotReady/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708  二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady 2.容器大部分处于Exit状态，Pod大部分处于Pendin">
+<meta property="og:description" content="一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708  二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady。 2.容器大部分处于Exit状态，Pod大部分处于Pendi">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/0001.png">
 <meta property="og:image" content="http://yoursite.com/images/0002.png">
@@ -93,10 +93,10 @@
 <meta property="og:image" content="http://yoursite.com/images/0004.png">
 <meta property="og:image" content="http://yoursite.com/images/0005.png">
 <meta property="og:image" content="http://yoursite.com/images/0006.png">
-<meta property="og:updated_time" content="2020-03-18T15:55:36.622Z">
+<meta property="og:updated_time" content="2020-03-18T16:13:21.422Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes节点频繁NotReady-处理和防范">
-<meta name="twitter:description" content="一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708  二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady 2.容器大部分处于Exit状态，Pod大部分处于Pendin">
+<meta name="twitter:description" content="一.环境概述 Kubernetes版本：1.12.6 Docker版本：17.06.2-ce-3 操作系统版本：CentOS 7.4.1708  二.问题现象1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady。 2.容器大部分处于Exit状态，Pod大部分处于Pendi">
 <meta name="twitter:image" content="http://yoursite.com/images/0001.png">
 
 
@@ -376,8 +376,8 @@
 <li>Docker版本：17.06.2-ce-3</li>
 <li>操作系统版本：CentOS 7.4.1708</li>
 </ul>
-<h2 id="二-问题现象"><a href="#二-问题现象" class="headerlink" title="二.问题现象"></a>二.问题现象</h2><p>1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady<br><img src="/images/0001.png" alt="image"></p>
-<p>2.容器大部分处于Exit状态，Pod大部分处于Pending、Unknown等状态<br>这里说一下，Pod处于Pending、Unknown等状态代表什么含义，前者基本上是scheduler失败的问题如节点资源不足等，后者则是Pod所在的节点有问题如kublet和其他K8s组件通信异常等。</p>
+<h2 id="二-问题现象"><a href="#二-问题现象" class="headerlink" title="二.问题现象"></a>二.问题现象</h2><p>1.钉钉收到Pod容器运行状态异常和服务接口超时监控告警，查看到K8s Worker节点频繁处于NotReady状态，如重启Kubelet和节点恢复正常一会后又变成NotReady。<br><img src="/images/0001.png" alt="image"></p>
+<p>2.容器大部分处于Exit状态，Pod大部分处于Pending、Unknown等状态。<br>这里说一下，Pod处于Pending、Unknown等状态代表什么含义，前者基本上是scheduler失败的问题如节点资源不足等，后者则是Pod所在的节点有问题如kublet和其他K8s组件通信异常等。</p>
 <h2 id="三-问题排查"><a href="#三-问题排查" class="headerlink" title="三.问题排查"></a>三.问题排查</h2><h3 id="1-定位问题的思路"><a href="#1-定位问题的思路" class="headerlink" title="1.定位问题的思路"></a>1.定位问题的思路</h3><p>A.查看notReady节点状态信息，提示无法连接到docker，实际上该节点的docker服务是处于Active运行状态的，这就说明k8s的某个组件和docker daemon交互有问题。不用想，K8s组件中和docker daemon交互最紧密的服务当然是Kubelet。<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe <span class="keyword">node</span> <span class="title">$NODE_NAME</span></span><br></pre></td></tr></table></figure></p>
 <p>提示错误信息，这里忘记截图了。<br><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cannot connect <span class="built_in">to</span> <span class="keyword">the</span> Docker daemon <span class="keyword">at</span> unix:<span class="comment">///var/run/docker.sock. Is the docker daemon running?</span></span><br></pre></td></tr></table></figure></p>
 <p>B.到有问题的节点上查看kubelet的日志<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">journalctl -f -u kubelet</span></span><br></pre></td></tr></table></figure></p>
@@ -387,7 +387,7 @@
 <p>D.查看有问题的主机负载和该节点上的Pod资源使用率，可以看到主机资源使用率和负载还是非常高的<br><img src="/images/0003.png" alt="image"></p>
 <p>没有资源使用异常高的Pod，或者说并不是某个Pod资源使用异常导致节点有问题。<br><img src="/images/0004.png" alt="image"></p>
 <p>E.下下策，重启docker、Kubelet、节点（无效果，此非线上环境，线上环境请慎重）<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">systemctl restart kubelet</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="2-进一步查找问题原因"><a href="#2-进一步查找问题原因" class="headerlink" title="2.进一步查找问题原因"></a>2.进一步查找问题原因</h3><p>根据上面B步骤定位问题时提示的Kubelet问题信息，可以大概知道与Pleg问题有关</p>
+<h3 id="2-进一步查找问题原因"><a href="#2-进一步查找问题原因" class="headerlink" title="2.进一步查找问题原因"></a>2.进一步查找问题原因</h3><p>根据上面B步骤定位问题时提示的Kubelet问题信息，可以大概知道与Pleg问题有关。</p>
 <p><strong> 什么是Pleg？</strong></p>
 <p>Pleg，即Pod生命周期事件生成器，Pleg是Kubelet二进制文件中的内部模块，主要职责就是通过每个匹配的 Pod级别事件来调整容器运行时的状态，并将调整的结果写入缓存，使 Pod 的缓存保持最新状态。对于 Pod，Kubelet 会从多个数据来源 watch Pod spec 中的变化。对于容器，Kubelet 会定期（默认是10s）轮询容器运行时，以获取所有容器的最新状态。</p>
 <p>随着 Pod 和容器数量的增加，轮询会产生不可忽略的开销，并且会由于 Kubelet 的并行操作而加剧这种开销（为每个 Pod 分配一个 goruntine，用来获取容器的状态）。轮询带来的周期性大量并发请求会导致较高的 CPU 使用率峰值（即使 Pod 的定义和容器的状态没有发生改变），降低性能。最后容器运行时可能不堪重负，从而降低系统的可靠性。</p>
@@ -406,7 +406,8 @@
 <h2 id="三-当前解决办法"><a href="#三-当前解决办法" class="headerlink" title="三.当前解决办法"></a>三.当前解决办法</h2><p>1.添加一台Worker节点，让每台节点运行合适数量的Pod；<br><img src="/images/0005.png" alt="image"></p>
 <p>2.依序重启所有的Worker节点，让Pod全部重新调度启动；</p>
 <h2 id="四-防范措施"><a href="#四-防范措施" class="headerlink" title="四.防范措施"></a>四.防范措施</h2><p>重启节点是有风险的，特别是线上环境。如何长效规避该类似问题的发生特别重要。如下：</p>
-<p>1.当前使用的Kubernetes 1.12版本和Docker版本客观上比较老，当前版本存在Bug（一定条件下触发），应尽可能使用Kubernetes新版本（如1.17）和Docker新版本（如19.03.4）；<br><a href="https://github.com/kubernetes/kubernetes/issues/45419" target="_blank" rel="noopener">https://github.com/kubernetes/kubernetes/issues/45419</a><br><img src="/images/0006.png" alt="image"><br>2.部署的Pod，应尽可能设置Resource的request和limit，不能任其使用主机系统资源；<br>3.每台Worker节点应当为系统设置预留资源，如预留4核6GB内存给Kubernetes服务和Systemd管理的进程使用；<br>4.Kubernetes集群每台Worker节点Pod运行数量不宜太多（基于现有配置从当前正常的线上环境来看不应超过70个），集群负载非常高时需及时扩容节点；<br>5.修改PLEG的检查时间为30s，可参考IBM文章，<a href="https://www.ibm.com/support/knowledgecenter/SSFC4F_1.1.0/troubleshoot/docker_pods_overload.html" target="_blank" rel="noopener">https://www.ibm.com/support/knowledgecenter/SSFC4F_1.1.0/troubleshoot/docker_pods_overload.html</a><br>6.除了针对Pod运行状态进行监控告警，还需要支持K8s节点运行状态的监控告警，这样能第一时间发现问题，介入处理降低风险；</p>
+<p>1.当前使用的Kubernetes 1.12版本和Docker版本客观上比较老，当前版本存在Bug（一定条件下触发），应尽可能使用Kubernetes新版本（如1.17）和Docker新版本（如19.03.4）；<br><a href="https://github.com/kubernetes/kubernetes/issues/45419" target="_blank" rel="noopener">https://github.com/kubernetes/kubernetes/issues/45419</a></p>
+<p><img src="/images/0006.png" alt="image"><br>2.部署的Pod，应尽可能设置Resource的request和limit，不能任其使用主机系统资源；<br>3.每台Worker节点应当为系统设置预留资源，如预留4核6GB内存给Kubernetes服务和Systemd管理的进程使用；<br>4.Kubernetes集群每台Worker节点Pod运行数量不宜太多（基于现有配置从当前正常的线上环境来看不应超过70个），集群负载非常高时需及时扩容节点；<br>5.修改PLEG的检查时间为30s，可参考IBM文章，<a href="https://www.ibm.com/support/knowledgecenter/SSFC4F_1.1.0/troubleshoot/docker_pods_overload.html" target="_blank" rel="noopener">https://www.ibm.com/support/knowledgecenter/SSFC4F_1.1.0/troubleshoot/docker_pods_overload.html</a><br>6.除了针对Pod运行状态进行监控告警，还需要支持K8s节点运行状态的监控告警，这样能第一时间发现问题，介入处理降低风险；</p>
 
       
     </div>
