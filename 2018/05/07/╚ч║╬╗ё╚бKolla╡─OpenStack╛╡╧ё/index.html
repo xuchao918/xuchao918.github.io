@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kolla,OpenStack,Docker," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="由于，OpenStack社区自Queens版本起，便不再提供将打包好的kolla openstack镜像放在该链接上 所以，我们要获取Kolla的OpenStack镜像，就只能依靠自己手动获取。有如下几种方法。 从官方源下载镜像安装kolla-ansible12# git clone https://github.com/openstack/kolla-ansible -b stable/quee">
+<meta name="keywords" content="Kolla,OpenStack,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何获取Kolla的OpenStack镜像">
+<meta property="og:url" content="http://yoursite.com/2018/05/07/╚ч║╬╗ё╚бKolla╡─OpenStack╛╡╧ё/index.html">
+<meta property="og:site_name" content="起风了">
+<meta property="og:description" content="由于，OpenStack社区自Queens版本起，便不再提供将打包好的kolla openstack镜像放在该链接上 所以，我们要获取Kolla的OpenStack镜像，就只能依靠自己手动获取。有如下几种方法。 从官方源下载镜像安装kolla-ansible12# git clone https://github.com/openstack/kolla-ansible -b stable/quee">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-14T14:25:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何获取Kolla的OpenStack镜像">
+<meta name="twitter:description" content="由于，OpenStack社区自Queens版本起，便不再提供将打包好的kolla openstack镜像放在该链接上 所以，我们要获取Kolla的OpenStack镜像，就只能依靠自己手动获取。有如下几种方法。 从官方源下载镜像安装kolla-ansible12# git clone https://github.com/openstack/kolla-ansible -b stable/quee">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/07/╚ч║╬╗ё╚бKolla╡─OpenStack╛╡╧ё/"/>
+
+
+
+
+
+  <title>如何获取Kolla的OpenStack镜像 | 起风了</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">起风了</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xuchao's blog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/07/╚ч║╬╗ё╚бKolla╡─OpenStack╛╡╧ё/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="XuChao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="起风了">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何获取Kolla的OpenStack镜像</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-07T23:16:22+08:00">
+                2018-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenStack/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenStack</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenStack/Kolla/" itemprop="url" rel="index">
+                    <span itemprop="name">Kolla</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于，OpenStack社区自Queens版本起，便不再提供将打包好的kolla openstack镜像放在<br><a href="http://tarballs.openstack.org/kolla/images/" target="_blank" rel="noopener">该链接上</a></p>
+<p>所以，我们要获取Kolla的OpenStack镜像，就只能依靠自己手动获取。有如下几种方法。</p>
+<h2 id="从官方源下载镜像"><a href="#从官方源下载镜像" class="headerlink" title="从官方源下载镜像"></a>从官方源下载镜像</h2><p>安装kolla-ansible<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/openstack/kolla-ansible -b stable/queens</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> pip install kolla-ansible/</span></span><br></pre></td></tr></table></figure></p>
+<p>编辑globals.yml文件，设置相关参数<br><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># vim /etc/kolla/globals.yml</span></span><br><span class="line"><span class="symbol">kolla_install_type:</span> <span class="string">"source"</span></span><br><span class="line"><span class="symbol">kolla_base_distro:</span> <span class="string">"centos"</span></span><br><span class="line"><span class="symbol">openstack_release:</span> <span class="string">"queens"</span></span><br></pre></td></tr></table></figure></p>
+<p>下载镜像<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> kolla-ansible -i all-in-one bootstrap-servers</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> kolla-ansible pull</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="手动构建镜像"><a href="#手动构建镜像" class="headerlink" title="手动构建镜像"></a>手动构建镜像</h2><p>下载kolla项目<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/openstack/kolla.git -b stable/queens</span></span><br></pre></td></tr></table></figure></p>
+<p>生成kolla-build.conf文件<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> pip install tox</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> kolla/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tox -e genconfig</span></span><br></pre></td></tr></table></figure></p>
+<p>构建openstack镜像<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//构建基于centos系统的source源码安装的openstack镜像</span><br><span class="line"># kolla-<span class="keyword">build </span>-t source -<span class="keyword">b </span>centos</span><br><span class="line"></span><br><span class="line">//或者，构建基于centos系统的<span class="keyword">binary二进制包安装的openstack镜像</span></span><br><span class="line"><span class="keyword"># </span>kolla-<span class="keyword">build </span>-t <span class="keyword">binary </span>-<span class="keyword">b </span>centos</span><br></pre></td></tr></table></figure></p>
+<h2 id="自动化拉取kolla镜像"><a href="#自动化拉取kolla镜像" class="headerlink" title="自动化拉取kolla镜像"></a>自动化拉取kolla镜像</h2><p>由于OpenStack社区，已经开始正式将kolla镜像托管在DockerHub上。所以，我们还可以从Docker Hub上直接拉取kolla镜像，由于openstack镜像少则几十，多则上百，因此，这里我编写了一个bash脚本，用于自动化拉取queens版本的kolla镜像。</p>
+<p>为了加快从docker hub上拉取镜像，这里，配置上阿里云的镜像加速器。<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># cat /etc/docker/daemon.json </span></span><br><span class="line">&#123;</span><br><span class="line"><span class="string">"registry-mirrors"</span>: [<span class="string">"https://a5aghnme.mirror.aliyuncs.com"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>重启docker服务，生效<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> systemctl daemon-reload &amp;&amp; systemctl restart docker</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>拉取queens版本的kolla镜像</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat 01_pull_kolla.sh </span></span><br><span class="line"><span class="meta">#!/usr/bin/bash</span></span><br><span class="line"></span><br><span class="line">image_tag=queens    <span class="comment">#该变量，你可以根据自己需要进行修改</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># delete images</span></span><br><span class="line">docker images | awk <span class="string">'&#123;print $3&#125;'</span> | xargs docker rmi -f</span><br><span class="line"></span><br><span class="line"><span class="comment"># pull public images</span></span><br><span class="line"><span class="keyword">for</span> public_images <span class="keyword">in</span> memcached kolla-toolbox cron mongodb mariadb rabbitmq keepalived haproxy chrony iscsid tgtd</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$public_images</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull monitor manage images</span></span><br><span class="line"><span class="comment"># it is recommended to use telegraf + influxdb + grafana + collectd + Prometheus</span></span><br><span class="line"><span class="keyword">for</span> monitor_images <span class="keyword">in</span> collectd telegraf grafana influxdb prometheus-server prometheus-haproxy-exporter prometheus-node-exporter prometheus-mysqld-exporter prometheus-memcached-exporter prometheus-cadvisor</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$monitor_images</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull log manage images</span></span><br><span class="line"><span class="keyword">for</span> log_images <span class="keyword">in</span> fluentd elasticsearch kibana</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$log_images</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull nova</span></span><br><span class="line"><span class="keyword">for</span> nova <span class="keyword">in</span> nova-compute nova-consoleauth nova-ssh nova-placement-api nova-api nova-compute-ironic nova-consoleauth nova-serialproxy nova-scheduler nova-novncproxy nova-conductor nova-libvirt</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$nova</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull keystone</span></span><br><span class="line"><span class="keyword">for</span> keystone <span class="keyword">in</span> keystone keystone-fernet keystone-ssh</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$keystone</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull freezer</span></span><br><span class="line">docker pull kolla/centos-source-freezer-api:<span class="variable">$image_tag</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull glance </span></span><br><span class="line"><span class="keyword">for</span> glance <span class="keyword">in</span> glance-api glance-registry</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$glance</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull cinder</span></span><br><span class="line"><span class="keyword">for</span> cinder <span class="keyword">in</span> cinder-volume cinder-api cinder-backup cinder-scheduler</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$cinder</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull neutron</span></span><br><span class="line"><span class="keyword">for</span> neutron <span class="keyword">in</span> neutron-server neutron-lbaas-agent neutron-dhcp-agent neutron-l3-agent neutron-openvswitch-agent neutron-metadata-agent neutron-server-opendaylight opendaylight</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$neutron</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull openvswitch</span></span><br><span class="line"><span class="keyword">for</span> openvswitch <span class="keyword">in</span> openvswitch-db-server openvswitch-vswitchd neutron-openvswitch-agent</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$openvswitch</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull ceilometer</span></span><br><span class="line"><span class="keyword">for</span> ceilometer <span class="keyword">in</span> ceilometer-api ceilometer-compute ceilometer-notification ceilometer-central</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$ceilometer</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull gnocchi</span></span><br><span class="line"><span class="keyword">for</span> gnocchi <span class="keyword">in</span> gnocchi-metricd gnocchi-api gnocchi-statsd</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$gnocchi</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull aodh</span></span><br><span class="line"><span class="keyword">for</span> aodh <span class="keyword">in</span> aodh-evaluator aodh-api aodh-listener aodh-notifier</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$aodh</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull heat</span></span><br><span class="line"><span class="keyword">for</span> heat <span class="keyword">in</span> heat-api heat-api-cfn heat-engine</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$heat</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull horizon</span></span><br><span class="line">docker pull kolla/centos-source-horizon:<span class="variable">$image_tag</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull murano</span></span><br><span class="line"><span class="keyword">for</span> murano <span class="keyword">in</span> murano-api murano-engine</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$murano</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull magnum</span></span><br><span class="line"><span class="keyword">for</span> magnum <span class="keyword">in</span> magnum-api magnum-conductor</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$magnum</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull senlin</span></span><br><span class="line"><span class="keyword">for</span> senlin <span class="keyword">in</span> senlin-api senlin-engine</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$senlin</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull sahara</span></span><br><span class="line"><span class="keyword">for</span> sahara <span class="keyword">in</span> sahara-engine sahara-api</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$sahara</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull trove</span></span><br><span class="line"><span class="keyword">for</span> trove <span class="keyword">in</span> trove-api trove-taskmanager trove-conductor</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$trove</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull swift</span></span><br><span class="line"><span class="keyword">for</span> swift <span class="keyword">in</span> swift-rsyncd swift-proxy-server swift-object-expirer swift-object swift-account swift-container swift-base</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$swift</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull ironic</span></span><br><span class="line"><span class="keyword">for</span> ironic <span class="keyword">in</span> ironic-conductor ironic-pxe ironic-api ironic-inspector</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$ironic</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">docker pull kolla/centos-source-dnsmasq:pike</span><br><span class="line">docker tag kolla/centos-source-dnsmasq:pike kolla/centos-source-dnsmasq:queens</span><br><span class="line">docker rmi -f kolla/centos-source-dnsmasq:pike</span><br><span class="line"></span><br><span class="line"><span class="comment"># pull cloudkitty</span></span><br><span class="line"><span class="keyword">for</span> cloudkitty <span class="keyword">in</span> cloudkitty-api cloudkitty-processor panko-api</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker pull kolla/centos-source-<span class="variable">$cloudkitty</span>:<span class="variable">$image_tag</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pull kuryr</span></span><br><span class="line">docker pull kolla/centos-source-kuryr-libnetwork:<span class="variable">$image_tag</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># save images</span></span><br><span class="line">images=`docker images | grep queens | awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line">docker save -o kolla_queens_images.tar <span class="variable">$images</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># clean pull's images</span></span><br><span class="line">docker images | awk <span class="string">'&#123;print $3&#125;'</span> | xargs docker rmi -f</span><br></pre></td></tr></table></figure></p>
+<p><strong>将镜像push到本地Registry</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat 02_push_kolla.sh </span></span><br><span class="line"><span class="meta">#!/usr/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># load images</span></span><br><span class="line">docker load --input kolla_queens_images.tar</span><br><span class="line"></span><br><span class="line">registry=172.17.51.27:4000    <span class="comment">#请将该registry地址，改为你自己环境的地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># tag images</span></span><br><span class="line">images=`docker images | grep queens | awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="keyword">for</span> images_tag <span class="keyword">in</span> <span class="variable">$images</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker tag <span class="variable">$images_tag</span>:queens <span class="variable">$registry</span>/<span class="variable">$images_tag</span>:queens</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># delete old's images</span></span><br><span class="line">delete_images=`docker images | grep <span class="string">'^kolla'</span> | awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="keyword">for</span> delete_images1 <span class="keyword">in</span> <span class="variable">$delete_images</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker rmi <span class="variable">$delete_images1</span>:queens</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># push images</span></span><br><span class="line">push_images=`docker images | grep queens | awk <span class="string">'&#123;print $1&#125;'</span>`</span><br><span class="line"><span class="keyword">for</span> push_images1 <span class="keyword">in</span> <span class="variable">$push_images</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">  docker push <span class="variable">$push_images1</span>:queens</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<p>综合，比较以上三种方法的优缺点。这里，推荐使用第三种方法，速度更快，也更便捷。<br>PS：脚本写得有点搓，不喜可喷。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kolla/" rel="tag"># Kolla</a>
+          
+            <a href="/tags/OpenStack/" rel="tag"># OpenStack</a>
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/07/╚ч║╬╔ш╓├OpenStack╜┌╡уSwap╖╓╟°/" rel="next" title="如何设置OpenStack节点Swap分区">
+                <i class="fa fa-chevron-left"></i> 如何设置OpenStack节点Swap分区
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/09/┴─┴─OpenStack╘╦╬м╝▄╣╣─╟╨й╩┬╢∙/" rel="prev" title="聊聊OpenStack运维架构那些事儿">
+                聊聊OpenStack运维架构那些事儿 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/touxiang.jpg"
+                alt="XuChao" />
+            
+              <p class="site-author-name" itemprop="name">XuChao</p>
+              <p class="site-description motion-element" itemprop="description">热爱开源技术，OpenStack、Kubernetes、CI/CD工程师一枚</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-globe"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://douban.com/people" target="_blank" title="豆瓣">
+                      
+                        <i class="fa fa-fw fa-globe"></i>豆瓣</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#从官方源下载镜像"><span class="nav-number">1.</span> <span class="nav-text">从官方源下载镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动构建镜像"><span class="nav-number">2.</span> <span class="nav-text">手动构建镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动化拉取kolla镜像"><span class="nav-number">3.</span> <span class="nav-text">自动化拉取kolla镜像</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=461525011&auto=1&height=66"></iframe>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XuChao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
