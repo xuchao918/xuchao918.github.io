@@ -4,6 +4,29 @@
 
     
   <url>
+    <loc>http://yoursite.com/2021/02/24/%E5%9F%BA%E4%BA%8EGo+Vue%E5%BC%80%E5%8F%91DevOps%E5%B9%B3%E5%8F%B0/</loc>
+    <lastmod>2021-02-25T02:16:19.356Z</lastmod>
+    <data>
+        <display>
+        <title>基于Go+Vue开发DevOps平台</title>
+        <pubTime>2021-02-24T08:47:35.053Z</pubTime>
+        
+        <tag>Go</tag>
+         
+        <tag>Kubernetes</tag>
+         
+        <tag>Vue</tag>
+         
+        <tag>DevOps</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2020/03/18/Kubernetes%E8%8A%82%E7%82%B9%E9%A2%91%E7%B9%81NotReady/</loc>
     <lastmod>2020-03-18T16:13:21.422Z</lastmod>
     <data>

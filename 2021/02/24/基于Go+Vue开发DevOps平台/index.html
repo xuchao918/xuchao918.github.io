@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Kolla,OpenStack," />
+  <meta name="keywords" content="Go,Kubernetes,Vue,DevOps," />
 
 
 
@@ -79,25 +79,21 @@
 
 
 
-<meta name="description" content="OpenStack Neutron网络服务定义了四种网络模式：1234# tenant_network_type = local# tenant_network_type = vlan   # tenant_network_type = gre# tenant_network_type = vxlan 这里，本文以vlan、vxlan为例，阐述如何实现OpenStack虚机网络（亦称租户网络、业务">
-<meta name="keywords" content="Kolla,OpenStack">
+<meta name="description" content="# 项目介绍 本项目基于优秀的Gin-Vue-Admin开源前后端框架开发(特别感谢!)，在此基础上做了大量精简，力图实现管理Kubernetes、应用监控和发布回滚等功能。 ## 技术栈 - 前端框架：Element-ui、Vue - 后台框架：Gin  # 部署使用 \12345678\- node版本 &amp;gt; v8.6.0\- golang版本 &amp;gt;= v1.14\- IDE推荐：Go">
+<meta name="keywords" content="Go,Kubernetes,Vue,DevOps">
 <meta property="og:type" content="article">
-<meta property="og:title" content="配置OpenStack虚机网络vxlan和vlan共存">
-<meta property="og:url" content="http://yoursite.com/2018/05/03/配置OpenStack虚机网络vxlan和vlan共存/index.html">
+<meta property="og:title" content="基于Go+Vue开发DevOps平台">
+<meta property="og:url" content="http://yoursite.com/2021/02/24/基于Go+Vue开发DevOps平台/index.html">
 <meta property="og:site_name" content="起风了">
-<meta property="og:description" content="OpenStack Neutron网络服务定义了四种网络模式：1234# tenant_network_type = local# tenant_network_type = vlan   # tenant_network_type = gre# tenant_network_type = vxlan 这里，本文以vlan、vxlan为例，阐述如何实现OpenStack虚机网络（亦称租户网络、业务">
+<meta property="og:description" content="# 项目介绍 本项目基于优秀的Gin-Vue-Admin开源前后端框架开发(特别感谢!)，在此基础上做了大量精简，力图实现管理Kubernetes、应用监控和发布回滚等功能。 ## 技术栈 - 前端框架：Element-ui、Vue - 后台框架：Gin  # 部署使用 \12345678\- node版本 &amp;gt; v8.6.0\- golang版本 &amp;gt;= v1.14\- IDE推荐：Go">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/globals.png">
-<meta property="og:image" content="http://yoursite.com/images/network1.png">
-<meta property="og:image" content="http://yoursite.com/images/network2.png">
-<meta property="og:image" content="http://yoursite.com/images/networkbrex.png">
-<meta property="og:image" content="http://yoursite.com/images/compute.png">
-<meta property="og:image" content="http://yoursite.com/images/computebrex.png">
-<meta property="og:updated_time" content="2018-05-03T14:09:11.355Z">
+<meta property="og:image" content="http://qmplusimg.henrongyi.top/gva/gin-vue-admin.png">
+<meta property="og:image" content="http://qmplusimg.henrongyi.top/naotu.png">
+<meta property="og:updated_time" content="2021-02-25T02:16:19.356Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="配置OpenStack虚机网络vxlan和vlan共存">
-<meta name="twitter:description" content="OpenStack Neutron网络服务定义了四种网络模式：1234# tenant_network_type = local# tenant_network_type = vlan   # tenant_network_type = gre# tenant_network_type = vxlan 这里，本文以vlan、vxlan为例，阐述如何实现OpenStack虚机网络（亦称租户网络、业务">
-<meta name="twitter:image" content="http://yoursite.com/images/globals.png">
+<meta name="twitter:title" content="基于Go+Vue开发DevOps平台">
+<meta name="twitter:description" content="# 项目介绍 本项目基于优秀的Gin-Vue-Admin开源前后端框架开发(特别感谢!)，在此基础上做了大量精简，力图实现管理Kubernetes、应用监控和发布回滚等功能。 ## 技术栈 - 前端框架：Element-ui、Vue - 后台框架：Gin  # 部署使用 \12345678\- node版本 &amp;gt; v8.6.0\- golang版本 &amp;gt;= v1.14\- IDE推荐：Go">
+<meta name="twitter:image" content="http://qmplusimg.henrongyi.top/gva/gin-vue-admin.png">
 
 
 
@@ -127,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/03/配置OpenStack虚机网络vxlan和vlan共存/"/>
+  <link rel="canonical" href="http://yoursite.com/2021/02/24/基于Go+Vue开发DevOps平台/"/>
 
 
 
 
 
-  <title>配置OpenStack虚机网络vxlan和vlan共存 | 起风了</title>
+  <title>基于Go+Vue开发DevOps平台 | 起风了</title>
   
 
 
@@ -304,7 +300,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/03/配置OpenStack虚机网络vxlan和vlan共存/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/24/基于Go+Vue开发DevOps平台/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="XuChao">
@@ -321,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">配置OpenStack虚机网络vxlan和vlan共存</h1>
+          <h1 class="post-title" itemprop="name headline">基于Go+Vue开发DevOps平台</h1>
         
 
         <div class="post-meta">
@@ -333,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-03T20:59:32+08:00">
-                2018-05-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-24T16:47:35+08:00">
+                2021-02-24
               </time>
             
 
@@ -343,28 +339,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenStack/" itemprop="url" rel="index">
-                    <span itemprop="name">OpenStack</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -393,46 +367,60 @@
       
 
       
-        <p>OpenStack Neutron网络服务定义了四种网络模式：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> tenant_network_type = <span class="built_in">local</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tenant_network_type = vlan   </span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tenant_network_type = gre</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tenant_network_type = vxlan</span></span><br></pre></td></tr></table></figure></p>
-<p>这里，本文以vlan、vxlan为例，阐述如何实现OpenStack虚机网络（亦称租户网络、业务网络）同时支持vxlan和vlan两种网络。</p>
-<p><strong>说明</strong></p>
-<ul>
-<li>环境：Openstack queens版本</li>
-<li>部署工具：kolla-ansible</li>
-</ul>
-<p>在kolla-ansible部署节点的/etc/kolla/globals.yml文件中，配置网卡。如下所示。</p>
-<p><img src="/images/globals.png" alt="image"></p>
-<ul>
-<li>eth0：openstack管理网络；vlan 51，交换机端口设置为Access模式</li>
-<li>eth1：虚机网络(vxlan)；vlan 52，交换机端口设置为Access模式</li>
-<li>eth2：外部网络兼虚机网络(vlan)；vlan网段53-54，交换机端口设置为trunk模式，主机不配置IP地址</li>
-</ul>
-<h2 id="在所有网络节点上，操作如下"><a href="#在所有网络节点上，操作如下" class="headerlink" title="在所有网络节点上，操作如下"></a>在所有网络节点上，操作如下</h2><p>修改文件/etc/kolla/neutron-server/ml2_conf.ini</p>
-<p><img src="/images/network1.png" alt="image"> </p>
-<p>修改文件/etc/kolla/neutron-openvswitch-agent/ml2_conf.ini</p>
-<p><img src="/images/network2.png" alt="image"> </p>
-<p>重启neutron容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker restart neutron_server neutron_openvswitch_agent</span></span><br></pre></td></tr></table></figure></p>
-<p>在网络节点上，查看br-ex网桥设置情况，如下。</p>
-<p><img src="/images/networkbrex.png" alt="image"> </p>
-<h2 id="在所有计算节点上，操作如下"><a href="#在所有计算节点上，操作如下" class="headerlink" title="在所有计算节点上，操作如下"></a>在所有计算节点上，操作如下</h2><p>修改文件/etc/kolla/neutron-openvswitch-agent/ml2_conf.ini</p>
-<p><img src="/images/compute.png" alt="image"></p>
-<p>创建一个br-ex外部网桥，并关联到主机的eth2物理网卡上。这样，当计算节点上的虚拟机使用vlan网络时，便可以直接通过qbr-&gt;br-int-&gt;br-ex-&gt;eth2连接到外网。（vlan网络的三层路由，建议使用物理路由器，这样性能和稳定性更好，而不需要通过网络节点上的L3 vRouter虚拟路由）。<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># docker exec -<span class="keyword">u</span> root -it neutron_openvswitch_agent ovs-vsctl <span class="built_in">add</span>-<span class="keyword">br</span> <span class="keyword">br</span>-<span class="keyword">ex</span></span><br><span class="line"># docker exec -<span class="keyword">u</span> root -it neutron_openvswitch_agent ovs-vsctl <span class="built_in">add</span>-port <span class="keyword">br</span>-<span class="keyword">ex</span> eth2</span><br></pre></td></tr></table></figure></p>
-<p>最后，重启相关容器<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> docker restart neutron_openvswitch_agent</span></span><br></pre></td></tr></table></figure></p>
-<p>在计算节点上，查看br-ex网桥设置情况，如下。</p>
-<p><img src="/images/computebrex.png" alt="image"></p>
-<p>创建一个vlan id为53的网段<br><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#</span> <span class="comment">neutron</span> <span class="comment">net</span><span class="literal">-</span><span class="comment">create</span> <span class="comment">vlan</span><span class="literal">-</span><span class="comment">53</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">shared</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:physical_network</span> <span class="comment">physnet1</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:network_type</span> <span class="comment">vlan</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">provider:segmentation_id</span> <span class="comment">53</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">#</span> <span class="comment">neutron</span> <span class="comment">subnet</span><span class="literal">-</span><span class="comment">create</span> <span class="comment">vlan</span><span class="literal">-</span><span class="comment">53</span> <span class="comment">172</span><span class="string">.</span><span class="comment">17</span><span class="string">.</span><span class="comment">53</span><span class="string">.</span><span class="comment">0/24</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">name</span> <span class="comment">provider</span><span class="literal">-</span><span class="comment">53</span><span class="literal">-</span><span class="comment">subnet</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">gateway</span> <span class="comment">172</span><span class="string">.</span><span class="comment">17</span><span class="string">.</span><span class="comment">53</span><span class="string">.</span><span class="comment">1</span></span><br></pre></td></tr></table></figure></p>
-<p>查看创建的网络，如下。<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># neutron net-<span class="type">list</span></span><br><span class="line">+--------------------------------------+----------------+----------------------------------+-----------------------------------------------------+</span><br><span class="line">| id                                   | name           | tenant_id                        | subnets                                             |</span><br><span class="line">+--------------------------------------+----------------+----------------------------------+-----------------------------------------------------+</span><br><span class="line">| <span class="number">5</span>d9c4874-e03b<span class="number">-4</span>bde-aee0<span class="number">-947</span>d7dde4860 | vlan<span class="number">-53</span>        | <span class="number">48</span>fbadff0ab84229b429166babbe488f | <span class="number">9</span>bade37c-ff44<span class="number">-4004</span><span class="number">-8e82</span><span class="number">-20</span>d61348fdc0 <span class="number">172.17</span><span class="number">.53</span><span class="number">.0</span>/<span class="number">24</span> |</span><br><span class="line">| <span class="number">7</span>b0152da-a975<span class="number">-4</span>dbf-b35b<span class="number">-437951</span>c66efa | tenant_network | <span class="number">48</span>fbadff0ab84229b429166babbe488f | a45516a4<span class="number">-4</span>ce9<span class="number">-4</span>c2e<span class="number">-8052</span><span class="number">-8</span>c71eae0e219 <span class="number">10.0</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">24</span>    |</span><br><span class="line">| <span class="number">9630</span>cf8b<span class="number">-4072</span><span class="number">-415</span>b-a9a9<span class="number">-99</span>ff815748f8 | public_network | <span class="number">48</span>fbadff0ab84229b429166babbe488f | a98f8c80<span class="number">-78</span>de<span class="number">-43</span>ba-af52-d86c19fc59ef <span class="number">172.17</span><span class="number">.54</span><span class="number">.0</span>/<span class="number">24</span> |</span><br><span class="line">+--------------------------------------+----------------+----------------------------------+-----------------------------------------------------+</span><br></pre></td></tr></table></figure></p>
-<p>最后，创建一个虚拟机并使用该vlan网络。<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># nova boot --flavor <span class="number">1</span>Gmem_1cpu --image centos7 --nic net-id=<span class="number">5</span>d9c4874-e03b<span class="number">-4</span>bde-aee0<span class="number">-947</span>d7dde4860 test_vm</span><br><span class="line"></span><br><span class="line"># nova <span class="type">list</span> | grep test_vm</span><br><span class="line">| f506129b<span class="number">-610</span>f<span class="number">-4e2</span>d<span class="number">-886</span>b<span class="number">-5</span>d791cdcb282 | test_vm | <span class="literal">ACTIVE</span> | -  | Running | vlan<span class="number">-53</span>=<span class="number">172.17</span><span class="number">.53</span><span class="number">.7</span></span><br></pre></td></tr></table></figure></p>
-<p>测试虚拟机网络通信<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ping -c 4 172.17.53.7</span></span><br><span class="line">PING 172.17.53.7 (172.17.53.7) 56(84) bytes of data.</span><br><span class="line">64 bytes <span class="keyword">from</span> 172.17.53.7: <span class="attribute">icmp_seq</span>=1 <span class="attribute">ttl</span>=63 <span class="attribute">time</span>=0.421 ms</span><br><span class="line">64 bytes <span class="keyword">from</span> 172.17.53.7: <span class="attribute">icmp_seq</span>=2 <span class="attribute">ttl</span>=63 <span class="attribute">time</span>=0.503 ms</span><br><span class="line">64 bytes <span class="keyword">from</span> 172.17.53.7: <span class="attribute">icmp_seq</span>=3 <span class="attribute">ttl</span>=63 <span class="attribute">time</span>=0.543 ms</span><br><span class="line">64 bytes <span class="keyword">from</span> 172.17.53.7: <span class="attribute">icmp_seq</span>=4 <span class="attribute">ttl</span>=63 <span class="attribute">time</span>=0.469 ms</span><br></pre></td></tr></table></figure></p>
-<p><strong>br-int和br-ex说明</strong></p>
-<ul>
-<li>br-int</li>
-</ul>
-<p>br-int是OpenVswitch中的集成网桥，类似于一个二层的交换机。上面挂载了大量的agent来提供各种网络服务，另外负责对发往br-ex的流量，实现local vlan转化为外部vlan。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ovs-ofctl dump-flows br-int  </span></span><br><span class="line">NXST_FLOW reply (<span class="attribute">xid</span>=0x4):  </span><br><span class="line"> <span class="attribute">cookie</span>=0x0, <span class="attribute">duration</span>=147294.121s, <span class="attribute">table</span>=0, <span class="attribute">n_packets</span>=224, <span class="attribute">n_bytes</span>=33961, <span class="attribute">idle_age</span>=13, <span class="attribute">hard_age</span>=65534, <span class="attribute">priority</span>=3,in_port=4,dl_vlan=1 <span class="attribute">actions</span>=mod_vlan_vid:101,NORMAL  </span><br><span class="line"> <span class="attribute">cookie</span>=0x0, <span class="attribute">duration</span>=603538.84s, <span class="attribute">table</span>=0, <span class="attribute">n_packets</span>=19, <span class="attribute">n_bytes</span>=2234, <span class="attribute">idle_age</span>=18963, <span class="attribute">hard_age</span>=65534, <span class="attribute">priority</span>=2,in_port=4 <span class="attribute">actions</span>=drop  </span><br><span class="line"> <span class="attribute">cookie</span>=0x0, <span class="attribute">duration</span>=603547.134s, <span class="attribute">table</span>=0, <span class="attribute">n_packets</span>=31901, <span class="attribute">n_bytes</span>=6419756, <span class="attribute">idle_age</span>=13, <span class="attribute">hard_age</span>=65534, <span class="attribute">priority</span>=1 <span class="attribute">actions</span>=NORMAL</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>br-ex</li>
-</ul>
-<p>br-ex是OpenVswitch中的一个外部网桥，要做的事情很简单，只需要正常转发数据流量即可。<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ovs-ofctl dump-flows br-ex  </span></span><br><span class="line">NXST_FLOW reply (<span class="attribute">xid</span>=0x4):  </span><br><span class="line"> <span class="attribute">cookie</span>=0x0, <span class="attribute">duration</span>=6770.969s, <span class="attribute">table</span>=0, <span class="attribute">n_packets</span>=5411, <span class="attribute">n_bytes</span>=306944, <span class="attribute">idle_age</span>=0, <span class="attribute">hard_age</span>=65534, <span class="attribute">priority</span>=0 <span class="attribute">actions</span>=NORMAL</span><br></pre></td></tr></table></figure></p>
+        <p><strong># 项目介绍</strong></p>
+<p>本项目基于优秀的<a href="https://github.com/flipped-aurora/gin-vue-admin" target="_blank" rel="noopener">Gin-Vue-Admin</a>开源前后端框架开发(特别感谢!)，在此基础上做了大量精简，力图实现管理Kubernetes、应用监控和发布回滚等功能。</p>
+<p><strong>## 技术栈</strong></p>
+<p>- 前端框架：<a href="https://github.com/ElemeFE/element" target="_blank" rel="noopener">Element-ui</a>、<a href="https://cn.vuejs.org/" target="_blank" rel="noopener">Vue</a></p>
+<p>- 后台框架：<a href="https://github.com/gin-gonic/gin" target="_blank" rel="noopener">Gin</a> </p>
+<p><strong># 部署使用</strong></p>
+<p>\<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">\- <span class="keyword">node</span><span class="title">版本 &gt; v8</span>.<span class="number">6.0</span></span><br><span class="line"></span><br><span class="line">\- golang版本 &gt;= v1.<span class="number">14</span></span><br><span class="line"></span><br><span class="line">\- IDE推荐：Goland</span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p><strong>## 启动Server端</strong></p>
+<p><strong>### 修改配置文件</strong></p>
+<p>\<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">\<span class="comment"># 克隆项目</span></span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> git@github.com:openstack-test/gin-vue-devops.git</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 修改server/config.yaml文件. 其中mysql数据库需要先创建好</span></span><br><span class="line"></span><br><span class="line">\<span class="comment"># mysql configuration</span></span><br><span class="line"></span><br><span class="line">mysql:</span><br><span class="line"></span><br><span class="line"> path: <span class="string">'127.0.0.1:3306'</span></span><br><span class="line"></span><br><span class="line"> config: <span class="string">'charset=utf8mb4&amp;parseTime=True&amp;loc=Local'</span></span><br><span class="line"></span><br><span class="line"> db-name: <span class="string">'gin-vue-devops'</span></span><br><span class="line"></span><br><span class="line"> username: <span class="string">'root'</span></span><br><span class="line"></span><br><span class="line"> password: <span class="string">'Aa@6447985'</span></span><br><span class="line"></span><br><span class="line"> max-idle-conns: 10</span><br><span class="line"></span><br><span class="line"> max-open-conns: 100</span><br><span class="line"></span><br><span class="line"> <span class="built_in">log</span>-mode: <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># redis configuration</span></span><br><span class="line"></span><br><span class="line">redis:</span><br><span class="line"></span><br><span class="line"> db: 0</span><br><span class="line"></span><br><span class="line"> addr: <span class="string">'127.0.0.1:6379'</span></span><br><span class="line"></span><br><span class="line"> password: <span class="string">''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 将kubeconfig文件放在server/kubeconfig目录下,文件名为.kube-staging</span></span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p><strong>### 初始化数据库</strong></p>
+<p>- Windows用户</p>
+<p>在server目录下，打开终端执行</p>
+<p>\<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">./initdb.bat</span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p>- Linux/Mac用户</p>
+<p>\<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">\<span class="comment"># 在server目录下,先构建gva终端工具</span></span><br><span class="line"></span><br><span class="line">make gva</span><br><span class="line"></span><br><span class="line">\<span class="comment"># 使用gva初始化数据, 如果不使用make initdb, 使用./gva initdb也可以</span></span><br><span class="line"></span><br><span class="line">make initdb</span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p>使用 goland等编辑工具，打开server目录</p>
+<p>\<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 进入server目录安装go依赖包</span></span><br><span class="line"></span><br><span class="line">go list (go mod tidy)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 编译</span></span><br><span class="line"></span><br><span class="line">go build -o gin-vue-devops</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 启动服务</span></span><br><span class="line"></span><br><span class="line">./gin-vue-devops</span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p><strong>## 启动Web端</strong></p>
+<p>\<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">\<span class="comment"># 进入web前端目录</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> web</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 安装依赖</span></span><br><span class="line"></span><br><span class="line">npm install --registry=https://registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 启动前端服务,会自动打开浏览器页面</span></span><br><span class="line"></span><br><span class="line">npm run serve</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># 发布打包（只在正式上线时使用）,将生成的dist目录下的所有文件拷贝到nginx目录下</span></span><br><span class="line"></span><br><span class="line">npm run build</span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p><strong>## Swagger自动化API文档</strong></p>
+<p><strong>### 安装 swagger</strong></p>
+<p>\<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">go get -u github.com/swaggo/swag/<span class="keyword">cmd</span><span class="bash">/swag</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">\</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>### 生成API文档</strong></p>
+<p>\<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">cd server</span><br><span class="line"></span><br><span class="line">swag init</span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p>执行上面的命令后，server目录下会出现docs文件夹，登录<a href="http://localhost:8888/swagger/index.html" target="_blank" rel="noopener">http://localhost:8888/swagger/index.html</a>, 即可查看swagger文档</p>
+<p><strong># 项目架构</strong></p>
+<p><strong>## 技术选型</strong></p>
+<p>- 前端：用基于<code>vue</code>的<code>Element-UI</code>构建基础页面。</p>
+<p>- 后端：用<code>Gin</code>快速搭建基础restful风格API，<code>Gin</code>是一个go语言编写的Web框架。</p>
+<p>- 数据库：采用<code>MySql</code>(5.6.44)版本，使用<code>gorm</code>实现对数据库的基本操作。</p>
+<p>- 缓存：使用<code>Redis</code>实现记录当前活跃用户的<code>jwt</code>令牌并实现多点登录限制。</p>
+<p>- API文档：使用<code>Swagger</code>构建自动化文档。</p>
+<p>- 配置文件：使用<code>viper</code>实现<code>yaml</code>格式的配置文件。</p>
+<p>- 日志：使用<code>zap</code>实现日志记录。</p>
+<p><strong>## 系统架构图</strong></p>
+<p>后端</p>
+<p><img src="http://qmplusimg.henrongyi.top/gva/gin-vue-admin.png" alt="系统架构图"></p>
+<p>前端</p>
+<p><img src="http://qmplusimg.henrongyi.top/naotu.png" alt="前端详细设计图"></p>
+<p><strong>## 目录结构</strong></p>
+<p>\<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  ├─server     （后端文件夹）</span><br><span class="line"></span><br><span class="line">  │ ├─api      （API）</span><br><span class="line"></span><br><span class="line">  | ├─cmd      （数据库表初始化工具）</span><br><span class="line"></span><br><span class="line">  │ ├─config     （配置相关）</span><br><span class="line"></span><br><span class="line">  │ ├─core      （启动相关）</span><br><span class="line"></span><br><span class="line">  │ ├─docs      （swagger文档目录）</span><br><span class="line"></span><br><span class="line">  │ ├─global     （全局对象）</span><br><span class="line"></span><br><span class="line">  │ ├─initialiaze  （gorm、<span class="built_in">log</span>、route、validator等相关初始化）</span><br><span class="line"></span><br><span class="line">  │ ├─middleware   （中间件）</span><br><span class="line"></span><br><span class="line">  │ ├─model     （结构体层）</span><br><span class="line"></span><br><span class="line">  │ ├─resource    （资源）</span><br><span class="line"></span><br><span class="line">  │ ├─router     （路由）</span><br><span class="line"></span><br><span class="line">  │ ├─service     (服务)</span><br><span class="line"></span><br><span class="line">  │ └─utils     （公共功能）</span><br><span class="line"></span><br><span class="line">  └─web      （前端文件夹）</span><br><span class="line"></span><br><span class="line">​    ├─public    （发布模板）</span><br><span class="line"></span><br><span class="line">​    └─src      （源码包）</span><br><span class="line"></span><br><span class="line">​      ├─api    （向后台发送ajax的封装层）</span><br><span class="line"></span><br><span class="line">​      ├─assets  （静态文件）</span><br><span class="line"></span><br><span class="line">​      ├─<span class="built_in">components</span>（组件）</span><br><span class="line"></span><br><span class="line">​      ├─router  （前端路由）</span><br><span class="line"></span><br><span class="line">​      ├─store   （vuex 状态管理仓）</span><br><span class="line"></span><br><span class="line">​      ├─<span class="built_in">style</span>   （通用样式文件）</span><br><span class="line"></span><br><span class="line">​      ├─utils   （前端工具库）</span><br><span class="line"></span><br><span class="line">​      └─<span class="built_in">view</span>   （前端页面）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\</span><br></pre></td></tr></table></figure></p>
+<p><strong>## 主要功能</strong></p>
+<p>- 权限管理：基于<code>jwt</code>和<code>casbin</code>实现的权限管理 </p>
+<p>- 角色管理：创建权限控制的主要对象，可以给角色分配不同api权限和菜单权限。</p>
+<p>- 菜单管理：实现用户动态菜单配置，实现不同角色不同菜单。</p>
+<p>- api管理：不同用户可调用的api接口的权限不同。</p>
+<p>- 表单生成器：表单生成器借助 <a href="https://github.com/JakHuang/form-generator" target="_blank" rel="noopener">@form-generator</a>。</p>
+<p>- 代码生成器：后台基础逻辑以及简单curd的代码生成器。</p>
+<p>- Kubernetes管理：包括NameSpace、Deployment、Pod容器等资源对象。</p>
+<p><strong>## 计划任务</strong></p>
+<p>- [ ] 完善Kubernetes资源对象管理</p>
+<p>- [ ] 应用创建部署、回滚</p>
+<p>- [ ] 其他</p>
 
       
     </div>
@@ -450,9 +438,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Kolla/" rel="tag"># Kolla</a>
+            <a href="/tags/Go/" rel="tag"># Go</a>
           
-            <a href="/tags/OpenStack/" rel="tag"># OpenStack</a>
+            <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          
+            <a href="/tags/Vue/" rel="tag"># Vue</a>
+          
+            <a href="/tags/DevOps/" rel="tag"># DevOps</a>
           
         </div>
       
@@ -465,8 +457,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/30/如何删除Registry中kolla-ansible的镜像/" rel="next" title="如何删除Registry中kolla-ansible的镜像">
-                <i class="fa fa-chevron-left"></i> 如何删除Registry中kolla-ansible的镜像
+              <a href="/2020/03/18/Kubernetes节点频繁NotReady/" rel="next" title="Kubernetes节点频繁NotReady-处理和防范">
+                <i class="fa fa-chevron-left"></i> Kubernetes节点频繁NotReady-处理和防范
               </a>
             
           </div>
@@ -527,17 +519,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -556,7 +539,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -567,7 +550,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -578,7 +561,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -630,22 +613,6 @@
       </section>
 
       
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在所有网络节点上，操作如下"><span class="nav-number">1.</span> <span class="nav-text">在所有网络节点上，操作如下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在所有计算节点上，操作如下"><span class="nav-number">2.</span> <span class="nav-text">在所有计算节点上，操作如下</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
       <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=461525011&auto=1&height=66"></iframe>
       
 
@@ -659,7 +626,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
